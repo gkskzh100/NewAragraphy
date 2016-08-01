@@ -10,24 +10,30 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class WriteActivity extends AppCompatActivity {
 
     private ImageButton writeChangeImageBtn;
     private ImageButton writeAddTextBtn;
     private ImageButton writeUploadBtn;
+    private LinearLayout writeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
 
-        init();
         setCustomActionbar();
+        init();
         setHideStatusBar();
+
 
 
     }
@@ -36,13 +42,23 @@ public class WriteActivity extends AppCompatActivity {
         writeChangeImageBtn = (ImageButton) findViewById(R.id.writeChangeImageBtn);
         writeAddTextBtn = (ImageButton) findViewById(R.id.writeAddTextBtn);
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
+        writeLayout = (LinearLayout) findViewById(R.id.writeLayout);
+        setListener();
+
     }
 
     private void setListener() {
         writeAddTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                EditText textView = new EditText(WriteActivity.this);
+                textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                textView.setBackgroundColor(Color.TRANSPARENT);
+                textView.setPadding(20,10,10,10);
+                textView.setTextColor(Color.parseColor("#FFFFFF"));
+                textView.setTextSize(13);
+                textView.setText("TEST TEXT");
+                writeLayout.addView(textView);
             }
         });
     }
