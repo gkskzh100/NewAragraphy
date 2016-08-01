@@ -8,10 +8,12 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HomeScreen">
+        android:theme="@style/AppTheme">
 
         <!-- main -->
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.HomeScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +22,10 @@
         </activity>
 
         <!-- splash -->
-        <activity android:name=".SplashActivity"></activity>
-        <activity android:name=".WriteActivity"></activity>
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.HomeScreen" />
+        <activity android:name=".WriteActivity" />
     </application>
 
 </manifest>

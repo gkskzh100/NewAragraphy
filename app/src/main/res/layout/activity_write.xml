@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="100"
+    android:background="#1c1c1c"
     tools:context="jm.dodam.newaragraphy.WriteActivity">
 
-    <!--액션바 만들기-->
 
 </LinearLayout>
