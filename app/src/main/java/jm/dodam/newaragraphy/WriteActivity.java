@@ -1,6 +1,8 @@
 package jm.dodam.newaragraphy;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -16,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class WriteActivity extends AppCompatActivity {
@@ -24,6 +28,12 @@ public class WriteActivity extends AppCompatActivity {
     private ImageButton writeAddTextBtn;
     private ImageButton writeUploadBtn;
     private LinearLayout writeLayout;
+
+
+    private EditText textView;
+
+    private int _xDelta = 0;
+    private int _yDelta = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +44,7 @@ public class WriteActivity extends AppCompatActivity {
         init();
         setHideStatusBar();
 
+        setListener();
 
 
     }
@@ -43,21 +54,62 @@ public class WriteActivity extends AppCompatActivity {
         writeAddTextBtn = (ImageButton) findViewById(R.id.writeAddTextBtn);
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
         writeLayout = (LinearLayout) findViewById(R.id.writeLayout);
-        setListener();
-
     }
 
     private void setListener() {
         writeAddTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText textView = new EditText(WriteActivity.this);
+                textView = new EditText(WriteActivity.this);
                 textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 textView.setBackgroundColor(Color.TRANSPARENT);
                 textView.setPadding(20,10,10,10);
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
                 textView.setTextSize(13);
-                textView.setText("TEST TEXT");
+                textView.setText("텍스트를 입력해주세요");
+
+                Bitmap bitmap;
+
+                bitmap = Bitmap.createBitmap(80, 100, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                textView.layout(0,80,80,100);
+                textView.draw(canvas);
+
+                textView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                        final int X = (int) motionEvent.getRawX();
+                        final int Y = (int) motionEvent.getRawY();
+                        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_DOWN:
+                                LinearLayout.LayoutParams IParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+                                _xDelta = X - IParams.leftMargin;
+                                _yDelta = Y - IParams.topMargin;
+                                textView.setFocusableInTouchMode(true);
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                break;
+                            case MotionEvent.ACTION_POINTER_DOWN:
+                                break;
+                            case MotionEvent.ACTION_POINTER_UP:
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+                                layoutParams.leftMargin = X - _xDelta;
+                                layoutParams.topMargin = Y - _yDelta;
+                                layoutParams.rightMargin = -250;
+                                layoutParams.bottomMargin = -250;
+                                view.setLayoutParams(layoutParams);
+                                textView.setFocusableInTouchMode(false);
+                                break;
+                        }
+                        writeLayout.invalidate();
+
+                        return false;
+                    }
+                });
+
                 writeLayout.addView(textView);
             }
         });
