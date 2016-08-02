@@ -28,6 +28,7 @@
         <activity android:name=".WriteActivity" />
         <activity android:name=".ShareActivity"></activity>
         <activity android:name=".SelectBackActivity"></activity>
+        <activity android:name=".ChooseImageActivity"></activity>
     </application>
 
 </manifest>

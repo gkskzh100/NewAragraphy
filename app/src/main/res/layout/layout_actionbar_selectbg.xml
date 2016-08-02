@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    >
+
+    <ImageButton
+        android:id="@+id/SelectExitImageBtn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/cancle_dark_btn"/>
+
+    <TextView
+        android:id="@+id/SelectTv"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:text="배경설정"
+        android:gravity="center"
+        android:layout_alignTop="@+id/SelectExitImageBtn"
+        android:layout_centerHorizontal="true" />
+
+    <View
+
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        />
+
+</RelativeLayout>

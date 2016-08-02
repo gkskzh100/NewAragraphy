@@ -119,6 +119,12 @@ public class WriteActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),ShareActivity.class));
             }
         });
+        writeChangeImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),SelectBackActivity.class));
+            }
+        });
     }
 
     private void setCustomActionbar() {
