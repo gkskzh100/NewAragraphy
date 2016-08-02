@@ -26,6 +26,8 @@
             android:name=".SplashActivity"
             android:theme="@style/Theme.HomeScreen" />
         <activity android:name=".WriteActivity" />
+        <activity android:name=".ShareActivity"></activity>
+        <activity android:name=".SelectBackActivity"></activity>
     </application>
 
 </manifest>
