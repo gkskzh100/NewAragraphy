@@ -1,5 +1,6 @@
 package jm.dodam.newaragraphy;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -63,7 +64,8 @@ public class WriteActivity extends AppCompatActivity {
                 textView.setPadding(20, 10, 10, 10);
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
                 textView.setTextSize(13);
-                textView.setText("텍스트를 입력해주세요");
+                textView.setHint("텍스트를 입력해주세요");
+                textView.setHintTextColor(Color.parseColor("#939393"));
 
                 Bitmap bitmap;
 
@@ -101,6 +103,7 @@ public class WriteActivity extends AppCompatActivity {
                                 view.setFocusableInTouchMode(false);
                                 break;
                         }
+//                        ((EditText) view).setTextColor(Color.YELLOW);
                         writeLayout.invalidate();
 
                         return false;
@@ -108,6 +111,12 @@ public class WriteActivity extends AppCompatActivity {
                 });
 
                 writeLayout.addView(textView);
+            }
+        });
+        writeUploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),ShareActivity.class));
             }
         });
     }

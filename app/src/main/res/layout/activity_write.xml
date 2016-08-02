@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="100"
-    android:background="#1c1c1c"
+    android:background="@color/workroomBackground"
     tools:context="jm.dodam.newaragraphy.WriteActivity">
 
     <android.support.v4.widget.Space
