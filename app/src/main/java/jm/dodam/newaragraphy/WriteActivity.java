@@ -1,15 +1,13 @@
 package jm.dodam.newaragraphy;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,14 +18,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class WriteActivity extends AppCompatActivity {
 
     private ImageButton writeChangeImageBtn;
     private ImageButton writeAddTextBtn;
     private ImageButton writeUploadBtn;
-    private LinearLayout writeLayout;
+    private RelativeLayout writeLayout;
 
 
     private EditText textView;
@@ -53,7 +50,7 @@ public class WriteActivity extends AppCompatActivity {
         writeChangeImageBtn = (ImageButton) findViewById(R.id.writeChangeImageBtn);
         writeAddTextBtn = (ImageButton) findViewById(R.id.writeAddTextBtn);
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
-        writeLayout = (LinearLayout) findViewById(R.id.writeLayout);
+        writeLayout = (RelativeLayout) findViewById(R.id.writeLayout);
     }
 
     private void setListener() {
@@ -63,7 +60,7 @@ public class WriteActivity extends AppCompatActivity {
                 textView = new EditText(WriteActivity.this);
                 textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 textView.setBackgroundColor(Color.TRANSPARENT);
-                textView.setPadding(20,10,10,10);
+                textView.setPadding(20, 10, 10, 10);
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
                 textView.setTextSize(13);
                 textView.setText("텍스트를 입력해주세요");
@@ -83,25 +80,25 @@ public class WriteActivity extends AppCompatActivity {
                         final int Y = (int) motionEvent.getRawY();
                         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
                             case MotionEvent.ACTION_DOWN:
-                                LinearLayout.LayoutParams IParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+                                RelativeLayout.LayoutParams IParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                                 _xDelta = X - IParams.leftMargin;
                                 _yDelta = Y - IParams.topMargin;
-                                textView.setFocusableInTouchMode(true);
                                 break;
                             case MotionEvent.ACTION_UP:
+                                view.setFocusableInTouchMode(true);
                                 break;
                             case MotionEvent.ACTION_POINTER_DOWN:
                                 break;
                             case MotionEvent.ACTION_POINTER_UP:
                                 break;
                             case MotionEvent.ACTION_MOVE:
-                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+                                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                                 layoutParams.leftMargin = X - _xDelta;
                                 layoutParams.topMargin = Y - _yDelta;
                                 layoutParams.rightMargin = -250;
                                 layoutParams.bottomMargin = -250;
                                 view.setLayoutParams(layoutParams);
-                                textView.setFocusableInTouchMode(false);
+                                view.setFocusableInTouchMode(false);
                                 break;
                         }
                         writeLayout.invalidate();
@@ -126,7 +123,6 @@ public class WriteActivity extends AppCompatActivity {
         actionBar.setCustomView(mCustomView);
 
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
-
 
 
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT);

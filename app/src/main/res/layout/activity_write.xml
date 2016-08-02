@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"/>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/writeLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="90"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical"/>
 </LinearLayout>
