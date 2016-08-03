@@ -1,6 +1,7 @@
 package jm.dodam.newaragraphy;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -54,6 +55,7 @@ public class MainActivity extends Activity {
         });
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private void checkPermission() {
         if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED
                 || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED) {

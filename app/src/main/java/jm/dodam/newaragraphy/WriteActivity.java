@@ -1,10 +1,12 @@
 package jm.dodam.newaragraphy;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,9 +22,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import junit.framework.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,6 +58,7 @@ public class WriteActivity extends AppCompatActivity {
         setHideStatusBar();
 
         setListener();
+
 
 
     }
@@ -127,6 +133,7 @@ public class WriteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String folder = "Test_Directory";
+                writeLayout.setDrawingCacheEnabled(false);
 
                 try {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -139,24 +146,24 @@ public class WriteActivity extends AppCompatActivity {
                         dirs.mkdirs();
                         Log.d("CAMERA_TEST", "Directory Created");
                     }
-                    writeLayout.buildDrawingCache();
+                    writeLayout.setDrawingCacheEnabled(true);
                     Bitmap captureView = writeLayout.getDrawingCache();
                     FileOutputStream fos;
                     String save;
 
                     try {
+                        writeLayout.refreshDrawableState();
+
                         save = sdCardPath.getPath() + "/" + folder + "/" + dateString + ".jpg";
                         fos = new FileOutputStream(save);
                         captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
-                        Toast.makeText(getApplicationContext(), "CAPTURE", Toast.LENGTH_SHORT).show();
+                        Log.d("capture","okok");
 
-//                        sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
-//                                Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+                        File file = new File(save);
+                        SingleMediaScanner mScanner = new SingleMediaScanner(getApplicationContext(),file);
 
-                        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
-                        + Environment.getExternalStorageDirectory() + "/Test_Directory")));
-
+                        Log.d("Scanner","okok");
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -165,10 +172,11 @@ public class WriteActivity extends AppCompatActivity {
                 }
 
 
-//                startActivity(new Intent(getApplicationContext(),ShareActivity.class));
+//                startActivity(new Intent(getApplicationContext(),WriteActivity.class));
             }
         });
     }
+
 
     private void setCustomActionbar() {
         ActionBar actionBar = getSupportActionBar();
