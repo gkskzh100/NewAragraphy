@@ -1,11 +1,14 @@
 package jm.dodam.newaragraphy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,9 +17,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Bong on 201d6-08-02.
@@ -24,6 +29,7 @@ import java.util.ArrayList;
 public class SelectBackActivity extends AppCompatActivity{
     private ImageButton selectExitImageBtn;
     private RecyclerView recyclerView;
+    List<String> imageUris;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +37,10 @@ public class SelectBackActivity extends AppCompatActivity{
 
         setCustomActionbar();
         init();
+//        parseImages();
         setListener();
         setListAdapter();
+        setItemClick();
 
     }
 
@@ -68,18 +76,37 @@ public class SelectBackActivity extends AppCompatActivity{
 
     }
     private void setListAdapter(){
-        ArrayList<String> uri = new ArrayList<String>();
-        for (int i= 0 ;i<=10;i++) {
-            uri.add("https://images.unsplash.com/photo-1470145318698-cb03732f5ddf?dpr=1.1500049829483032&auto=format&crop=entropy&fit=crop&w=1500&h=2250&q=80");
-        }
+
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(uri, getApplicationContext());
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(imageUris, getApplicationContext());
         recyclerView.setAdapter(myBackgroundAdapter);
 
 
     }
+    private void setItemClick(){
 
+        recyclerView.addOnItemTouchListener(new SelectBackClickListener(getApplicationContext(), recyclerView, new SelectBackClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                startActivity(new Intent(getApplicationContext(),ChooseImageActivity.class));
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
+    }
+    private void parseImages(){
+
+        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(getApplicationContext(),"https://unsplash.com/collections/225685/surf");
+        imageUris = jsoupAsyncTask.getImageUris();
+        for (int i=0;i<imageUris.size();i++){
+            Log.d("image","URI : "+imageUris.get(i));
+        }
+        jsoupAsyncTask.execute();
+    }
 
 
 }

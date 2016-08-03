@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="180dp"
     android:orientation="horizontal"
-    android:weightSum="100">
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
+
+    >
 
     <ImageView
-        android:id="@+id/rightImage"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="50" />
+        android:id="@+id/bgImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-    <ImageView
-        android:id="@+id/leftImage"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="50" />
+
 </LinearLayout>
