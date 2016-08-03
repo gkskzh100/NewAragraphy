@@ -5,10 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +22,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class WriteActivity extends AppCompatActivity {
 
@@ -116,7 +125,40 @@ public class WriteActivity extends AppCompatActivity {
         writeUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),ShareActivity.class));
+                String folder = "Test_Directory";
+
+                try {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+                    Date currentTime_1 = new Date();
+                    String dateString = formatter.format(currentTime_1);
+                    File sdCardPath = Environment.getExternalStorageDirectory();
+                    File dirs = new File(Environment.getExternalStorageDirectory(), folder);
+
+                    if(!dirs.exists()) {
+                        dirs.mkdirs();
+                        Log.d("CAMERA_TEST", "Directory Created");
+                    }
+                    writeLayout.buildDrawingCache();
+                    Bitmap captureView = writeLayout.getDrawingCache();
+                    FileOutputStream fos;
+                    String save;
+
+                    try {
+                        save = sdCardPath.getPath() + "/" + folder + "/" + dateString + ".jpg";
+                        fos = new FileOutputStream(save);
+                        captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+                        sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
+                                Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    Log.e("Screen", "" + e.toString());
+                }
+
+
+//                startActivity(new Intent(getApplicationContext(),ShareActivity.class));
             }
         });
     }
