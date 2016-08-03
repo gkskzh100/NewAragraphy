@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -148,8 +149,14 @@ public class WriteActivity extends AppCompatActivity {
                         fos = new FileOutputStream(save);
                         captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
-                        sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
-                                Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+                        Toast.makeText(getApplicationContext(), "CAPTURE", Toast.LENGTH_SHORT).show();
+
+//                        sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
+//                                Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+
+                        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"
+                        + Environment.getExternalStorageDirectory() + "/Test_Directory")));
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
