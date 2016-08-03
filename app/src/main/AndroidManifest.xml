@@ -32,7 +32,7 @@
 
         <activity android:name=".ShareActivity"></activity>
         <activity android:name=".SelectBackActivity"></activity>
-        <activity android:name=".ChooseImageActivity"></activity>
+        <activity android:name=".CropImageActivity"></activity>
 
 
     </application>

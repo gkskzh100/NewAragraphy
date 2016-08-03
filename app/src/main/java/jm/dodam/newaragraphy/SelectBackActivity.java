@@ -1,27 +1,19 @@
 package jm.dodam.newaragraphy;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Bong on 201d6-08-02.
@@ -29,15 +21,16 @@ import java.util.List;
 public class SelectBackActivity extends AppCompatActivity{
     private ImageButton selectExitImageBtn;
     private RecyclerView recyclerView;
-    List<String> imageUris;
+    ArrayList<String> imageUris = new ArrayList<>();
+    ImageResource imageResource;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_bg);
-
         setCustomActionbar();
         init();
-//        parseImages();
+
+        parseImages();
         setListener();
         setListAdapter();
         setItemClick();
@@ -89,7 +82,7 @@ public class SelectBackActivity extends AppCompatActivity{
         recyclerView.addOnItemTouchListener(new SelectBackClickListener(getApplicationContext(), recyclerView, new SelectBackClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(new Intent(getApplicationContext(),ChooseImageActivity.class));
+                startActivity(new Intent(getApplicationContext(),CropImageActivity.class));
             }
 
             @Override
@@ -101,7 +94,9 @@ public class SelectBackActivity extends AppCompatActivity{
     private void parseImages(){
 
         JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(getApplicationContext(),"https://unsplash.com/collections/225685/surf");
-        imageUris = jsoupAsyncTask.getImageUris();
+
+
+        Log.v("imageUris : ",imageUris.size()+"");
         for (int i=0;i<imageUris.size();i++){
             Log.d("image","URI : "+imageUris.get(i));
         }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="#3e3e3e"    >
+
+    <ImageButton
+        android:id="@+id/SelectExitImageBtn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+
+        android:background="@drawable/cancle_btn"/>
+
+    <View
+
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+
+        android:background="@drawable/cancle_btn"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        />
+
+</RelativeLayout>
