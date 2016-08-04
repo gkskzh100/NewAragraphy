@@ -1,5 +1,6 @@
 package jm.dodam.newaragraphy.controller.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,15 @@ public class FontMenuFragment extends Fragment {
     }
 
     private ViewHolder viewHolder;
+    private OnFontChange handler;
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        handler = (OnFontChange) context;
+    }
 
     @Nullable
     @Override
@@ -47,7 +56,7 @@ public class FontMenuFragment extends Fragment {
         viewHolder.viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return new ChangeColorFragment();
+                return ChangeColorFragment.newInstance(handler);
             }
 
             @Override
@@ -55,5 +64,9 @@ public class FontMenuFragment extends Fragment {
                 return 1;
             }
         });
+    }
+
+    public interface OnFontChange {
+        void onColorChanged(int color);
     }
 }

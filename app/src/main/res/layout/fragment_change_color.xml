@@ -1,13 +1,19 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin"
     tools:context=".controller.fragment.ChangeColorFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <GridView
+        android:id="@+id/fragment_change_color_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:numColumns="auto_fit"
+        android:columnWidth="@dimen/change_color_circle_width"
+        android:verticalSpacing="@dimen/grid_vertical_spacing"
+        android:horizontalSpacing="@dimen/grid_horizontal_spacing"
+        android:scrollbars="none"/>
 
-</FrameLayout>
+</LinearLayout>

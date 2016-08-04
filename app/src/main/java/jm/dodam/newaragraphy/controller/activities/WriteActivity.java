@@ -39,8 +39,9 @@ import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.controller.fragment.FontMenuFragment;
 import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
-public class WriteActivity extends AppCompatActivity {
+public class WriteActivity extends AppCompatActivity implements FontMenuFragment.OnFontChange {
 
+    private static final String TAG = "WriteActivity";
     private ImageButton writeChangeImageBtn;
     private ImageButton writeAddTextBtn;
     private ImageButton writeUploadBtn;
@@ -96,8 +97,10 @@ public class WriteActivity extends AppCompatActivity {
                 textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 textView.setBackgroundColor(Color.TRANSPARENT);
                 textView.setPadding(20, 10, 10, 10);
+                // TODO: Color
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
                 textView.setTextSize(13);
+                // TODO: 하드코딩
                 textView.setHint("텍스트를 입력해주세요");
                 textView.setHintTextColor(Color.parseColor("#939393"));
 
@@ -150,6 +153,7 @@ public class WriteActivity extends AppCompatActivity {
         writeUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // TODO: 하드코딩
                 String folder = "Test_Directory";
                 writeLayout.setDrawingCacheEnabled(false);
 
@@ -285,4 +289,9 @@ public class WriteActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onColorChanged(int color) {
+        Log.d(TAG, "" + color);
+    }
 }

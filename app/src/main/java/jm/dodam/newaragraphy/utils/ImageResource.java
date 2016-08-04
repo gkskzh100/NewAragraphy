@@ -1,4 +1,4 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,12 +9,15 @@ import android.util.Log;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Created by Bong on 2016-08-04.
  */
 public class ImageResource {
+
+    /*
+    * TODO: 스태틱을 사용한 이유를 모르겠음
+    * */
     static ArrayList<String> arrayList = new ArrayList<>();
 
     public ImageResource() {

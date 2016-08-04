@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
-import jm.dodam.newaragraphy.ImageResource;
+import jm.dodam.newaragraphy.utils.ImageResource;
 import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.SelectBackClickListener;
 
@@ -88,6 +88,7 @@ public class SelectBackActivity extends AppCompatActivity{
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getApplicationContext(),CropBgActivity.class);
+                // TODO: 하드코딩
                 intent.putExtra("position",position);
                 startActivity(intent);
             }
