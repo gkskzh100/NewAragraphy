@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:background="#3e3e3e"    >
 
+    <!--TODO: 코드 내 공백은 취향이지만 xml 태그 구문 도중 공백을 주는것은 가독성을 해침 -->
+    <!--TODO: 20dp, 100dp 같이 HARD CODING 하는 습관을 버려야함 xml 에서도 dimen.xml 이라는 훌륭한 도구가 있음 -->
+    <!--id 지을 때 파일명을 앞에 붙여주면 다른 파일과 id가 겹치는 문제가 사라짐 다만 이건 취향이기 때문에 뭐가 더 좋다 나쁘다는 없음 -->
+
     <ImageButton
         android:id="@+id/SelectExitImageBtn"
         android:layout_width="20dp"

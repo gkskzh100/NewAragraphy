@@ -88,6 +88,14 @@ public class MainActivity extends Activity {
     }
 
     private void writeFile() {
+        /*
+        * TODO: "temp.txt" 처럼 하드코딩은 지양하는 것이 좋음
+        * utils 에 Global 클래스를 만들어 둠 그곳에
+        * public static final String tempPath = "temp.txt";
+        * 이런식으로 선언해두고 가져다 쓰는 것이 안전함.
+        * 적어도 "tepm.txt" 이런식으로 오타를 낼 일은 없음
+        * 추후에 파일 경로가 바뀌어도 Global 의 변수만 바꿔주면 되므로 유지보수에 유리함.
+        * */
         File file = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "temp.txt");
         try {
             Log.d(TAG, "create new File : " + file.createNewFile());
@@ -96,7 +104,7 @@ public class MainActivity extends Activity {
         }
     }
     private void parseImages(){
-
+        // TODO: 변수명 + 하드코딩
         JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(getApplicationContext(),"https://unsplash.com/collections/225685/surf");
         jsoupAsyncTask.execute();
     }

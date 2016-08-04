@@ -97,8 +97,10 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                 textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 textView.setBackgroundColor(Color.TRANSPARENT);
                 textView.setPadding(20, 10, 10, 10);
+                // TODO: Color
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
                 textView.setTextSize(13);
+                // TODO: 하드코딩
                 textView.setHint("텍스트를 입력해주세요");
                 textView.setHintTextColor(Color.parseColor("#939393"));
 
@@ -151,6 +153,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
         writeUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // TODO: 하드코딩
                 String folder = "Test_Directory";
                 writeLayout.setDrawingCacheEnabled(false);
 

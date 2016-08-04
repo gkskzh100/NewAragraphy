@@ -59,6 +59,7 @@ public class ChangeColorFragment extends Fragment {
     private void init(View view) {
         gridView = (GridView) view.findViewById(R.id.fragment_change_color_grid);
 
+        // dummy data
         colors.add(Color.rgb(255, 255, 255));
         colors.add(Color.rgb(100, 210, 230));
         colors.add(Color.rgb(110, 200, 20));
@@ -108,11 +109,11 @@ public class ChangeColorFragment extends Fragment {
                 view = inflater.inflate(R.layout.item_change_color, viewGroup, false);
             }
             ImageView colorCircle = (ImageView) view.findViewById(R.id.item_change_color_circle);
-            Drawable background;
             if (i == 0) {
+                // 투명
                 // TODO 투명 이미지 입히기
                 colorCircle.setBackgroundResource(R.drawable.circle);
-                background = colorCircle.getBackground();
+                Drawable background = colorCircle.getBackground();
                 ((GradientDrawable) background).setColor(Color.WHITE);
 
                 colorCircle.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +127,7 @@ public class ChangeColorFragment extends Fragment {
                 // 색 조합
                 // TODO 여러 색 입힐 수 있는 팔레트 이미지 입히기
                 colorCircle.setBackgroundResource(R.drawable.circle);
-                background = colorCircle.getBackground();
+                Drawable background = colorCircle.getBackground();
                 ((GradientDrawable) background).setColor(Color.WHITE);
 
                 colorCircle.setOnClickListener(new View.OnClickListener() {
@@ -153,8 +154,9 @@ public class ChangeColorFragment extends Fragment {
                 });
 
             } else {
+                // 일반 색상
                 colorCircle.setBackgroundResource(R.drawable.circle);
-                background = colorCircle.getBackground();
+                Drawable background = colorCircle.getBackground();
                 ((GradientDrawable) background).setColor(colors.get(position));
 
 
