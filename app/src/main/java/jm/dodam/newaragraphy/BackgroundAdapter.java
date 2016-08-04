@@ -30,10 +30,6 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Vi
     @Override
     public BackgroundAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_bg,parent,false);
-        for (int i=0;i<images.size();i++){
-            Log.d("image","URI : "+images.get(i));
-        }
-
         return new ViewHolder(view);
     }
 

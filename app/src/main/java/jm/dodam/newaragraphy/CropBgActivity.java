@@ -3,10 +3,12 @@ package jm.dodam.newaragraphy;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageActivity;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -30,6 +33,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -42,10 +47,11 @@ public class CropBgActivity extends AppCompatActivity {
     private ImageButton SelectAcceptImageBtn, SelectExitImageBtn;
     SelectBackActivity selectBackActivity = (SelectBackActivity)SelectBackActivity.mySelectBackActivity;
     WriteActivity writeActivity = (WriteActivity)WriteActivity.mtWriteActivity;
-    private ImageView resultView, freeCropImageBtn, squareCropImageBtn, hQuadrangleCropImageBtn, vQuadrangleCropImageBtn;
+    private ImageView freeCropImageBtn, squareCropImageBtn, hQuadrangleCropImageBtn, vQuadrangleCropImageBtn;
     CropImageView cropImageView;
     String uri = null;
     Bitmap bitmap = null;
+    back task;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +68,9 @@ public class CropBgActivity extends AppCompatActivity {
         int position = getIntent().getIntExtra("position",0);
         ImageResource imageResource = new ImageResource();
         uri = imageResource.getImage(position);
-        bitmap = imageResource.getBitmapImage(getApplicationContext(),position);
+        task = new back();
+        task.execute(uri);
+
 
 
     }
@@ -83,9 +91,6 @@ public class CropBgActivity extends AppCompatActivity {
     private void cropImage() {
         //URL url = new URL("https://images.unsplash.com/photo-1445771832954-9c7fb748f214?dpr=1&amp;auto=compress,format&amp;crop=entropy&amp;fit=crop&amp;w=767&amp;h=512&amp;q=80&quot;");
 
-
-
-        cropImageView.setImageResource(R.drawable.exam1);
 
         cropImageView.setOnGetCroppedImageCompleteListener(new CropImageView.OnGetCroppedImageCompleteListener() {
             @Override
@@ -213,6 +218,61 @@ public class CropBgActivity extends AppCompatActivity {
         vQuadrangleCropImageBtn.setImageResource(R.drawable.quadrangle_vertical);
     }
 
+    private class back extends AsyncTask<String, Integer,Bitmap> {
 
+
+
+
+
+
+
+        @Override
+
+        protected Bitmap doInBackground(String... urls) {
+
+            // TODO Auto-generated method stub
+
+            try{
+
+                URL myFileUrl = new URL(urls[0]);
+
+                HttpURLConnection conn = (HttpURLConnection)myFileUrl.openConnection();
+
+                conn.setDoInput(true);
+
+                conn.connect();
+
+
+
+                InputStream is = conn.getInputStream();
+
+
+
+                bitmap = BitmapFactory.decodeStream(is);
+
+
+
+
+            }catch(IOException e){
+
+                e.printStackTrace();
+
+            }
+
+            return bitmap;
+
+        }
+
+
+
+        protected void onPostExecute(Bitmap img){
+
+            cropImageView.setImageBitmap(bitmap);
+
+        }
+
+
+
+    }
 
 }
