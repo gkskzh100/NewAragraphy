@@ -68,7 +68,7 @@ public class SelectBackActivity extends AppCompatActivity{
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT);
         actionBar.setCustomView(mCustomView,params);
 
-    }
+     }
     private void setListAdapter(){
 
         recyclerView.setHasFixedSize(true);
