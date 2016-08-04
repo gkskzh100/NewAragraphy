@@ -3,7 +3,6 @@ package jm.dodam.newaragraphy;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -77,13 +75,30 @@ public class ShareActivity extends Activity {
         });
     }
 
-//    private void sendShare() {
-//        Uri uri = Uri.fromFile(new File(savePath));
-//        Intent shareIntent = new Intent();
-//        shareIntent.setAction(Intent.ACTION_SEND);
-//        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-//        shareIntent.setType("image/jpeg");
-//        startActivity(Intent.createChooser(shareIntent,"공유하기"));
-//    }
+    private Intent getShareIntent(String name, String subject, String text) {
+        boolean found = false;
 
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+
+        List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(intent, 0);
+
+        if(resInfo == null)
+            return null;
+
+        for (ResolveInfo info : resInfo) {
+            if(info.activityInfo.packageName.toLowerCase().contains(name) ||
+                    info.activityInfo.name.toLowerCase().contains(name)) {
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, text);
+                intent.setPackage(info.activityInfo.packageName);
+                found = true;
+                break;
+            }
+        }
+        if (found)
+            return intent;
+
+        return null;
+    }
 }
