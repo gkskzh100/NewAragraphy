@@ -1,69 +1,79 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.controller.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageActivity;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
+
+import jm.dodam.newaragraphy.utils.ImageResource;
+import jm.dodam.newaragraphy.R;
 
 /**
  * Created by Bong on 2016-08-03.
  */
 public class CropBgActivity extends AppCompatActivity {
+
+    /*
+    * TODO 변수명에 약어를 쓰는것은 좋지 않음
+    * 예 ViewController
+    * BadCase: vc
+    * BestCase: viewController
+    * Tip: Android Studio 는 안드로이드 표준을 이식하여 만든 것이므로 경고등이나 밑줄이 보이면 가급적 수정하는 것이 바람직함.
+    * */
     private TextView cropFreeTv, cropSquareTv, cropHsquareTv, cropVsquareTv;
     private ImageButton SelectAcceptImageBtn, SelectExitImageBtn;
+
+    /*
+    * TODO: Activity 를 멤버변수로 선언하는 것은 객체지향을 해치는 행위임으로 최대한 기피 해야함
+    * Activity Stack 하단의 Activity 를 종료하려 한다면 Flag 를 사용하는 것을 권장함
+    * */
     SelectBackActivity selectBackActivity = (SelectBackActivity)SelectBackActivity.mySelectBackActivity;
     WriteActivity writeActivity = (WriteActivity)WriteActivity.mtWriteActivity;
     private ImageView freeCropImageBtn, squareCropImageBtn, hQuadrangleCropImageBtn, vQuadrangleCropImageBtn;
+
+    /*
+    * TODO: 특별한 이유가 없다면 private 을 의무화하는게 좋음
+    * 미연의 사고를 방지하기 위함
+    * */
     CropImageView cropImageView;
     String uri = null;
     Bitmap bitmap = null;
     back task;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cropimage);
+
         setCustomActionbar();
         init();
         setListener();
         getImageResource();
         cropImage();
-
-
     }
+
+
     private void getImageResource(){
         int position = getIntent().getIntExtra("position",0);
         ImageResource imageResource = new ImageResource();
@@ -138,6 +148,9 @@ public class CropBgActivity extends AppCompatActivity {
         View mCustomView = LayoutInflater.from(this).inflate(R.layout.layout_actionbar_crop, null);
         actionBar.setCustomView(mCustomView);
 
+        /*
+        * TODO Color 의 경우 res폴더의 colors.xml 을 생성하여 다루는 것을 권장
+        * */
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3e3e3e")));
 
 
@@ -159,8 +172,17 @@ public class CropBgActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Bitmap cropped = cropImageView.getCroppedImage();
+                /*
+                * TODO: "BBB" 라고 태그명을 짓는 것 보다는 클래스 최상단에 private static final String TAG = "파일명"의 형식으로 갖추는 것을 습관화 하는것이 좋음
+                * Log.d("BBB", cropped.toString()); -> Log.d(TAG, cropped.toString());
+                * */
                 Log.d("BBB", cropped.toString());
-                writeActivity.setWriteImageBitmab(cropped);
+
+                /*
+                * TODO: 다른 액티비티의 객체를 통해 직접 컨트롤 하는것은 객체지향에 좋지 못함 가급적 삼가하는 것을 권장.
+                * Intent 로 해결 가능힘
+                * */
+                writeActivity.setWriteImageBitmap(cropped);
                 selectBackActivity.finish();
                 finish();
 

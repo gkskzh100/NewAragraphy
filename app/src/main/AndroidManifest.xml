@@ -15,7 +15,7 @@
 
         <!-- main -->
         <activity
-            android:name=".MainActivity"
+            android:name=".controller.activities.MainActivity"
             android:theme="@style/Theme.HomeScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,13 +26,13 @@
 
         <!-- splash -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".controller.activities.SplashActivity"
             android:theme="@style/Theme.HomeScreen" />
-        <activity android:name=".WriteActivity" />
+        <activity android:name=".controller.activities.WriteActivity" />
 
-        <activity android:name=".ShareActivity"></activity>
-        <activity android:name=".SelectBackActivity"></activity>
-        <activity android:name=".CropBgActivity"></activity>
+        <activity android:name=".controller.activities.ShareActivity"></activity>
+        <activity android:name=".controller.activities.SelectBackActivity"></activity>
+        <activity android:name=".controller.activities.CropBgActivity"></activity>
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
     </application>

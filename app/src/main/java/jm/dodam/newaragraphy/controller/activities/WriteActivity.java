@@ -1,14 +1,11 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.controller.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,12 +26,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import junit.framework.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,8 +35,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class WriteActivity extends AppCompatActivity {
+import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.controller.fragment.FontMenuFragment;
+import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
+public class WriteActivity extends AppCompatActivity implements FontMenuFragment.OnFontChange {
+
+    private static final String TAG = "WriteActivity";
     private ImageButton writeChangeImageBtn;
     private ImageButton writeAddTextBtn;
     private ImageButton writeUploadBtn;
@@ -71,11 +67,9 @@ public class WriteActivity extends AppCompatActivity {
 
         setListener();
 
-
-
     }
 
-    public void setWriteImageBitmab(Bitmap bitmap) {
+    public void setWriteImageBitmap(Bitmap bitmap) {
         writeImageView.setImageBitmap(bitmap);
         writeImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
     }
@@ -89,6 +83,10 @@ public class WriteActivity extends AppCompatActivity {
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
         writeLayout = (RelativeLayout) findViewById(R.id.writeLayout);
         writeImageView = (ImageView) findViewById(R.id.writeImageView);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.activity_write_fond_menu_bar, new FontMenuFragment())
+                .commit();
     }
 
     private void setListener() {
@@ -99,8 +97,10 @@ public class WriteActivity extends AppCompatActivity {
                 textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 textView.setBackgroundColor(Color.TRANSPARENT);
                 textView.setPadding(20, 10, 10, 10);
+                // TODO: Color
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
                 textView.setTextSize(13);
+                // TODO: 하드코딩
                 textView.setHint("텍스트를 입력해주세요");
                 textView.setHintTextColor(Color.parseColor("#939393"));
 
@@ -153,6 +153,7 @@ public class WriteActivity extends AppCompatActivity {
         writeUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // TODO: 하드코딩
                 String folder = "Test_Directory";
                 writeLayout.setDrawingCacheEnabled(false);
 
@@ -288,4 +289,9 @@ public class WriteActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onColorChanged(int color) {
+        Log.d(TAG, "" + color);
+    }
 }

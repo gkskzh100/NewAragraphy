@@ -1,7 +1,6 @@
 package jm.dodam.newaragraphy;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -12,7 +11,8 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+
+import jm.dodam.newaragraphy.utils.ImageResource;
 
 /**
  * Created by Bong on 2016-08-01.

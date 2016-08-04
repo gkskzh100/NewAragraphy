@@ -1,4 +1,4 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.controller.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,12 +8,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
+
+import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
+import jm.dodam.newaragraphy.utils.ImageResource;
+import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.SelectBackClickListener;
 
 /**
  * Created by Bong on 201d6-08-02.
@@ -84,6 +88,7 @@ public class SelectBackActivity extends AppCompatActivity{
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getApplicationContext(),CropBgActivity.class);
+                // TODO: 하드코딩
                 intent.putExtra("position",position);
                 startActivity(intent);
             }
