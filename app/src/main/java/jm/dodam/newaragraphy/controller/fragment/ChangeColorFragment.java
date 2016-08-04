@@ -2,6 +2,7 @@ package jm.dodam.newaragraphy.controller.fragment;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -14,10 +15,15 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.utils.Global;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +33,14 @@ public class ChangeColorFragment extends Fragment {
     private static final String TAG = "ChangeColorFragment";
     private List<Integer> colors = new ArrayList<>();
     private GridView gridView;
+    private static FontMenuFragment.OnFontChange handler;
+
+
+    public static ChangeColorFragment newInstance(FontMenuFragment.OnFontChange handler) {
+        ChangeColorFragment fragment = new ChangeColorFragment();
+        ChangeColorFragment.handler = handler;
+        return fragment;
+    }
 
 
     public ChangeColorFragment() {
@@ -72,12 +86,14 @@ public class ChangeColorFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return colors.size();
+            return colors.size() + 2;
         }
 
         @Override
         public Object getItem(int i) {
-            return colors.get(i);
+            if (i < colors.size())
+                return colors.get(i);
+            return i;
         }
 
         @Override
@@ -87,17 +103,67 @@ public class ChangeColorFragment extends Fragment {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
+            final int position = i - 1;
             if (view == null) {
                 view = inflater.inflate(R.layout.item_change_color, viewGroup, false);
             }
             ImageView colorCircle = (ImageView) view.findViewById(R.id.item_change_color_circle);
-            Drawable background = colorCircle.getBackground();
-            if (background instanceof GradientDrawable) {
-                // 일반 색상일 때
-                ((GradientDrawable) background).setColor(colors.get(i));
+            Drawable background;
+            if (i == 0) {
+                // TODO 투명 이미지 입히기
+                colorCircle.setBackgroundResource(R.drawable.circle);
+                background = colorCircle.getBackground();
+                ((GradientDrawable) background).setColor(Color.WHITE);
+
+                colorCircle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        handler.onColorChanged(Global.INVISIBLE);
+                    }
+                });
+
+            } else if (position == colors.size()) {
+                // 색 조합
+                // TODO 여러 색 입힐 수 있는 팔레트 이미지 입히기
+                colorCircle.setBackgroundResource(R.drawable.circle);
+                background = colorCircle.getBackground();
+                ((GradientDrawable) background).setColor(Color.WHITE);
+
+                colorCircle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ColorPickerDialogBuilder.with(getActivity())
+                                .setTitle(getResources().getString(R.string.color_title))
+                                .initialColor(Color.YELLOW)
+                                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                                .density(20)
+                                .setPositiveButton(getResources().getString(R.string.color_submit), new ColorPickerClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int selectColor, Integer[] integers) {
+                                        handler.onColorChanged(selectColor);
+                                    }
+                                })
+                                .setNegativeButton(getResources().getString(R.string.color_cancel), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                }).build().show();
+                    }
+                });
+
             } else {
-                // 투명 or 상세 색상일 때
-                
+                colorCircle.setBackgroundResource(R.drawable.circle);
+                background = colorCircle.getBackground();
+                ((GradientDrawable) background).setColor(colors.get(position));
+
+
+                colorCircle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        handler.onColorChanged(colors.get(position));
+                    }
+                });
             }
             return view;
         }

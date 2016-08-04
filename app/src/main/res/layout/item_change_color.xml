@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="@dimen/change_color_circle_width"
-    android:layout_height="@dimen/change_color_circle_height">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/item_change_color_circle"
         android:layout_width="@dimen/change_color_circle_width"
-        android:layout_height="@dimen/change_color_circle_height"
-        android:background="@drawable/circle"/>
+        android:layout_height="@dimen/change_color_circle_height"/>
 
 </LinearLayout>

@@ -39,8 +39,9 @@ import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.controller.fragment.FontMenuFragment;
 import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
-public class WriteActivity extends AppCompatActivity {
+public class WriteActivity extends AppCompatActivity implements FontMenuFragment.OnFontChange {
 
+    private static final String TAG = "WriteActivity";
     private ImageButton writeChangeImageBtn;
     private ImageButton writeAddTextBtn;
     private ImageButton writeUploadBtn;
@@ -285,4 +286,9 @@ public class WriteActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onColorChanged(int color) {
+        Log.d(TAG, "" + color);
+    }
 }

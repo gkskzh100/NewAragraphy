@@ -3,15 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin"
     tools:context=".controller.fragment.ChangeColorFragment">
 
     <GridView
         android:id="@+id/fragment_change_color_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="5"
+        android:numColumns="auto_fit"
+        android:columnWidth="@dimen/change_color_circle_width"
         android:verticalSpacing="@dimen/grid_vertical_spacing"
         android:horizontalSpacing="@dimen/grid_horizontal_spacing"
-        android:stretchMode="columnWidth"/>
+        android:scrollbars="none"/>
 
 </LinearLayout>
