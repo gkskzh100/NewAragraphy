@@ -1,4 +1,4 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.controller.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 
 import java.io.File;
 import java.util.List;
+
+import jm.dodam.newaragraphy.R;
 
 
 /**

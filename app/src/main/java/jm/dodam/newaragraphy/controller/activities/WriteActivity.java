@@ -1,14 +1,11 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.controller.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,12 +26,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import junit.framework.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,6 +34,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
 public class WriteActivity extends AppCompatActivity {
 

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:weightSum="100"
     android:background="@color/workroomBackground"
-    tools:context="jm.dodam.newaragraphy.WriteActivity">
+    tools:context=".controller.activities.WriteActivity">
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
@@ -23,4 +22,11 @@
             android:layout_height="match_parent"
             android:id="@+id/writeImageView"/>
     </RelativeLayout>
-</LinearLayout>
+
+
+    <jm.dodam.newaragraphy.view.FontMenuBar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</RelativeLayout>

@@ -1,25 +1,24 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.controller.activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+
+import jm.dodam.newaragraphy.JsoupAsyncTask;
+import jm.dodam.newaragraphy.R;
 
 public class MainActivity extends Activity {
 

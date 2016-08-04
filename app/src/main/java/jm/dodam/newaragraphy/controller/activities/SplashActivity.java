@@ -1,10 +1,12 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.controller.activities;
 
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import jm.dodam.newaragraphy.R;
 
 public class SplashActivity extends Activity {
 

@@ -1,21 +1,18 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.controller.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+
+import jm.dodam.newaragraphy.R;
 
 /**
  * Created by Bong on 2016-08-02.

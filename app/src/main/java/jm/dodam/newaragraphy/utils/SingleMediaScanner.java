@@ -1,4 +1,4 @@
-package jm.dodam.newaragraphy;
+package jm.dodam.newaragraphy.utils;
 
 import android.content.Context;
 import android.media.MediaScannerConnection;
