@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.controller.fragment.FontMenuFragment;
 import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
 public class WriteActivity extends AppCompatActivity {
@@ -65,11 +66,9 @@ public class WriteActivity extends AppCompatActivity {
 
         setListener();
 
-
-
     }
 
-    public void setWriteImageBitmab(Bitmap bitmap) {
+    public void setWriteImageBitmap(Bitmap bitmap) {
         writeImageView.setImageBitmap(bitmap);
         writeImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
     }
@@ -83,6 +82,10 @@ public class WriteActivity extends AppCompatActivity {
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
         writeLayout = (RelativeLayout) findViewById(R.id.writeLayout);
         writeImageView = (ImageView) findViewById(R.id.writeImageView);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.activity_write_fond_menu_bar, new FontMenuFragment())
+                .commit();
     }
 
     private void setListener() {

@@ -149,7 +149,7 @@ public class CropBgActivity extends AppCompatActivity {
 
                 Bitmap cropped = cropImageView.getCroppedImage();
                 Log.d("BBB", cropped.toString());
-                writeActivity.setWriteImageBitmab(cropped);
+                writeActivity.setWriteImageBitmap(cropped);
                 selectBackActivity.finish();
                 finish();
 
