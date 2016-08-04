@@ -21,10 +21,9 @@
         android:layout_centerHorizontal="true" />
 
     <ImageButton
-
+        android:id="@+id/SelectAcceptImageBtn"
         android:layout_width="20dp"
         android:layout_height="20dp"
-
         android:background="@drawable/cancle_btn"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

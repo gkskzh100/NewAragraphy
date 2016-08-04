@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class SelectBackActivity extends AppCompatActivity{
     private ImageButton selectExitImageBtn;
     private RecyclerView recyclerView;
+    public static SelectBackActivity mySelectBackActivity;
     ArrayList<String> imageUris = new ArrayList<>();
     ImageResource imageResource;
     @Override
@@ -38,6 +39,7 @@ public class SelectBackActivity extends AppCompatActivity{
     }
 
     private void init() {
+        mySelectBackActivity = SelectBackActivity.this;
         recyclerView = (RecyclerView)findViewById(R.id.SelectRecyclerView);
         selectExitImageBtn = (ImageButton)findViewById(R.id.SelectExitImageBtn);
     }
@@ -82,7 +84,7 @@ public class SelectBackActivity extends AppCompatActivity{
         recyclerView.addOnItemTouchListener(new SelectBackClickListener(getApplicationContext(), recyclerView, new SelectBackClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(new Intent(getApplicationContext(),CropImageActivity.class));
+                startActivity(new Intent(getApplicationContext(),CropBgActivity.class));
             }
 
             @Override
