@@ -2,6 +2,7 @@ package jm.dodam.newaragraphy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,7 +40,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class WriteActivity extends AppCompatActivity {
 
@@ -189,11 +194,61 @@ public class WriteActivity extends AppCompatActivity {
                 }
 
 
-                Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
-                intent.putExtra("savePath",savePath);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+//                intent.putExtra("savePath",savePath);
+//                startActivity(intent);
+//
+//                Log.d("sendSavePath", savePath);
 
-                Log.d("sendSavePath", savePath);
+//                Intent intent = new Intent(Intent.ACTION_SEND);
+//                File file =new File(savePath);
+//                MimeTypeMap type = MimeTypeMap.getSingleton();
+//                intent.setType(type.getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(savePath)));
+//
+//                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+
+//                Log.d("shareFaceBook","success!");
+//                startActivity(intent);
+
+                String subject = "메시지 제목";
+                String text = "메시지 내용은 \n다음줄에서..";
+                File file = new File(savePath);
+
+                List targetedShareIntents = new ArrayList<>();
+
+                //facebook
+                Intent facebookIntent = getShareIntent("com.facebook.katana", subject, text, file);
+                if(facebookIntent != null)
+                    targetedShareIntents.add(facebookIntent);
+
+                //twitter
+                Intent twitterIntent = getShareIntent("com.twitter.android", subject, text, file);
+                if(twitterIntent != null)
+                    targetedShareIntents.add(twitterIntent);
+
+//                // 구글 플러스
+//                Intent googlePlusIntent = getShareIntent("com.google.android.apps.plus", subject, text, file);
+//                if(googlePlusIntent != null)
+//                    targetedShareIntents.add(googlePlusIntent);
+//
+//                // Gmail
+//                Intent gmailIntent = getShareIntent("gmail", subject, text, file);
+//                if(gmailIntent != null)
+//                    targetedShareIntents.add(gmailIntent);
+
+                //kakaoTalk
+                Intent kakaoTalkIntent = getShareIntent("com.kakao.talk", subject, text, file);
+                if(kakaoTalkIntent != null)
+                    targetedShareIntents.add(kakaoTalkIntent);
+
+                //instagram
+                Intent instagramIntent = getShareIntent("com.instagram.android", subject, text, file);
+                if(instagramIntent != null)
+                    targetedShareIntents.add(instagramIntent);
+
+                Intent chooser = Intent.createChooser((Intent) targetedShareIntents.remove(0),"공유하기");
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS,targetedShareIntents.toArray(new Parcelable[]{}));
+                startActivity(chooser);
 
             }
         });
@@ -203,6 +258,35 @@ public class WriteActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),SelectBackActivity.class));
             }
         });
+    }
+
+    private Intent getShareIntent(String name, String subject, String text, File file) {
+        boolean found = false;
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        MimeTypeMap type = MimeTypeMap.getSingleton();
+        intent.setType(type.getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(savePath)));
+
+        List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(intent, 0);
+
+        if(resInfo == null)
+            return null;
+
+        for (ResolveInfo info : resInfo) {
+            if(info.activityInfo.packageName.toLowerCase().contains(name) ||
+                    info.activityInfo.name.toLowerCase().contains(name)) {
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, text);
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                intent.setPackage(info.activityInfo.packageName);
+                found = true;
+                break;
+            }
+        }
+        if (found)
+            return intent;
+
+        return null;
     }
 
 
