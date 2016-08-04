@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -40,10 +42,10 @@ public class CropBgActivity extends AppCompatActivity {
     private ImageButton SelectAcceptImageBtn, SelectExitImageBtn;
     SelectBackActivity selectBackActivity = (SelectBackActivity)SelectBackActivity.mySelectBackActivity;
     WriteActivity writeActivity = (WriteActivity)WriteActivity.mtWriteActivity;
-    URL url;
     private ImageView resultView, freeCropImageBtn, squareCropImageBtn, hQuadrangleCropImageBtn, vQuadrangleCropImageBtn;
     CropImageView cropImageView;
-
+    String uri = null;
+    Bitmap bitmap = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +53,20 @@ public class CropBgActivity extends AppCompatActivity {
         setCustomActionbar();
         init();
         setListener();
-
+        getImageResource();
         cropImage();
 
 
     }
+    private void getImageResource(){
+        int position = getIntent().getIntExtra("position",0);
+        ImageResource imageResource = new ImageResource();
+        uri = imageResource.getImage(position);
+        bitmap = imageResource.getBitmapImage(getApplicationContext(),position);
+
+
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -74,7 +85,8 @@ public class CropBgActivity extends AppCompatActivity {
 
 
 
-        cropImageView.setImageResource(R.drawable.instagram_btn);
+        cropImageView.setImageResource(R.drawable.exam1);
+
         cropImageView.setOnGetCroppedImageCompleteListener(new CropImageView.OnGetCroppedImageCompleteListener() {
             @Override
             public void onGetCroppedImageComplete(CropImageView view, Bitmap bitmap, Exception error) {

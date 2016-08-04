@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, SplashActivity.class));
         init();
         checkPermission();
+        parseImages();
 
     }
 
@@ -92,5 +93,10 @@ public class MainActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void parseImages(){
+
+        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(getApplicationContext(),"https://unsplash.com/collections/225685/surf");
+        jsoupAsyncTask.execute();
     }
 }

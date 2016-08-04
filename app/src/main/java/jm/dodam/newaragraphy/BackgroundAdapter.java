@@ -41,8 +41,7 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         Glide.with(context)
-//                .load(images.get(position))
-                .load("https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=faces&amp;fit=crop&amp;h=32&amp;w=32&amp;s=46caf91cf1f90b8b5ab6621512f102a8")
+                .load(images.get(position))
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.bgImage);
@@ -52,7 +51,7 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return images.size()+10;
+        return images.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

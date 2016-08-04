@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="match_parent"
     android:background="#3e3e3e"    >
 
     <ImageButton
@@ -10,12 +10,12 @@
         android:layout_height="20dp"
         android:layout_centerVertical="true"
 
-        android:background="@drawable/cancle_btn"/>
+        android:background="@drawable/back"/>
 
     <View
 
         android:layout_width="100dp"
-        android:layout_height="match_parent"
+        android:layout_height="20dp"
 
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
@@ -24,7 +24,7 @@
         android:id="@+id/SelectAcceptImageBtn"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@drawable/cancle_btn"
+        android:background="@drawable/checked"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"

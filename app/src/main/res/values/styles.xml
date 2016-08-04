@@ -1,7 +1,9 @@
 <resources>
 
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarSize">48dp</item>
         <!-- Customize your theme here. -->
         <!--<item name="colorPrimary">@color/colorTest</item>-->
         <item name="colorPrimaryDark">@color/colorTest</item>

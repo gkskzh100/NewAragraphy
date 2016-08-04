@@ -50,7 +50,8 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
 //                Log.d("images", "Image : " + imageUris.get(count));
                 count++;
             }
-            DB = new ImageResource(imageUris);
+            DB = new ImageResource();
+            DB.setArrayList(imageUris);
         } catch (IOException e) {
             e.printStackTrace();
         }

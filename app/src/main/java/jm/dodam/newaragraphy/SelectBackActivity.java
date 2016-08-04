@@ -31,7 +31,6 @@ public class SelectBackActivity extends AppCompatActivity{
         setCustomActionbar();
         init();
 
-        parseImages();
         setListener();
         setListAdapter();
         setItemClick();
@@ -74,7 +73,7 @@ public class SelectBackActivity extends AppCompatActivity{
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(imageUris, getApplicationContext());
+        BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(new ImageResource().getArrayList(), getApplicationContext());
         recyclerView.setAdapter(myBackgroundAdapter);
 
 
@@ -84,7 +83,9 @@ public class SelectBackActivity extends AppCompatActivity{
         recyclerView.addOnItemTouchListener(new SelectBackClickListener(getApplicationContext(), recyclerView, new SelectBackClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(new Intent(getApplicationContext(),CropBgActivity.class));
+                Intent intent = new Intent(getApplicationContext(),CropBgActivity.class);
+                intent.putExtra("position",position);
+                startActivity(intent);
             }
 
             @Override
@@ -93,17 +94,7 @@ public class SelectBackActivity extends AppCompatActivity{
             }
         }));
     }
-    private void parseImages(){
 
-        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(getApplicationContext(),"https://unsplash.com/collections/225685/surf");
-
-
-        Log.v("imageUris : ",imageUris.size()+"");
-        for (int i=0;i<imageUris.size();i++){
-            Log.d("image","URI : "+imageUris.get(i));
-        }
-        jsoupAsyncTask.execute();
-    }
 
 
 }
