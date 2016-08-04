@@ -3,6 +3,7 @@ package jm.dodam.newaragraphy;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -27,6 +28,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import junit.framework.Test;
 
 import java.io.File;
@@ -41,7 +45,7 @@ public class WriteActivity extends AppCompatActivity {
     private ImageButton writeAddTextBtn;
     private ImageButton writeUploadBtn;
     private RelativeLayout writeLayout;
-
+    private ImageView writeImageView;
 
     private EditText textView;
 
@@ -50,6 +54,7 @@ public class WriteActivity extends AppCompatActivity {
 
     private String savePath = null;
 
+    public static WriteActivity mtWriteActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +70,20 @@ public class WriteActivity extends AppCompatActivity {
 
     }
 
+    public void setWriteImageBitmab(Bitmap bitmap) {
+        writeImageView.setImageBitmap(bitmap);
+        writeImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+    }
+
+
     private void init() {
+        mtWriteActivity = WriteActivity.this;
+
         writeChangeImageBtn = (ImageButton) findViewById(R.id.writeChangeImageBtn);
         writeAddTextBtn = (ImageButton) findViewById(R.id.writeAddTextBtn);
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
         writeLayout = (RelativeLayout) findViewById(R.id.writeLayout);
+        writeImageView = (ImageView) findViewById(R.id.writeImageView);
     }
 
     private void setListener() {
@@ -215,4 +229,5 @@ public class WriteActivity extends AppCompatActivity {
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
+
 }

@@ -11,18 +11,21 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageActivity;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -33,9 +36,10 @@ import java.net.URL;
  * Created by Bong on 2016-08-03.
  */
 public class CropBgActivity extends AppCompatActivity {
-    public static Bitmap bgBitmap;
-    ImageButton SelectAcceptImageBtn, SelectExitImageBtn;
+    private TextView cropFreeTv, cropSquareTv, cropHsquareTv, cropVsquareTv;
+    private ImageButton SelectAcceptImageBtn, SelectExitImageBtn;
     SelectBackActivity selectBackActivity = (SelectBackActivity)SelectBackActivity.mySelectBackActivity;
+    WriteActivity writeActivity = (WriteActivity)WriteActivity.mtWriteActivity;
     URL url;
     private ImageView resultView, freeCropImageBtn, squareCropImageBtn, hQuadrangleCropImageBtn, vQuadrangleCropImageBtn;
     CropImageView cropImageView;
@@ -100,6 +104,11 @@ public class CropBgActivity extends AppCompatActivity {
         squareCropImageBtn = (ImageView) findViewById(R.id.squareCropImageBtn);
         hQuadrangleCropImageBtn = (ImageView) findViewById(R.id.hQuadrangleCropImageBtn);
         vQuadrangleCropImageBtn = (ImageView) findViewById(R.id.vQuadrangleCropImageBtn);
+        cropFreeTv = (TextView) findViewById(R.id.cropFreeTv);
+        cropSquareTv = (TextView) findViewById(R.id.cropSquareTv);
+        cropHsquareTv = (TextView) findViewById(R.id.cropHsquareTv);
+        cropVsquareTv = (TextView) findViewById(R.id.cropVsquareTv);
+
     }
 
     private void setCustomActionbar() {
@@ -131,9 +140,10 @@ public class CropBgActivity extends AppCompatActivity {
         SelectAcceptImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bgBitmap = cropImageView.getCroppedImage();
-                Intent intent = new Intent(getApplicationContext(),WriteActivity.class);
-                intent.putExtra("background",bgBitmap);
+
+                Bitmap cropped = cropImageView.getCroppedImage();
+                Log.d("BBB", cropped.toString());
+                writeActivity.setWriteImageBitmab(cropped);
                 selectBackActivity.finish();
                 finish();
 
@@ -143,6 +153,9 @@ public class CropBgActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 cropImageView.setFixedAspectRatio(false);
+                buttonWhiteChange();
+                cropFreeTv.setTextColor(Color.parseColor("#fc7374"));
+                freeCropImageBtn.setImageResource(R.drawable.cropfield_press);
             }
         });
         squareCropImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +163,9 @@ public class CropBgActivity extends AppCompatActivity {
             public void onClick(View view) {
                 cropImageView.setFixedAspectRatio(true);
                 cropImageView.setAspectRatio(1, 1);
+                buttonWhiteChange();
+                cropSquareTv.setTextColor(Color.parseColor("#fc7374"));
+                squareCropImageBtn.setImageResource(R.drawable.square_press);
             }
         });
         hQuadrangleCropImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +173,9 @@ public class CropBgActivity extends AppCompatActivity {
             public void onClick(View view) {
                 cropImageView.setFixedAspectRatio(true);
                 cropImageView.setAspectRatio(4, 3);
+                buttonWhiteChange();
+                cropHsquareTv.setTextColor(Color.parseColor("#fc7374"));
+                hQuadrangleCropImageBtn.setImageResource(R.drawable.quadrangle_horizontal_press);
             }
         });
         vQuadrangleCropImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -164,9 +183,24 @@ public class CropBgActivity extends AppCompatActivity {
             public void onClick(View view) {
                 cropImageView.setFixedAspectRatio(true);
                 cropImageView.setAspectRatio(3, 4);
+                buttonWhiteChange();
+                cropVsquareTv.setTextColor(Color.parseColor("#fc7374"));
+                vQuadrangleCropImageBtn.setImageResource(R.drawable.quadrangle_vertical_press);
             }
         });
     }
+    private void buttonWhiteChange(){
+        cropSquareTv.setTextColor(Color.parseColor("#ffffff"));
+        cropVsquareTv.setTextColor(Color.parseColor("#ffffff"));
+        cropHsquareTv.setTextColor(Color.parseColor("#ffffff"));
+        cropFreeTv.setTextColor(Color.parseColor("#ffffff"));
+
+        freeCropImageBtn.setImageResource(R.drawable.cropfield);
+        squareCropImageBtn.setImageResource(R.drawable.square);
+        hQuadrangleCropImageBtn.setImageResource(R.drawable.quadrangle_horizontal);
+        vQuadrangleCropImageBtn.setImageResource(R.drawable.quadrangle_vertical);
+    }
+
 
 
 }
