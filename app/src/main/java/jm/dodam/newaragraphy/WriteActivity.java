@@ -194,22 +194,6 @@ public class WriteActivity extends AppCompatActivity {
                 }
 
 
-//                Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
-//                intent.putExtra("savePath",savePath);
-//                startActivity(intent);
-//
-//                Log.d("sendSavePath", savePath);
-
-//                Intent intent = new Intent(Intent.ACTION_SEND);
-//                File file =new File(savePath);
-//                MimeTypeMap type = MimeTypeMap.getSingleton();
-//                intent.setType(type.getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(savePath)));
-//
-//                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-
-//                Log.d("shareFaceBook","success!");
-//                startActivity(intent);
-
                 String subject = "메시지 제목";
                 String text = "메시지 내용은 \n다음줄에서..";
                 File file = new File(savePath);
@@ -225,16 +209,6 @@ public class WriteActivity extends AppCompatActivity {
                 Intent twitterIntent = getShareIntent("com.twitter.android", subject, text, file);
                 if(twitterIntent != null)
                     targetedShareIntents.add(twitterIntent);
-
-//                // 구글 플러스
-//                Intent googlePlusIntent = getShareIntent("com.google.android.apps.plus", subject, text, file);
-//                if(googlePlusIntent != null)
-//                    targetedShareIntents.add(googlePlusIntent);
-//
-//                // Gmail
-//                Intent gmailIntent = getShareIntent("gmail", subject, text, file);
-//                if(gmailIntent != null)
-//                    targetedShareIntents.add(gmailIntent);
 
                 //kakaoTalk
                 Intent kakaoTalkIntent = getShareIntent("com.kakao.talk", subject, text, file);
