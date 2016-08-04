@@ -48,6 +48,8 @@ public class WriteActivity extends AppCompatActivity {
     private int _xDelta = 0;
     private int _yDelta = 0;
 
+    private String savePath = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,6 +157,7 @@ public class WriteActivity extends AppCompatActivity {
                         writeLayout.refreshDrawableState();
 
                         save = sdCardPath.getPath() + "/" + folder + "/" + dateString + ".jpg";
+                        savePath = save;
                         fos = new FileOutputStream(save);
                         captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
@@ -172,7 +175,12 @@ public class WriteActivity extends AppCompatActivity {
                 }
 
 
-//                startActivity(new Intent(getApplicationContext(),WriteActivity.class));
+                Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+                intent.putExtra("savePath",savePath);
+                startActivity(intent);
+
+                Log.d("sendSavePath", savePath);
+
             }
         });
         writeChangeImageBtn.setOnClickListener(new View.OnClickListener() {

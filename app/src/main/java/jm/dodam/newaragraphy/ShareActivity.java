@@ -6,9 +6,12 @@ import android.content.pm.ResolveInfo;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +19,7 @@ import java.util.List;
 /**
  * Created by Bong on 2016-08-02.
  */
-public class ShareActivity extends Activity{
+public class ShareActivity extends Activity {
     private ImageButton shareGalleryBtn;
     private ImageButton shareKakaoBtn;
     private ImageButton shareFacebookBtn;
@@ -24,14 +27,20 @@ public class ShareActivity extends Activity{
     private ImageButton shareInstagramBtn;
     private ImageButton shareCancelBtn;
 
-    Image mImagePath ;
+    private String savePath = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
 
+        Intent intent = getIntent();
+        savePath = intent.getStringExtra("savePath");
+        Log.d("getSavePath", savePath);
+
         init();
+
+//        sendShare();
     }
 
     private void init() {
@@ -52,31 +61,29 @@ public class ShareActivity extends Activity{
                 finish();
             }
         });
-    }
+        shareFacebookBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                File file =new File(savePath);
+                MimeTypeMap type = MimeTypeMap.getSingleton();
+                intent.setType(type.getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(savePath)));
 
-    private void sendFacebookShare() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 
-        List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(intent, 0);
-        if(resInfo.isEmpty()) {
-            return;
-        }
-
-        List<Intent> shareIntentList = new ArrayList<Intent>();
-
-        for (ResolveInfo info : resInfo) {
-            Intent shareIntent = (Intent) intent.clone();
-
-            if(info.activityInfo.packageName.toLowerCase().equals("com.facebook.katana")) {
-                //facebook
-                shareIntent.setType("image/*");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "#Aragraphy");
-                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///"+mImagePath));
+                Log.d("shareFaceBook","success!");
+                startActivity(intent);
             }
-        }
-
-//        http://gogorchg.tistory.com/entry/Android-SNS%EB%A1%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B3%B5%EC%9C%A0%ED%95%98%EA%B8%B0
+        });
     }
+
+//    private void sendShare() {
+//        Uri uri = Uri.fromFile(new File(savePath));
+//        Intent shareIntent = new Intent();
+//        shareIntent.setAction(Intent.ACTION_SEND);
+//        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+//        shareIntent.setType("image/jpeg");
+//        startActivity(Intent.createChooser(shareIntent,"공유하기"));
+//    }
 
 }
