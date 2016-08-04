@@ -33,6 +33,8 @@ public class ChangeColorFragment extends Fragment {
     private static final String TAG = "ChangeColorFragment";
     private List<Integer> colors = new ArrayList<>();
     private GridView gridView;
+
+    // WriteActivity 로 데이터 전송
     private static FontMenuFragment.OnFontChange handler;
 
 
@@ -44,7 +46,6 @@ public class ChangeColorFragment extends Fragment {
 
 
     public ChangeColorFragment() {
-        // Required empty public constructor
     }
 
 
