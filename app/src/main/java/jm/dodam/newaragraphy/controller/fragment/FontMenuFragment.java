@@ -56,7 +56,8 @@ public class FontMenuFragment extends Fragment {
         viewHolder.viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return ChangeColorFragment.newInstance(handler);
+//                return ChangeColorFragment.newInstance(handler);
+                return ChangeSizeFragment.newInstance(handler);
             }
 
             @Override
@@ -68,5 +69,6 @@ public class FontMenuFragment extends Fragment {
 
     public interface OnFontChange {
         void onColorChanged(int color);
+        void onSizeChanged(String size);
     }
 }

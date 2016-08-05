@@ -294,4 +294,9 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
     public void onColorChanged(int color) {
         Log.d(TAG, "" + color);
     }
+
+    @Override
+    public void onSizeChanged(String size) {
+        Log.d(TAG, "" + size);
+    }
 }
