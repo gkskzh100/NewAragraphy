@@ -55,9 +55,9 @@ public class CropBgActivity extends AppCompatActivity {
     * TODO: 특별한 이유가 없다면 private 을 의무화하는게 좋음
     * 미연의 사고를 방지하기 위함
     * */
-    CropImageView cropImageView;
-    String uri = null;
-    Bitmap bitmap = null;
+    private CropImageView cropImageView;
+    private String uri = null;
+    private Bitmap bitmap = null;
     back task;
 
 
@@ -151,7 +151,7 @@ public class CropBgActivity extends AppCompatActivity {
         /*
         * TODO Color 의 경우 res폴더의 colors.xml 을 생성하여 다루는 것을 권장
         * */
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3e3e3e")));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#707070")));
 
 
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT);
@@ -229,10 +229,10 @@ public class CropBgActivity extends AppCompatActivity {
         });
     }
     private void buttonWhiteChange(){
-        cropSquareTv.setTextColor(Color.parseColor("#ffffff"));
-        cropVsquareTv.setTextColor(Color.parseColor("#ffffff"));
-        cropHsquareTv.setTextColor(Color.parseColor("#ffffff"));
-        cropFreeTv.setTextColor(Color.parseColor("#ffffff"));
+        cropSquareTv.setTextColor(Color.parseColor("#000000"));
+        cropVsquareTv.setTextColor(Color.parseColor("#000000"));
+        cropHsquareTv.setTextColor(Color.parseColor("#000000"));
+        cropFreeTv.setTextColor(Color.parseColor("#000000"));
 
         freeCropImageBtn.setImageResource(R.drawable.cropfield);
         squareCropImageBtn.setImageResource(R.drawable.square);

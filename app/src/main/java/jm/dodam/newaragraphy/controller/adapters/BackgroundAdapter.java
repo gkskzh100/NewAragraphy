@@ -34,7 +34,7 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
+        //이미지 넣어주기
         Glide.with(context)
                 .load(images.get(position))
                 .centerCrop()

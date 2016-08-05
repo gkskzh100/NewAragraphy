@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#191919"
+    android:background="#efefef"
     android:orientation="vertical"
     android:weightSum="100">
 
@@ -11,12 +11,12 @@
         android:id="@+id/cropImage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="83" />
+        android:layout_weight="85" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="17"
+        android:layout_weight="15"
         android:orientation="horizontal"
         android:weightSum="100">
 
@@ -38,7 +38,7 @@
                 android:id="@+id/freeCropImageBtn"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
@@ -46,6 +46,7 @@
                 android:src="@drawable/cropfield_press" />
 
             <TextView
+                android:textSize="11sp"
                 android:id="@+id/cropFreeTv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -67,7 +68,7 @@
                 android:id="@+id/squareCropImageBtn"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
@@ -75,13 +76,14 @@
                 android:src="@drawable/square" />
 
             <TextView
+                android:textSize="11sp"
                 android:id="@+id/cropSquareTv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="50"
                 android:gravity="center_horizontal"
                 android:text="1:1"
-                android:textColor="#ffffff" />
+                android:textColor="@color/dark" />
         </LinearLayout>
 
         <LinearLayout
@@ -97,7 +99,7 @@
                 android:id="@+id/hQuadrangleCropImageBtn"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
@@ -105,13 +107,14 @@
                 android:src="@drawable/quadrangle_horizontal" />
 
             <TextView
+                android:textSize="11sp"
                 android:id="@+id/cropHsquareTv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="50"
                 android:gravity="center_horizontal"
                 android:text="4:3"
-                android:textColor="#ffffff" />
+                android:textColor="@color/dark" />
 
         </LinearLayout>
 
@@ -127,7 +130,7 @@
                 android:id="@+id/vQuadrangleCropImageBtn"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
@@ -135,13 +138,15 @@
                 android:src="@drawable/quadrangle_vertical" />
 
             <TextView
+
+                android:textSize="11sp"
                 android:id="@+id/cropVsquareTv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="50"
                 android:gravity="center_horizontal"
                 android:text="3:4"
-                android:textColor="#ffffff" />
+                android:textColor="@color/dark" />
 
         </LinearLayout>
 

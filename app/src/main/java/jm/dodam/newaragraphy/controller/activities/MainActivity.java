@@ -105,7 +105,8 @@ public class MainActivity extends Activity {
     }
     private void parseImages(){
         // TODO: 변수명 + 하드코딩
-        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask(getApplicationContext(),"https://unsplash.com/collections/225685/surf");
-        jsoupAsyncTask.execute();
+        //사진 사이트에서 이미지 파싱중
+        JsoupAsyncTask imageParsing = new JsoupAsyncTask(getApplicationContext(),"https://unsplash.com/collections/225685/surf");
+        imageParsing.execute();
     }
 }

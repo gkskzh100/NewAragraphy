@@ -74,7 +74,7 @@ public class SelectBackActivity extends AppCompatActivity{
 
      }
     private void setListAdapter(){
-
+        //그리드뷰 설정하는곳
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(new ImageResource().getArrayList(), getApplicationContext());
@@ -87,10 +87,11 @@ public class SelectBackActivity extends AppCompatActivity{
         recyclerView.addOnItemTouchListener(new SelectBackClickListener(getApplicationContext(), recyclerView, new SelectBackClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getApplicationContext(),CropBgActivity.class);
+                Intent itCropActivity = new Intent(getApplicationContext(),CropBgActivity.class);
                 // TODO: 하드코딩
-                intent.putExtra("position",position);
-                startActivity(intent);
+                //이미지의 포지션 값을 다음 화면에 보낸다.
+                itCropActivity.putExtra("position",position);
+                startActivity(itCropActivity);
             }
 
             @Override

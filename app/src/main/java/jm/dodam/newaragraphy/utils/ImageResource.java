@@ -17,6 +17,7 @@ public class ImageResource {
 
     /*
     * TODO: 스태틱을 사용한 이유를 모르겠음
+    * //실행될때 파싱한 이미지를 static으로 저장 (다른 액티비티에서 사용 유효)
     * */
     static ArrayList<String> arrayList = new ArrayList<>();
 

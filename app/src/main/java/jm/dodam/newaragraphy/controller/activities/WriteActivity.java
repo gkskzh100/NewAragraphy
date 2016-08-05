@@ -5,6 +5,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -289,6 +290,11 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
         }
     }
 
+
+    @Override
+    public void onFontChanged(Typeface font) {
+        Log.d(TAG,""+font);
+    }
 
     @Override
     public void onColorChanged(int color) {

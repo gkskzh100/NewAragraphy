@@ -1,15 +1,24 @@
 package jm.dodam.newaragraphy.controller.fragment;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jm.dodam.newaragraphy.R;
 
@@ -18,6 +27,7 @@ import jm.dodam.newaragraphy.R;
  */
 public class FontMenuFragment extends Fragment {
 
+
     private class ViewHolder {
         private ViewPager viewPager;
         private Button controllerBtn;
@@ -25,6 +35,7 @@ public class FontMenuFragment extends Fragment {
         public ViewHolder(View view) {
             this.viewPager = (ViewPager) view.findViewById(R.id.view_font_menu_bar_pager);
             this.controllerBtn = (Button) view.findViewById(R.id.view_font_menu_bar_controller);
+
         }
     }
 
@@ -50,23 +61,27 @@ public class FontMenuFragment extends Fragment {
     private void init(View view) {
         viewHolder = new ViewHolder(view);
         viewPagerSetting();
+
     }
 
     private void viewPagerSetting() {
         viewHolder.viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
+        @Override
+        public Fragment getItem(int position) {
+                //return ChangeFontFragment.newInstance(handler);
                 return ChangeColorFragment.newInstance(handler);
-            }
 
-            @Override
-            public int getCount() {
-                return 1;
-            }
-        });
-    }
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+    });
+}
 
     public interface OnFontChange {
+        void onFontChanged(Typeface font);
         void onColorChanged(int color);
     }
 }

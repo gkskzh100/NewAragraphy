@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#3e3e3e"    >
+    android:layout_height="match_parent">
 
     <!--TODO: 코드 내 공백은 취향이지만 xml 태그 구문 도중 공백을 주는것은 가독성을 해침 -->
     <!--TODO: 20dp, 100dp 같이 HARD CODING 하는 습관을 버려야함 xml 에서도 dimen.xml 이라는 훌륭한 도구가 있음 -->

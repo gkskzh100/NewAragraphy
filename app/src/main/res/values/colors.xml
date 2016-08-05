@@ -7,4 +7,7 @@
     <color name="colorTest">#696969</color>
     <color name="workroomBackground">#191919</color>
     <color name="shareBackground">#3e3e3e</color>
+    <color name="cropActionbar">#707070</color>
+    <color name="white">#ffffff</color>
+    <color name="dark">#000000</color>
 </resources>
