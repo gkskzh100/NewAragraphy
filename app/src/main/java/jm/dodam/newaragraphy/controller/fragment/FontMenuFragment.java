@@ -20,6 +20,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.astuetz.PagerSlidingTabStrip;
+
 import jm.dodam.newaragraphy.R;
 
 /**
@@ -31,10 +33,12 @@ public class FontMenuFragment extends Fragment {
     private class ViewHolder {
         private ViewPager viewPager;
         private Button controllerBtn;
+        private PagerSlidingTabStrip tabs;
 
         public ViewHolder(View view) {
             this.viewPager = (ViewPager) view.findViewById(R.id.view_font_menu_bar_pager);
             this.controllerBtn = (Button) view.findViewById(R.id.view_font_menu_bar_controller);
+            this.tabs = (PagerSlidingTabStrip) view.findViewById(R.id.view_font_menu_bar_tab);
 
         }
     }
@@ -66,22 +70,47 @@ public class FontMenuFragment extends Fragment {
 
     private void viewPagerSetting() {
         viewHolder.viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
-        @Override
-        public Fragment getItem(int position) {
-                //return ChangeFontFragment.newInstance(handler);
-                return ChangeColorFragment.newInstance(handler);
 
-        }
 
-        @Override
-        public int getCount() {
-            return 1;
-        }
-    });
-}
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return ChangeColorFragment.newInstance(handler);
+                    case 1:
+                        return ChangeSizeFragment.newInstance(handler);
+                }
 
-    public interface OnFontChange {
-        void onFontChanged(Typeface font);
-        void onColorChanged(int color);
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position) {
+                    case 0:
+                        return "색깔";
+                    case 1:
+                        return "크기";
+                }
+                return null;
+            }
+        });
+        viewHolder.tabs.setViewPager(viewHolder.viewPager);
+
     }
+
+
+
+public interface OnFontChange {
+    void onFontChanged(Typeface font);
+
+    void onColorChanged(int color);
+
+    void onSizeChanged(String size);
+}
 }

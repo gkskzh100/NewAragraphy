@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100">
 
     <!--끌어올릴 버튼-->
     <Button
         android:id="@+id/view_font_menu_bar_controller"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="btn"/>
-
-
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:text="btn" />
 
 
     <!--폰트선택 폰트편집 색상편집 사진편집 편집완료   Tab-->
-
-
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/view_font_menu_bar_tab"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10" />
 
 
     <!--폰트선택 폰트편집 색상편집 사진편집 편집완료   ViewPager-->
     <android.support.v4.view.ViewPager
         android:id="@+id/view_font_menu_bar_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="0dp"
+        android:layout_weight="80"/>
 
 
 </LinearLayout>

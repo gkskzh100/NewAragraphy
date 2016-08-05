@@ -29,12 +29,11 @@
             android:name=".controller.activities.SplashActivity"
             android:theme="@style/Theme.HomeScreen" />
         <activity android:name=".controller.activities.WriteActivity" />
-
-        <activity android:name=".controller.activities.ShareActivity"></activity>
-        <activity android:name=".controller.activities.SelectBackActivity"></activity>
-        <activity android:name=".controller.activities.CropBgActivity"></activity>
-
+        <activity android:name=".controller.activities.ShareActivity" />
+        <activity android:name=".controller.activities.SelectBackActivity" />
+        <activity android:name=".controller.activities.CropBgActivity" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
+        <activity android:name=".controller.fragment.ChangeSizeFragment"></activity>
     </application>
 
 </manifest>
