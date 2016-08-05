@@ -94,7 +94,10 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
             @Override
             public void onClick(View view) {
                 textView = new EditText(WriteActivity.this);
-                textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+                textView.setLayoutParams(layoutParams);
                 textView.setBackgroundColor(Color.TRANSPARENT);
                 textView.setPadding(20, 10, 10, 10);
                 // TODO: Color
@@ -103,6 +106,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                 // TODO: 하드코딩
                 textView.setHint("텍스트를 입력해주세요");
                 textView.setHintTextColor(Color.parseColor("#939393"));
+
 
                 Bitmap bitmap;
 
@@ -293,5 +297,10 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
     @Override
     public void onColorChanged(int color) {
         Log.d(TAG, "" + color);
+    }
+
+    @Override
+    public void onSizeChanged(String size) {
+        Log.d(TAG, "" + size);
     }
 }
