@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="100"
     android:background="@color/workroomBackground"
+    android:orientation="vertical"
     tools:context=".controller.activities.WriteActivity">
 
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10"/>
+
     <RelativeLayout
         android:id="@+id/writeLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="90"
-        android:orientation="vertical">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_weight="90">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,4 +30,4 @@
         android:orientation="vertical"></LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
