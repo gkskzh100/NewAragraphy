@@ -213,29 +213,28 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                 }
 
 
-                String subject = "메시지 제목";
-                String text = "메시지 내용은 \n다음줄에서..";
+                String text = "글씨가 아름다워지는 어플 #Aragraphy";
                 File file = new File(savePath);
 
                 List targetedShareIntents = new ArrayList<>();
 
                 //facebook
-                Intent facebookIntent = getShareIntent("com.facebook.katana", subject, text, file);
+                Intent facebookIntent = getShareIntent("com.facebook.katana", text, file);
                 if(facebookIntent != null)
                     targetedShareIntents.add(facebookIntent);
 
                 //twitter
-                Intent twitterIntent = getShareIntent("com.twitter.android", subject, text, file);
+                Intent twitterIntent = getShareIntent("com.twitter.android", text, file);
                 if(twitterIntent != null)
                     targetedShareIntents.add(twitterIntent);
 
                 //kakaoTalk
-                Intent kakaoTalkIntent = getShareIntent("com.kakao.talk", subject, text, file);
+                Intent kakaoTalkIntent = getShareIntent("com.kakao.talk", text, file);
                 if(kakaoTalkIntent != null)
                     targetedShareIntents.add(kakaoTalkIntent);
 
                 //instagram
-                Intent instagramIntent = getShareIntent("com.instagram.android", subject, text, file);
+                Intent instagramIntent = getShareIntent("com.instagram.android", text, file);
                 if(instagramIntent != null)
                     targetedShareIntents.add(instagramIntent);
 
@@ -253,7 +252,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
         });
     }
 
-    private Intent getShareIntent(String name, String subject, String text, File file) {
+    private Intent getShareIntent(String name, String text, File file) {
         boolean found = false;
 
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -268,7 +267,6 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
         for (ResolveInfo info : resInfo) {
             if(info.activityInfo.packageName.toLowerCase().contains(name) ||
                     info.activityInfo.name.toLowerCase().contains(name)) {
-                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
                 intent.putExtra(Intent.EXTRA_TEXT, text);
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
                 intent.setPackage(info.activityInfo.packageName);
