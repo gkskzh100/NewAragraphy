@@ -28,6 +28,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -92,6 +95,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.activity_write_fond_menu_bar, new FontMenuFragment())
                 .commit();
+
     }
 
     private void setListener() {

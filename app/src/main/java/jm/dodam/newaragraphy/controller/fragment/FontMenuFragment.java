@@ -77,6 +77,7 @@ public class FontMenuFragment extends Fragment {
             }
         });
 
+
     }
 
     private void viewPagerSetting() {
