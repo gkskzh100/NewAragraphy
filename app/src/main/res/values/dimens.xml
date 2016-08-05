@@ -11,4 +11,6 @@
     <!--GridView Spacing-->
     <dimen name="grid_vertical_spacing">10dp</dimen>
     <dimen name="grid_horizontal_spacing">10dp</dimen>
+
+    <dimen name="write_fragment_max_height">200dp</dimen>
 </resources>

@@ -23,7 +23,7 @@
     <LinearLayout
         android:id="@+id/activity_write_fond_menu_bar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/write_fragment_max_height"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"></LinearLayout>
 
