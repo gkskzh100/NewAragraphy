@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="100">
 
@@ -10,7 +11,7 @@
         android:id="@+id/view_font_menu_bar_controller"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="15"
         android:text="btn" />
 
 
@@ -19,7 +20,8 @@
         android:id="@+id/view_font_menu_bar_tab"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10" />
+        android:layout_weight="20"
+        app:pstsIndicatorHeight="2dp"/>
 
 
     <!--폰트선택 폰트편집 색상편집 사진편집 편집완료   ViewPager-->
@@ -27,7 +29,7 @@
         android:id="@+id/view_font_menu_bar_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="80"/>
+        android:layout_weight="65"/>
 
 
 </LinearLayout>

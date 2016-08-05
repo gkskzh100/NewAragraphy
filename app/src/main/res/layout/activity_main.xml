@@ -39,7 +39,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="20"
-                    android:src="@drawable/write"
+                    android:src="@drawable/write_btn"
                     android:background="#00ffffff"
                     android:scaleType="centerInside"/>
             </LinearLayout>

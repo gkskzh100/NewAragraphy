@@ -3,12 +3,16 @@ package jm.dodam.newaragraphy.controller.fragment;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +33,7 @@ import jm.dodam.newaragraphy.R;
  */
 public class FontMenuFragment extends Fragment {
 
+    private int icons[] = {R.drawable.text_btn, R.drawable.enlarge_btn, R.drawable.color_palette_btn};
 
     private class ViewHolder {
         private ViewPager viewPager;
@@ -65,6 +70,12 @@ public class FontMenuFragment extends Fragment {
     private void init(View view) {
         viewHolder = new ViewHolder(view);
         viewPagerSetting();
+        viewHolder.controllerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -76,9 +87,11 @@ public class FontMenuFragment extends Fragment {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return ChangeColorFragment.newInstance(handler);
+                        return ChangeFontFragment.newInstance(handler);
                     case 1:
                         return ChangeSizeFragment.newInstance(handler);
+                    case 2:
+                        return ChangeColorFragment.newInstance(handler);
                 }
 
                 return null;
@@ -86,18 +99,30 @@ public class FontMenuFragment extends Fragment {
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
+            }
+
+            public int getPageIconResId(int position) {
+                return icons[position];
             }
 
             @Override
             public CharSequence getPageTitle(int position) {
                 switch (position) {
                     case 0:
-                        return "색깔";
+                        return "폰트";
                     case 1:
                         return "크기";
+                    case 2:
+                        return "색깔";
                 }
                 return null;
+//                Drawable image = getContext().getResources().getDrawable(icons[position]);
+//                image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+//                SpannableString sb = new SpannableString("   ");
+//                ImageSpan imageSpan = new ImageSpan(image,ImageSpan.ALIGN_BOTTOM);
+//                sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                return sb;
             }
         });
         viewHolder.tabs.setViewPager(viewHolder.viewPager);
@@ -105,12 +130,11 @@ public class FontMenuFragment extends Fragment {
     }
 
 
+    public interface OnFontChange {
+        void onFontChanged(Typeface font);
 
-public interface OnFontChange {
-    void onFontChanged(Typeface font);
+        void onColorChanged(int color);
 
-    void onColorChanged(int color);
-
-    void onSizeChanged(String size);
-}
+        void onSizeChanged(String size);
+    }
 }

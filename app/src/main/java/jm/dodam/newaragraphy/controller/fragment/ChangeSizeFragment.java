@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import jm.dodam.newaragraphy.R;
@@ -36,7 +37,6 @@ public class ChangeSizeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_change_size, container, false);
         init(view);
-
         return view;
     }
 
@@ -55,7 +55,12 @@ public class ChangeSizeFragment extends Fragment {
 
                 str = charSequence.toString();
                 Log.d("ChangeSizeFragment", ""+str);
+                if(charSequence == null) {
+                    editText.setText("0");
+                    str="0";
+                }
                 handler.onSizeChanged(str);
+
 
             }
 

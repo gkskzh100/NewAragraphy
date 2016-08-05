@@ -5,10 +5,10 @@
 
 
     <!--Change Color Circle-->
-    <dimen name="change_color_circle_width">60dp</dimen>
-    <dimen name="change_color_circle_height">60dp</dimen>
+    <dimen name="change_color_circle_width">45dp</dimen>
+    <dimen name="change_color_circle_height">45dp</dimen>
 
     <!--GridView Spacing-->
-    <dimen name="grid_vertical_spacing">20dp</dimen>
-    <dimen name="grid_horizontal_spacing">20dp</dimen>
+    <dimen name="grid_vertical_spacing">10dp</dimen>
+    <dimen name="grid_horizontal_spacing">10dp</dimen>
 </resources>

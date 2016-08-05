@@ -56,6 +56,10 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
 
     private String savePath = null;
 
+    private int fontSize = 13;
+    private int fontColor = -1;
+    private Typeface fontsytle;
+
     public static WriteActivity mtWriteActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +99,9 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
             @Override
             public void onClick(View view) {
                 textView = new EditText(WriteActivity.this);
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
-                textView.setLayoutParams(layoutParams);
+                textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                textView.setX((float) 100.0);
+                textView.setY((float) 500.0);
                 textView.setBackgroundColor(Color.TRANSPARENT);
                 textView.setPadding(20, 10, 10, 10);
                 // TODO: Color
@@ -146,10 +149,16 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                                 break;
                         }
 //                        ((EditText) view).setTextColor(Color.YELLOW);
+                        ((EditText) view).setTextSize(fontSize);
+                        ((EditText) view).setTextColor(fontColor);
+                        ((EditText) view).setTypeface(fontsytle);
+
                         writeLayout.invalidate();
 
                         return false;
                     }
+
+
                 });
 
                 writeLayout.addView(textView);
@@ -298,15 +307,25 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
     @Override
     public void onFontChanged(Typeface font) {
         Log.d(TAG,""+font);
+
+        fontsytle = font;
     }
 
     @Override
     public void onColorChanged(int color) {
         Log.d(TAG, "" + color);
+
+        fontColor = color;
     }
 
     @Override
     public void onSizeChanged(String size) {
         Log.d(TAG, "" + size);
+
+        if(size == null) {
+            fontSize=0;
+        }
+
+        fontSize = Integer.parseInt(size);
     }
 }

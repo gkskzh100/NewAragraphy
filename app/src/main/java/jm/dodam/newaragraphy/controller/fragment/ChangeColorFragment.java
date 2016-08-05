@@ -65,10 +65,12 @@ public class ChangeColorFragment extends Fragment {
         colors.add(Color.rgb(100, 210, 230));
         colors.add(Color.rgb(110, 200, 20));
         colors.add(Color.rgb(120, 190, 100));
+
         colors.add(Color.rgb(130, 180, 190));
         colors.add(Color.rgb(140, 170, 180));
         colors.add(Color.rgb(150, 160, 170));
         colors.add(Color.rgb(160, 150, 160));
+
         colors.add(Color.rgb(170, 140, 150));
         colors.add(Color.rgb(180, 130, 140));
         colors.add(Color.rgb(190, 120, 130));
