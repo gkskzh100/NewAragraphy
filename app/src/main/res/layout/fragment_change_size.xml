@@ -23,6 +23,7 @@
             android:layout_weight="6"
             android:textSize="25sp"
             android:inputType="phone"
+            android:textColor="#FFFFFF"
             android:layout_centerInParent="true"/>
         <TextView
             android:layout_width="0dp"
@@ -30,6 +31,7 @@
             android:layout_weight="4"
             android:text="px"
             android:textSize="20sp"
+            android:textColor="#FFFFFF"
             android:gravity="center_vertical"/>
     </LinearLayout>
 

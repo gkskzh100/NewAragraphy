@@ -23,26 +23,20 @@
             <android.support.v4.widget.Space
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="85"/>
-            <LinearLayout
+                android:layout_weight="95"/>
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="15"
-                android:orientation="horizontal"
-                android:weightSum="60">
-                <android.support.v4.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="20"/>
+                android:layout_height="70dp">
+
                 <ImageButton
                     android:id="@+id/mainWriteImgBtn"
-                    android:layout_width="0dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="20"
                     android:src="@drawable/write_btn"
                     android:background="#00ffffff"
-                    android:scaleType="centerInside"/>
-            </LinearLayout>
+                    android:layout_centerInParent="true"
+                    android:scaleType="fitCenter"/>
+            </RelativeLayout>
         </LinearLayout>
     </FrameLayout>
 

@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,8 +56,7 @@ public class ChangeSizeFragment extends Fragment {
 
                 str = charSequence.toString();
                 Log.d("ChangeSizeFragment", ""+str);
-                if(charSequence == null) {
-                    editText.setText("0");
+                if(charSequence == null || TextUtils.isEmpty(charSequence)) {
                     str="0";
                 }
                 handler.onSizeChanged(str);

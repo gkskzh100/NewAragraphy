@@ -61,7 +61,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
 
     private int fontSize = 13;
     private int fontColor = -1;
-    private Typeface fontsytle;
+    private Typeface fontStyle;
 
     public static WriteActivity mtWriteActivity;
     @Override
@@ -155,7 +155,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
 //                        ((EditText) view).setTextColor(Color.YELLOW);
                         ((EditText) view).setTextSize(fontSize);
                         ((EditText) view).setTextColor(fontColor);
-                        ((EditText) view).setTypeface(fontsytle);
+                        ((EditText) view).setTypeface(fontStyle);
 
                         writeLayout.invalidate();
 
@@ -312,7 +312,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
     public void onFontChanged(Typeface font) {
         Log.d(TAG,""+font);
 
-        fontsytle = font;
+        fontStyle = font;
     }
 
     @Override
