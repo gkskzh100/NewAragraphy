@@ -95,7 +95,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
             public void onClick(View view) {
                 textView = new EditText(WriteActivity.this);
                 textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                textView.setBackgroundColor(Color.TRANSPARENT);
+                textView.setBackgroundColor(Color.YELLOW);
                 textView.setPadding(20, 10, 10, 10);
                 // TODO: Color
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
