@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -122,7 +123,8 @@ public class ChangeColorFragment extends Fragment {
                 colorCircle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        handler.onColorChanged(Global.INVISIBLE);
+//                        handler.onColorChanged(Global.INVISIBLE);
+                        ((EditText)getActivity().getCurrentFocus()).setTextColor(Global.INVISIBLE);
                     }
                 });
 
@@ -136,6 +138,7 @@ public class ChangeColorFragment extends Fragment {
                 colorCircle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         ColorPickerDialogBuilder.with(getActivity())
                                 .setTitle(getResources().getString(R.string.color_title))
                                 .initialColor(Color.YELLOW)
@@ -144,7 +147,8 @@ public class ChangeColorFragment extends Fragment {
                                 .setPositiveButton(getResources().getString(R.string.color_submit), new ColorPickerClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int selectColor, Integer[] integers) {
-                                        handler.onColorChanged(selectColor);
+                                        ((EditText)getActivity().getCurrentFocus()).setTextColor(selectColor);
+//                                        handler.onColorChanged(selectColor);
                                     }
                                 })
                                 .setNegativeButton(getResources().getString(R.string.color_cancel), new DialogInterface.OnClickListener() {
@@ -166,10 +170,17 @@ public class ChangeColorFragment extends Fragment {
                 colorCircle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        handler.onColorChanged(colors.get(position));
+
+                        try{
+                            ((EditText)getActivity().getCurrentFocus()).setTextColor(colors.get(position));
+                        }catch (ClassCastException e){
+                            e.printStackTrace();
+                        }
+//                        handler.onColorChanged(colors.get(position));
                     }
                 });
             }
+
             return view;
         }
     }

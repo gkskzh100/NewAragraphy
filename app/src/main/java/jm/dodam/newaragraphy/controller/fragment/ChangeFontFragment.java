@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -107,7 +108,12 @@ public class ChangeFontFragment extends Fragment {
             fontText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    handler.onFontChanged(fonts.get(position));
+                    try{
+                        ((EditText)getActivity().getCurrentFocus()).setTypeface(fonts.get(position));
+                    }catch (ClassCastException e){
+                        e.printStackTrace();
+                    }
+//                    handler.onFontChanged(fonts.get(position));
                 }
             });
 

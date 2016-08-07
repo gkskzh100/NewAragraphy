@@ -38,9 +38,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.controller.fragment.FontMenuFragment;
+import jm.dodam.newaragraphy.utils.ImageResource;
 import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
 public class WriteActivity extends AppCompatActivity implements FontMenuFragment.OnFontChange {
@@ -64,6 +66,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
     private Typeface fontStyle;
 
     public static WriteActivity mtWriteActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,20 +77,30 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
         setHideStatusBar();
 
         setListener();
+        setHardCoding();
 
+    }
+    private void setHardCoding() {
+        ArrayList<String> backgroundExam = new ImageResource().getArrayList();
+
+        Glide.with(this)
+                .load(backgroundExam.get(new Random().nextInt(backgroundExam.size())))
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(writeImageView);
     }
 
     public void setWriteImageBitmap(Bitmap bitmap) {
-        writeImageView.setImageBitmap(bitmap);
-        writeImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-    }
+            writeImageView.setImageBitmap(bitmap);
+            writeImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        }
 
 
-    private void init() {
-        mtWriteActivity = WriteActivity.this;
+        private void init() {
+            mtWriteActivity = WriteActivity.this;
 
-        writeChangeImageBtn = (ImageButton) findViewById(R.id.writeChangeImageBtn);
-        writeAddTextBtn = (ImageButton) findViewById(R.id.writeAddTextBtn);
+            writeChangeImageBtn = (ImageButton) findViewById(R.id.writeChangeImageBtn);
+            writeAddTextBtn = (ImageButton) findViewById(R.id.writeAddTextBtn);
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
         writeLayout = (RelativeLayout) findViewById(R.id.writeLayout);
         writeImageView = (ImageView) findViewById(R.id.writeImageView);
@@ -110,7 +123,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                 textView.setPadding(20, 10, 10, 10);
                 // TODO: Color
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
-                textView.setTextSize(13);
+                textView.setTextSize(33);
                 // TODO: 하드코딩
                 textView.setHint("텍스트를 입력해주세요");
                 textView.setHintTextColor(Color.parseColor("#939393"));
@@ -120,7 +133,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
 
                 bitmap = Bitmap.createBitmap(80, 100, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
-                textView.layout(0,80,80,100);
+                textView.layout(0, 80, 80, 100);
                 textView.draw(canvas);
 
                 textView.setOnTouchListener(new View.OnTouchListener() {
@@ -153,9 +166,9 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                                 break;
                         }
 //                        ((EditText) view).setTextColor(Color.YELLOW);
-                        ((EditText) view).setTextSize(fontSize);
-                        ((EditText) view).setTextColor(fontColor);
-                        ((EditText) view).setTypeface(fontStyle);
+//                        ((EditText) view).setTextSize(fontSize);
+//                        ((EditText) view).setTextColor(fontColor);
+//                        ((EditText) view).setTypeface(fontStyle);
 
                         writeLayout.invalidate();
 
@@ -174,7 +187,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                 // TODO: 하드코딩
                 String folder = "Test_Directory";
                 writeLayout.setDrawingCacheEnabled(false);
-
+                writeLayout.setFocusable(true);
                 try {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
                     Date currentTime_1 = new Date();
@@ -182,7 +195,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                     File sdCardPath = Environment.getExternalStorageDirectory();
                     File dirs = new File(Environment.getExternalStorageDirectory(), folder);
 
-                    if(!dirs.exists()) {
+                    if (!dirs.exists()) {
                         dirs.mkdirs();
                         Log.d("CAMERA_TEST", "Directory Created");
                     }
@@ -199,12 +212,12 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                         fos = new FileOutputStream(save);
                         captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
-                        Log.d("capture","okok");
+                        Log.d("capture", "okok");
 
                         File file = new File(save);
-                        SingleMediaScanner mScanner = new SingleMediaScanner(getApplicationContext(),file);
+                        SingleMediaScanner mScanner = new SingleMediaScanner(getApplicationContext(), file);
 
-                        Log.d("Scanner","okok");
+                        Log.d("Scanner", "okok");
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -220,26 +233,26 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
 
                 //facebook
                 Intent facebookIntent = getShareIntent("com.facebook.katana", text, file);
-                if(facebookIntent != null)
+                if (facebookIntent != null)
                     targetedShareIntents.add(facebookIntent);
 
                 //twitter
                 Intent twitterIntent = getShareIntent("com.twitter.android", text, file);
-                if(twitterIntent != null)
+                if (twitterIntent != null)
                     targetedShareIntents.add(twitterIntent);
 
                 //kakaoTalk
                 Intent kakaoTalkIntent = getShareIntent("com.kakao.talk", text, file);
-                if(kakaoTalkIntent != null)
+                if (kakaoTalkIntent != null)
                     targetedShareIntents.add(kakaoTalkIntent);
 
                 //instagram
                 Intent instagramIntent = getShareIntent("com.instagram.android", text, file);
-                if(instagramIntent != null)
+                if (instagramIntent != null)
                     targetedShareIntents.add(instagramIntent);
 
-                Intent chooser = Intent.createChooser((Intent) targetedShareIntents.remove(0),"공유하기");
-                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS,targetedShareIntents.toArray(new Parcelable[]{}));
+                Intent chooser = Intent.createChooser((Intent) targetedShareIntents.remove(0), "공유하기");
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
                 startActivity(chooser);
 
             }
@@ -247,7 +260,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
         writeChangeImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),SelectBackActivity.class));
+                startActivity(new Intent(getApplicationContext(), SelectBackActivity.class));
             }
         });
     }
@@ -261,11 +274,11 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
 
         List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(intent, 0);
 
-        if(resInfo == null)
+        if (resInfo == null)
             return null;
 
         for (ResolveInfo info : resInfo) {
-            if(info.activityInfo.packageName.toLowerCase().contains(name) ||
+            if (info.activityInfo.packageName.toLowerCase().contains(name) ||
                     info.activityInfo.name.toLowerCase().contains(name)) {
                 intent.putExtra(Intent.EXTRA_TEXT, text);
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
@@ -288,17 +301,17 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        View mCustomView = LayoutInflater.from(this).inflate(R.layout.layout_actionbar,null);
+        View mCustomView = LayoutInflater.from(this).inflate(R.layout.layout_actionbar, null);
         actionBar.setCustomView(mCustomView);
 
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
 
 
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT);
-        actionBar.setCustomView(mCustomView,params);
+        actionBar.setCustomView(mCustomView, params);
     }
 
-    private void setHideStatusBar(){
+    private void setHideStatusBar() {
         if (Build.VERSION.SDK_INT >= 19) {      //Kitkat 이상 상태바 투명하게 만들기 //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             Window window = getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -308,7 +321,7 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
 
     @Override
     public void onFontChanged(Typeface font) {
-        Log.d(TAG,""+font);
+        Log.d(TAG, "" + font);
 
         fontStyle = font;
     }
@@ -324,10 +337,13 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
     public void onSizeChanged(String size) {
         Log.d(TAG, "" + size);
 
-        if(size == null) {
-            fontSize=0;
+        if (size == null) {
+            fontSize = 0;
         }
-
-        fontSize = Integer.parseInt(size);
+        try {
+            fontSize = Integer.parseInt(size);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 }

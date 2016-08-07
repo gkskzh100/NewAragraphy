@@ -12,14 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.SeekBar;
 
 import jm.dodam.newaragraphy.R;
 
 public class ChangeSizeFragment extends Fragment {
 
-    private EditText editText;
-    private String str = null;
-
+    private SeekBar seekBar;
+    private int brightnes;
     private static FontMenuFragment.OnFontChange handler;
 
 
@@ -42,9 +42,32 @@ public class ChangeSizeFragment extends Fragment {
     }
 
     private void init(View view) {
-        editText = (EditText) view.findViewById(R.id.fragment_change_size_edit);
+        seekBar = (SeekBar) view.findViewById(R.id.fragment_change_size_edit);
 
-        editText.addTextChangedListener(new TextWatcher() {
+        seekBar.setProgress(50);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+                try{
+                    ((EditText)getActivity().getCurrentFocus()).setTextSize(i);
+                }catch (ClassCastException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+/*        editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //입력 전
@@ -59,7 +82,12 @@ public class ChangeSizeFragment extends Fragment {
                 if(charSequence == null || TextUtils.isEmpty(charSequence)) {
                     str="0";
                 }
-                handler.onSizeChanged(str);
+                try{
+                    ((EditText)getActivity().getCurrentFocus()).setTextSize(Integer.valueOf(str));
+                }catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+//                handler.onSizeChanged(str);
 
 
             }
@@ -68,7 +96,7 @@ public class ChangeSizeFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
                 //입력 끝
             }
-       });
+       });*/
 
 
 

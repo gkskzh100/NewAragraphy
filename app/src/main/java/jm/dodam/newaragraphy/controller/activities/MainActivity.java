@@ -14,11 +14,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 import jm.dodam.newaragraphy.JsoupAsyncTask;
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.utils.ImageResource;
 
 public class MainActivity extends Activity {
 
@@ -37,7 +43,10 @@ public class MainActivity extends Activity {
         checkPermission();
         parseImages();
 
+
     }
+
+
 
     private void init() {
         mainExImageView = (ImageView)findViewById(R.id.mainExImageView);
