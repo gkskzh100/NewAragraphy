@@ -62,20 +62,28 @@ public class ChangeColorFragment extends Fragment {
         gridView = (GridView) view.findViewById(R.id.fragment_change_color_grid);
 
         // dummy data
-        colors.add(Color.rgb(255, 255, 255));
-        colors.add(Color.rgb(100, 210, 230));
-        colors.add(Color.rgb(110, 200, 20));
-        colors.add(Color.rgb(120, 190, 100));
 
-        colors.add(Color.rgb(130, 180, 190));
-        colors.add(Color.rgb(140, 170, 180));
-        colors.add(Color.rgb(150, 160, 170));
-        colors.add(Color.rgb(160, 150, 160));
+        //투명
+        colors.add(Color.rgb(255, 255, 255));//흰색
+        colors.add(Color.rgb(109, 110, 114));//회색
+        colors.add(Color.rgb(0, 0, 0));     //검정
+        colors.add(Color.rgb(29, 32, 136));//남색
 
-        colors.add(Color.rgb(170, 140, 150));
-        colors.add(Color.rgb(180, 130, 140));
-        colors.add(Color.rgb(190, 120, 130));
-        colors.add(Color.rgb(0, 0, 0));
+        colors.add(Color.rgb(222, 127, 169));//핑크
+        colors.add(Color.rgb(230, 0, 18)); //빨강
+        colors.add(Color.rgb(235, 97, 0)); //주황
+        colors.add(Color.rgb(245, 158, 3));//귤색
+        colors.add(Color.rgb(255, 241, 0));//노랑
+
+        colors.add(Color.rgb(187, 213, 80));//라임
+        colors.add(Color.rgb(0, 153, 68)); //초록
+        colors.add(Color.rgb(0, 104, 183));//파랑
+        colors.add(Color.rgb(96, 25, 134));//보라
+        //팔레트
+
+//        투명 흰색 회색 검정 남색
+//        핑크 빨강 주황 귤색 노랑
+//        라임 초록 파랑 보라 팔레트
 
         gridView.setAdapter(new Adapter());
     }
@@ -116,9 +124,9 @@ public class ChangeColorFragment extends Fragment {
             if (i == 0) {
                 // 투명
                 // TODO 투명 이미지 입히기
-                colorCircle.setBackgroundResource(R.drawable.circle);
-                Drawable background = colorCircle.getBackground();
-                ((GradientDrawable) background).setColor(Color.WHITE);
+                colorCircle.setBackgroundResource(R.drawable.alpha_btn);
+//                Drawable background = colorCircle.getBackground();
+//                ((GradientDrawable) background).setColor(Color.WHITE);
 
                 colorCircle.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -131,9 +139,9 @@ public class ChangeColorFragment extends Fragment {
             } else if (position == colors.size()) {
                 // 색 조합
                 // TODO 여러 색 입힐 수 있는 팔레트 이미지 입히기
-                colorCircle.setBackgroundResource(R.drawable.circle);
-                Drawable background = colorCircle.getBackground();
-                ((GradientDrawable) background).setColor(Color.WHITE);
+                colorCircle.setBackgroundResource(R.drawable.pallet_btn);
+//                Drawable background = colorCircle.getBackground();
+//                ((GradientDrawable) background).setColor(Color.WHITE);
 
                 colorCircle.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -141,7 +149,7 @@ public class ChangeColorFragment extends Fragment {
 
                         ColorPickerDialogBuilder.with(getActivity())
                                 .setTitle(getResources().getString(R.string.color_title))
-                                .initialColor(Color.YELLOW)
+                                .initialColor(Color.WHITE)
                                 .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                                 .density(20)
                                 .setPositiveButton(getResources().getString(R.string.color_submit), new ColorPickerClickListener() {

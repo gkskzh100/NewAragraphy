@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SlidingDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class FontMenuFragment extends Fragment {
     private ViewPager viewPager;
     private ImageButton controllerBtn;
     private PagerSlidingTabStrip tabs;
-    private LinearLayout layout;
+    private SlidingDrawer slidingDrawer;
 
     private int _yDelta = 0;
 
@@ -68,41 +69,10 @@ public class FontMenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_font_menu_bar, container, false);
         init(view);
 
-        controllerBtn.setOnTouchListener(new View.OnTouchListener() {
+        controllerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                final int Y = (int) motionEvent.getRawY();
-
-                switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN :
-                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
-                        _yDelta = Y - layoutParams.topMargin;
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        break;
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        break;
-                    case MotionEvent.ACTION_POINTER_UP:
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        LinearLayout.LayoutParams lParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
-                        float dimen = getResources().getDimension(R.dimen.write_fragment_max_height);
-                        DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
-                        int height = dm.heightPixels;
-
-                        if(Y < (height-100) && (height - dimen +50) < Y) {
-                            lParams.topMargin = Y - _yDelta;
-                            layout.setLayoutParams(lParams);
-                        }
-
-
-                        break;
-
-
-                }
-
-                return false;
+            public void onClick(View view) {
+                slidingDrawer.animateClose();
             }
         });
 
@@ -111,9 +81,9 @@ public class FontMenuFragment extends Fragment {
 
     private void init(View view) {
         viewPager = (ViewPager) view.findViewById(R.id.view_font_menu_bar_pager);
-        controllerBtn = (ImageButton) view.findViewById(R.id.view_font_menu_bar_controller);
+        controllerBtn = (ImageButton) view.findViewById(R.id.view_sliding_btn);
         tabs = (PagerSlidingTabStrip) view.findViewById(R.id.view_font_menu_bar_tab);
-        layout = (LinearLayout) view.findViewById(R.id.view_font_menu_bar_layout);
+        slidingDrawer = (SlidingDrawer) view.findViewById(R.id.view_sliding_drawer);
 
         viewPagerSetting();
 

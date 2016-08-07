@@ -64,10 +64,25 @@ public class ChangeFontFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.fragment_change_font_list);
 
         // dummy data
-        for (int i =0 ;i<10;i++) {
-            fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "senal.ttf"));
-        }
+//        for (int i =0 ;i<10;i++) {
+//            fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "senal.ttf"));
+//        }
+        setListView();
         listView.setAdapter(new Adapter());
+    }
+
+    private void setListView() {
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "senal.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "darae_hand.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "han_river.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "hans_punch.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "typo_papyrus.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "jolrida.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "makgeolli.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "mortal_heart_immortal_memory.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "ojun_ohwhoo.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "sigol.ttf"));
+        fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "sulam.ttf"));
     }
 
 
