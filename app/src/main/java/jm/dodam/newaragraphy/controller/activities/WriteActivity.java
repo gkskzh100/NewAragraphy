@@ -187,7 +187,8 @@ public class WriteActivity extends AppCompatActivity implements FontMenuFragment
                 // TODO: 하드코딩
                 String folder = "Test_Directory";
                 writeLayout.setDrawingCacheEnabled(false);
-                writeLayout.setFocusable(true);
+                textView.setFocusable(false);
+
                 try {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
                     Date currentTime_1 = new Date();

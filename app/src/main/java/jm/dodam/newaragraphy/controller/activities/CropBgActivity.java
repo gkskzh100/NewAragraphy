@@ -172,11 +172,6 @@ public class CropBgActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Bitmap cropped = cropImageView.getCroppedImage();
-                /*
-                * TODO: "BBB" 라고 태그명을 짓는 것 보다는 클래스 최상단에 private static final String TAG = "파일명"의 형식으로 갖추는 것을 습관화 하는것이 좋음
-                * Log.d("BBB", cropped.toString()); -> Log.d(TAG, cropped.toString());
-                * */
-                Log.d("BBB", cropped.toString());
 
                 /*
                 * TODO: 다른 액티비티의 객체를 통해 직접 컨트롤 하는것은 객체지향에 좋지 못함 가급적 삼가하는 것을 권장.
@@ -242,17 +237,8 @@ public class CropBgActivity extends AppCompatActivity {
 
     private class back extends AsyncTask<String, Integer,Bitmap> {
 
-
-
-
-
-
-
         @Override
-
         protected Bitmap doInBackground(String... urls) {
-
-            // TODO Auto-generated method stub
 
             try{
 
@@ -292,8 +278,6 @@ public class CropBgActivity extends AppCompatActivity {
             cropImageView.setImageBitmap(bitmap);
 
         }
-
-
 
     }
 

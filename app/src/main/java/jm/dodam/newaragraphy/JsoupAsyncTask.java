@@ -24,8 +24,7 @@ public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
     int count = 0;
     Context context;
     ImageResource DB;
-    public ArrayList<String> imageUris = new ArrayList<String>();
-    ArrayList<String> test = new ArrayList<String>();
+    ArrayList<String> imageUris = new ArrayList<String>();
     public JsoupAsyncTask(Context context, String htmlPageUrl) {
         this.context = context;
         this.htmlPageUrl = htmlPageUrl;
