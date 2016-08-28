@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.controller.activities.WriteActivity;
 import jm.dodam.newaragraphy.utils.Global;
 
 /**
@@ -36,10 +37,10 @@ public class ChangeColorFragment extends Fragment {
     private GridView gridView;
 
     // WriteActivity 로 데이터 전송
-    private static FontMenuFragment.OnFontChange handler;
+    private static WriteActivity.OnFontChange handler;
 
 
-    public static ChangeColorFragment newInstance(FontMenuFragment.OnFontChange handler) {
+    public static ChangeColorFragment newInstance(WriteActivity.OnFontChange handler) {
         ChangeColorFragment fragment = new ChangeColorFragment();
         ChangeColorFragment.handler = handler;
         return fragment;
@@ -132,7 +133,12 @@ public class ChangeColorFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 //                        handler.onColorChanged(Global.INVISIBLE);
-                        ((EditText)getActivity().getCurrentFocus()).setTextColor(Global.INVISIBLE);
+                        try {
+
+                            WriteActivity.getSelectTextView().setTextColor(Global.INVISIBLE);
+                        } catch (ClassCastException | NullPointerException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 
@@ -140,8 +146,6 @@ public class ChangeColorFragment extends Fragment {
                 // 색 조합
                 // TODO 여러 색 입힐 수 있는 팔레트 이미지 입히기
                 colorCircle.setBackgroundResource(R.drawable.pallet_btn);
-//                Drawable background = colorCircle.getBackground();
-//                ((GradientDrawable) background).setColor(Color.WHITE);
 
                 colorCircle.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -155,7 +159,7 @@ public class ChangeColorFragment extends Fragment {
                                 .setPositiveButton(getResources().getString(R.string.color_submit), new ColorPickerClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int selectColor, Integer[] integers) {
-                                        ((EditText)getActivity().getCurrentFocus()).setTextColor(selectColor);
+                                        WriteActivity.getSelectTextView().setTextColor(selectColor);
 //                                        handler.onColorChanged(selectColor);
                                     }
                                 })
@@ -180,8 +184,8 @@ public class ChangeColorFragment extends Fragment {
                     public void onClick(View view) {
 
                         try{
-                            ((EditText)getActivity().getCurrentFocus()).setTextColor(colors.get(position));
-                        }catch (ClassCastException e){
+                            WriteActivity.getSelectTextView().setTextColor(colors.get(position));
+                        }catch (ClassCastException | NullPointerException e){
                             e.printStackTrace();
                         }
 //                        handler.onColorChanged(colors.get(position));

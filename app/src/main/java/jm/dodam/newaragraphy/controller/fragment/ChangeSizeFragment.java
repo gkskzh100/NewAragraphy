@@ -3,29 +3,29 @@ package jm.dodam.newaragraphy.controller.fragment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
+import java.io.Writer;
 
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.controller.activities.WriteActivity;
 
 public class ChangeSizeFragment extends Fragment {
 
     private SeekBar seekBar;
     private int brightnes;
-    private static FontMenuFragment.OnFontChange handler;
+    private static WriteActivity.OnFontChange handler;
+    private WriteActivity writeActivity;
 
 
-    public static ChangeSizeFragment newInstance(FontMenuFragment.OnFontChange handler){
+    public ChangeSizeFragment newInstance(WriteActivity writeActivity){
         ChangeSizeFragment fragment = new ChangeSizeFragment();
-        ChangeSizeFragment.handler = handler;
+        this.writeActivity = writeActivity;
         return fragment;
     }
 
@@ -51,8 +51,8 @@ public class ChangeSizeFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
                 try{
-                    ((EditText)getActivity().getCurrentFocus()).setTextSize(i);
-                }catch (ClassCastException e){
+                    WriteActivity.getSelectTextView().setTextSize(i);
+                }catch (ClassCastException | NullPointerException e) {
                     e.printStackTrace();
                 }
             }

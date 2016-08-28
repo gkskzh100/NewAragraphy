@@ -8,39 +8,32 @@
         android:id="@+id/view_sliding_drawer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/write_fragment_max_height"
-        android:orientation="vertical"
-        android:handle="@+id/view_sliding_btn"
-        android:content="@+id/view_sliding_content"
         android:allowSingleTap="true"
-        android:animateOnClick="true">
+        android:animateOnClick="true"
+        android:content="@+id/view_sliding_content"
+        android:handle="@+id/view_font_menu_bar_tab"
+        android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/view_sliding_btn"
+        <!--폰트선택 폰트편집 색상편집 사진편집 편집완료   Tab-->
+        <android.support.design.widget.TabLayout
+            android:id="@+id/view_font_menu_bar_tab"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#00ffffff"
-            android:src="@drawable/write_pallet_btn"
-            android:scaleType="fitCenter"/>
+            android:layout_height="40dp"
+            android:background="#ffffff"
+            app:tabGravity="fill"
+            app:tabMode="fixed" />
 
         <LinearLayout
             android:id="@+id/view_sliding_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <!--폰트선택 폰트편집 색상편집 사진편집 편집완료   Tab-->
-            <com.astuetz.PagerSlidingTabStrip
-                android:id="@+id/view_font_menu_bar_tab"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                app:pstsIndicatorHeight="2dp"
-                app:pstsIndicatorColor="#fc7374"
-                android:background="#171717"/>
             <!--폰트선택 폰트편집 색상편집 사진편집 편집완료   ViewPager-->
             <android.support.v4.view.ViewPager
                 android:id="@+id/view_font_menu_bar_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#171717"/>
+                android:background="#ffffff" />
         </LinearLayout>
 
     </SlidingDrawer>

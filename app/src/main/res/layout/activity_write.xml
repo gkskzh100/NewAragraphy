@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,19 +14,76 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="70dp">
+
         <ImageView
+            android:id="@+id/writeImageView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/writeImageView"/>
+            android:layout_height="match_parent" />
     </RelativeLayout>
 
 
     <LinearLayout
         android:id="@+id/activity_write_fond_menu_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/write_fragment_max_height"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:hint="텍스트를 입력해주세요"
+            android:background="#ffffff"/>
+        <!--<SlidingDrawer-->
+        <!--android:id="@+id/view_sliding_drawer"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/write_fragment_max_height"-->
+        <!--android:allowSingleTap="true"-->
+        <!--android:animateOnClick="true"-->
+        <!--android:content="@+id/view_sliding_content"-->
+        <!--android:handle="@+id/view_font_menu_bar_tab"-->
+        <!--android:orientation="vertical">-->
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/view_font_menu_bar_tab"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#ffffff"
+            app:tabGravity="fill"
+            app:tabMode="fixed" />
+
+        <LinearLayout
+            android:id="@+id/view_sliding_content"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <!--폰트선택 폰트편집 색상편집 사진편집 편집완료   Tab-->
+            <!--<android.support.design.widget.TabLayout-->
+            <!--android:id="@+id/view_font_menu_bar_tab"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:background="#ffffff"-->
+            <!--app:tabMode="fixed"-->
+            <!--app:tabGravity="fill"/>-->
+            <!--<com.astuetz.PagerSlidingTabStrip-->
+            <!--android:id="@+id/view_font_menu_bar_tab"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="30dp"-->
+            <!--app:pstsIndicatorHeight="2dp"-->
+            <!--app:pstsIndicatorColor="#fc7374"-->
+            <!--android:background="#171717"/>-->
+            <!--폰트선택 폰트편집 색상편집 사진편집 편집완료   ViewPager-->
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_font_menu_bar_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff" />
+        </LinearLayout>
+        <!--</SlidingDrawer>-->
+    </LinearLayout>
 
 
 </RelativeLayout>

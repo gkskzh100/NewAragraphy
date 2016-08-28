@@ -20,11 +20,11 @@
 
     <ImageButton
         android:id="@+id/writeUploadBtn"
-        android:layout_width="20dp"
+        android:layout_width="50dp"
         android:layout_height="20dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:background="@drawable/upload"/>
+        android:background="@drawable/save_btn"/>
 
 </RelativeLayout>
