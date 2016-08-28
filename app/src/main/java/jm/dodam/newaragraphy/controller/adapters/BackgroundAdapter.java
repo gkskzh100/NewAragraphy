@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.utils.DBManager;
 
 /**
  * Created by Bong on 2016-08-02.
@@ -20,6 +21,7 @@ import jm.dodam.newaragraphy.R;
 public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.ViewHolder> {
     ArrayList<String> images = null;
     Context context = null;
+
 
     public BackgroundAdapter(ArrayList<String> images, Context context) {
         this.images = images;
@@ -29,6 +31,7 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Vi
     @Override
     public BackgroundAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_bg, parent, false);
+
         return new ViewHolder(view);
     }
 

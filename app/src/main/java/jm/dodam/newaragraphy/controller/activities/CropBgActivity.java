@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -25,6 +27,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import jm.dodam.newaragraphy.utils.DBManager;
 import jm.dodam.newaragraphy.utils.ImageResource;
 import jm.dodam.newaragraphy.R;
 
@@ -32,7 +35,6 @@ import jm.dodam.newaragraphy.R;
  * Created by Bong on 2016-08-03.
  */
 public class CropBgActivity extends AppCompatActivity {
-
     /*
     * TODO 변수명에 약어를 쓰는것은 좋지 않음
     * 예 ViewController
@@ -42,7 +44,7 @@ public class CropBgActivity extends AppCompatActivity {
     * */
     private TextView cropFreeTv, cropSquareTv, cropHsquareTv, cropVsquareTv;
     private ImageButton SelectAcceptImageBtn, SelectExitImageBtn;
-
+    final DBManager dbManager = new DBManager(CropBgActivity.this,"Image.db",null,1);
     /*
     * TODO: Activity 를 멤버변수로 선언하는 것은 객체지향을 해치는 행위임으로 최대한 기피 해야함
     * Activity Stack 하단의 Activity 를 종료하려 한다면 Flag 를 사용하는 것을 권장함
@@ -75,9 +77,14 @@ public class CropBgActivity extends AppCompatActivity {
 
 
     private void getImageResource(){
+        String uri = getIntent().getStringExtra("String");
+        if (uri != null){
+           task = new back();
+            task.execute(uri);
+        }
         int position = getIntent().getIntExtra("position",0);
         ImageResource imageResource = new ImageResource();
-        uri = imageResource.getImage(position);
+        uri = dbManager.getImageList().get(position);
         task = new back();
         task.execute(uri);
 
@@ -141,6 +148,7 @@ public class CropBgActivity extends AppCompatActivity {
     private void setCustomActionbar() {
         ActionBar actionBar = getSupportActionBar();
 
+        getSupportActionBar().setElevation(0);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
@@ -151,7 +159,7 @@ public class CropBgActivity extends AppCompatActivity {
         /*
         * TODO Color 의 경우 res폴더의 colors.xml 을 생성하여 다루는 것을 권장
         * */
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#707070")));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ffffff")));
 
 
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT);
@@ -188,8 +196,8 @@ public class CropBgActivity extends AppCompatActivity {
             public void onClick(View view) {
                 cropImageView.setFixedAspectRatio(false);
                 buttonWhiteChange();
-                cropFreeTv.setTextColor(Color.parseColor("#fc7374"));
-                freeCropImageBtn.setImageResource(R.drawable.cropfield_press);
+                cropFreeTv.setTextColor(Color.parseColor("#1B8CFF"));
+                freeCropImageBtn.setImageResource(R.drawable.cropfield_free_select);
             }
         });
         squareCropImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -198,8 +206,8 @@ public class CropBgActivity extends AppCompatActivity {
                 cropImageView.setFixedAspectRatio(true);
                 cropImageView.setAspectRatio(1, 1);
                 buttonWhiteChange();
-                cropSquareTv.setTextColor(Color.parseColor("#fc7374"));
-                squareCropImageBtn.setImageResource(R.drawable.square_press);
+                cropSquareTv.setTextColor(Color.parseColor("#1B8CFF"));
+                squareCropImageBtn.setImageResource(R.drawable.cropfield_1_1_select);
             }
         });
         hQuadrangleCropImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -208,8 +216,8 @@ public class CropBgActivity extends AppCompatActivity {
                 cropImageView.setFixedAspectRatio(true);
                 cropImageView.setAspectRatio(4, 3);
                 buttonWhiteChange();
-                cropHsquareTv.setTextColor(Color.parseColor("#fc7374"));
-                hQuadrangleCropImageBtn.setImageResource(R.drawable.quadrangle_horizontal_press);
+                cropHsquareTv.setTextColor(Color.parseColor("#1B8CFF"));
+                hQuadrangleCropImageBtn.setImageResource(R.drawable.cropfield_4_3_select);
             }
         });
         vQuadrangleCropImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -218,8 +226,8 @@ public class CropBgActivity extends AppCompatActivity {
                 cropImageView.setFixedAspectRatio(true);
                 cropImageView.setAspectRatio(3, 4);
                 buttonWhiteChange();
-                cropVsquareTv.setTextColor(Color.parseColor("#fc7374"));
-                vQuadrangleCropImageBtn.setImageResource(R.drawable.quadrangle_vertical_press);
+                cropVsquareTv.setTextColor(Color.parseColor("#1B8CFF"));
+                vQuadrangleCropImageBtn.setImageResource(R.drawable.cropfield_3_4_select);
             }
         });
     }
@@ -229,10 +237,10 @@ public class CropBgActivity extends AppCompatActivity {
         cropHsquareTv.setTextColor(Color.parseColor("#000000"));
         cropFreeTv.setTextColor(Color.parseColor("#000000"));
 
-        freeCropImageBtn.setImageResource(R.drawable.cropfield);
-        squareCropImageBtn.setImageResource(R.drawable.square);
-        hQuadrangleCropImageBtn.setImageResource(R.drawable.quadrangle_horizontal);
-        vQuadrangleCropImageBtn.setImageResource(R.drawable.quadrangle_vertical);
+        freeCropImageBtn.setImageResource(R.drawable.cropfield_free);
+        squareCropImageBtn.setImageResource(R.drawable.cropfield_1_1);
+        hQuadrangleCropImageBtn.setImageResource(R.drawable.cropfield_4_3);
+        vQuadrangleCropImageBtn.setImageResource(R.drawable.cropfield_3_4);
     }
 
     private class back extends AsyncTask<String, Integer,Bitmap> {

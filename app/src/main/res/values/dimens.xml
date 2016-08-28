@@ -13,4 +13,7 @@
     <dimen name="grid_horizontal_spacing">10dp</dimen>
 
     <dimen name="write_fragment_max_height">250dp</dimen>
+
+    <dimen name="dialog_btn_corners">12dp</dimen>
+    <dimen name="dialog_btn_margin">8dp</dimen>
 </resources>

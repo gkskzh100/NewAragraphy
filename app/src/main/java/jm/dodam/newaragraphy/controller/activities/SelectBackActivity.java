@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
+import jm.dodam.newaragraphy.utils.DBManager;
 import jm.dodam.newaragraphy.utils.ImageResource;
 import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.SelectBackClickListener;
@@ -23,6 +25,8 @@ import jm.dodam.newaragraphy.SelectBackClickListener;
  * Created by Bong on 201d6-08-02.
  */
 public class SelectBackActivity extends AppCompatActivity{
+
+    final DBManager dbManager = new DBManager(SelectBackActivity.this,"Image.db",null,1);
     private ImageButton selectExitImageBtn;
     private RecyclerView recyclerView;
     public static SelectBackActivity mySelectBackActivity;
@@ -59,6 +63,7 @@ public class SelectBackActivity extends AppCompatActivity{
     private void setCustomActionbar() {
         ActionBar actionBar = getSupportActionBar();
 
+        getSupportActionBar().setElevation(0);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
@@ -77,7 +82,7 @@ public class SelectBackActivity extends AppCompatActivity{
         //그리드뷰 설정하는곳
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(new ImageResource().getArrayList(), getApplicationContext());
+        BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(dbManager.getImageList(), getApplicationContext());
         recyclerView.setAdapter(myBackgroundAdapter);
 
 

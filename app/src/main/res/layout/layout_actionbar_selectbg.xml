@@ -10,18 +10,16 @@
         android:layout_height="15dp"
         android:layout_centerVertical="true"
 
-        android:background="@drawable/cancel_dark_btn"/>
+        android:background="@drawable/exit"/>
 
-    <TextView
+    <ImageView
         android:textColor="#fc7374"
         android:id="@+id/SelectTv"
         android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:text="배경"
-        android:textStyle="bold"
-        android:textSize="16.5sp"
+        android:layout_height="20dp"
+        android:src="@drawable/aragraphy"
         android:gravity="center"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/SelectExitImageBtn"
         android:layout_centerHorizontal="true" />
 
     <View

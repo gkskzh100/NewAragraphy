@@ -8,6 +8,7 @@
         <!--<item name="colorPrimary">@color/colorTest</item>-->
         <item name="colorPrimaryDark">@color/colorTest</item>
         <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="Theme.HomeScreen" parent="android:Theme.Holo.NoActionBar.TranslucentDecor">

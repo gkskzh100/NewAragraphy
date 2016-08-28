@@ -13,7 +13,7 @@
             android:id="@+id/mainExImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ex3"
+            android:src="@drawable/aragraphy_background"
             android:scaleType="centerCrop"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,10 +23,10 @@
             <android.support.v4.widget.Space
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="95"/>
+                android:layout_weight="70"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp">
+                android:layout_height="90dp">
 
                 <ImageButton
                     android:id="@+id/mainWriteImgBtn"

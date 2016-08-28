@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -32,8 +33,8 @@
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity android:name=".controller.activities.ShareActivity" />
         <activity android:name=".controller.activities.SelectBackActivity" />
-        <activity android:name=".controller.activities.CropBgActivity" />
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
+        <activity android:name=".controller.activities.CropBgActivity"/>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"/>
     </application>
 
 </manifest>

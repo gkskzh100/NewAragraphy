@@ -8,9 +8,10 @@
     <!--id 지을 때 파일명을 앞에 붙여주면 다른 파일과 id가 겹치는 문제가 사라짐 다만 이건 취향이기 때문에 뭐가 더 좋다 나쁘다는 없음 -->
 
     <ImageButton
+        android:scaleType="centerCrop"
         android:id="@+id/SelectExitImageBtn"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="12dp"
+        android:layout_height="24dp"
         android:layout_centerVertical="true"
 
         android:background="@drawable/back"/>
@@ -27,7 +28,7 @@
         android:id="@+id/SelectAcceptImageBtn"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@drawable/checked"
+        android:background="@drawable/check"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"

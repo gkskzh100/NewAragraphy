@@ -5,13 +5,17 @@
     android:background="#ffffff"
     android:weightSum="100"
     >
-
-    <android.support.v7.widget.RecyclerView
-        android:paddingLeft="16dp"
-        android:background="#efefef"
+    <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="100"
+        android:layout_weight="0.2"
+        android:background="#D0D0D0"/>
+    <android.support.v7.widget.RecyclerView
+        android:paddingLeft="16dp"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="99.8"
         android:id="@+id/SelectRecyclerView"/>
 
 
