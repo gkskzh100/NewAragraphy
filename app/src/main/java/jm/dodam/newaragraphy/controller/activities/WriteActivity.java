@@ -171,7 +171,7 @@ public class WriteActivity extends AppCompatActivity {
                 // TODO: 하드코딩
                 String folder = "Test_Directory";
                 writeLayout.setDrawingCacheEnabled(false);
-                if(textView != null) {
+                if (textView != null) {
                     textView.setFocusable(false);
                 }
 
@@ -369,19 +369,6 @@ public class WriteActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.view_font_menu_bar_pager);
         tabs = (TabLayout) findViewById(R.id.view_font_menu_bar_tab);
         view_sliding_content = (LinearLayout) findViewById(R.id.view_sliding_content);
-
-        tabs.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.d("dd", "gggg");
-                if (!isMenuShowing) {
-                    Log.d("dd", "move");
-                    view_sliding_content.setVisibility(View.VISIBLE);
-                    isMenuShowing = true;
-                }
-                return false;
-            }
-        });
         viewPagerSetting();
 
     }
@@ -395,6 +382,10 @@ public class WriteActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                if (!isMenuShowing) {
+                    view_sliding_content.setVisibility(View.VISIBLE);
+                    isMenuShowing = true;
+                }
                 if (position == 0) {
                     addNewText();
                     editText.setVisibility(View.VISIBLE);
@@ -413,12 +404,12 @@ public class WriteActivity extends AppCompatActivity {
                     editText.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            textView.setText(charSequence);
+                            textView.setText(charSequence + " ");
                         }
 
                         @Override
                         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            textView.setText(charSequence);
+                            textView.setText(charSequence + " ");
                         }
 
                         @Override
