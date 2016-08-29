@@ -55,13 +55,13 @@ import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.controller.fragment.ChangeColorFragment;
 import jm.dodam.newaragraphy.controller.fragment.ChangeFontFragment;
 import jm.dodam.newaragraphy.controller.fragment.ChangeSizeFragment;
+import jm.dodam.newaragraphy.utils.DBManager;
 import jm.dodam.newaragraphy.utils.ImageResource;
 import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
 public class WriteActivity extends AppCompatActivity {
 
     private static final String TAG = "WriteActivity";
-
     private EditText editText;
 
     private ImageButton writeUploadBtn;
@@ -102,7 +102,6 @@ public class WriteActivity extends AppCompatActivity {
         setHideStatusBar();
 
         setListener();
-        setHardCoding();
 
     }
 
@@ -116,23 +115,16 @@ public class WriteActivity extends AppCompatActivity {
         }
     }
 
-    private void setHardCoding() {
-        ArrayList<String> backgroundExam = new ImageResource().getArrayList();
 
-        try {
-            Glide.with(this)
-                    .load(backgroundExam.get(new Random().nextInt(backgroundExam.size())))
-                    .fitCenter()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(writeImageView);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void setWriteImageBitmap(Bitmap bitmap) {
-        writeImageView.setImageBitmap(bitmap);
-        writeImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+    private void setWriteImage() {
+        Bitmap imageBitmap = null;
+
+        imageBitmap = getIntent().getParcelableExtra("bgImage");
+
+        Log.d("abcd",imageBitmap+"");
+        writeImageView.setImageBitmap(imageBitmap);
+
     }
 
 
@@ -146,7 +138,9 @@ public class WriteActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.edit_text);
         supportFragmentManager = getSupportFragmentManager();
 
+        setWriteImage();
         fragmentInit();
+
 
     }
 

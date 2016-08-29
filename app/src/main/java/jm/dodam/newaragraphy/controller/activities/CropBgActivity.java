@@ -49,8 +49,7 @@ public class CropBgActivity extends AppCompatActivity {
     * TODO: Activity 를 멤버변수로 선언하는 것은 객체지향을 해치는 행위임으로 최대한 기피 해야함
     * Activity Stack 하단의 Activity 를 종료하려 한다면 Flag 를 사용하는 것을 권장함
     * */
-    SelectBackActivity selectBackActivity = (SelectBackActivity)SelectBackActivity.mySelectBackActivity;
-    WriteActivity writeActivity = (WriteActivity)WriteActivity.mtWriteActivity;
+
     private ImageView freeCropImageBtn, squareCropImageBtn, hQuadrangleCropImageBtn, vQuadrangleCropImageBtn;
 
     /*
@@ -58,7 +57,7 @@ public class CropBgActivity extends AppCompatActivity {
     * 미연의 사고를 방지하기 위함
     * */
     private CropImageView cropImageView;
-    private String uri = null;
+    private Bitmap cropped = null;
     private Bitmap bitmap = null;
     back task;
 
@@ -67,26 +66,19 @@ public class CropBgActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cropimage);
-
+        getImageResource();
         setCustomActionbar();
         init();
-        setListener();
-        getImageResource();
         cropImage();
+        setListener();
+
     }
 
 
     private void getImageResource(){
-        String uri = getIntent().getStringExtra("String");
-        if (uri != null){
-           task = new back();
-            task.execute(uri);
-        }
         int position = getIntent().getIntExtra("position",0);
-        ImageResource imageResource = new ImageResource();
-        uri = dbManager.getImageList().get(position);
         task = new back();
-        task.execute(uri);
+        task.execute(dbManager.getImageList().get(position));
 
 
 
@@ -179,16 +171,13 @@ public class CropBgActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Bitmap cropped = cropImageView.getCroppedImage();
+                cropped = cropImageView.getCroppedImage();
+                Log.d("asdfgn",cropped.toString());
+                Intent intentWrite = new Intent(getApplicationContext(),WriteActivity.class);
+                intentWrite.putExtra("bgImage",cropped);
 
-                /*
-                * TODO: 다른 액티비티의 객체를 통해 직접 컨트롤 하는것은 객체지향에 좋지 못함 가급적 삼가하는 것을 권장.
-                * Intent 로 해결 가능힘
-                * */
-                writeActivity.setWriteImageBitmap(cropped);
-                selectBackActivity.finish();
-                finish();
-
+               // writeActivity.setWriteImageBitmap(cropped);
+                startActivity(new Intent(getApplicationContext(),WriteActivity.class));
             }
         });
         freeCropImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -283,8 +272,8 @@ public class CropBgActivity extends AppCompatActivity {
 
         protected void onPostExecute(Bitmap img){
 
-            cropImageView.setImageBitmap(bitmap);
 
+            cropImageView.setImageBitmap(img);
         }
 
     }
