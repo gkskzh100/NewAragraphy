@@ -19,7 +19,6 @@ public class ChangeSizeFragment extends Fragment {
 
     private SeekBar seekBar;
     private int brightnes;
-    private static WriteActivity.OnFontChange handler;
     private WriteActivity writeActivity;
 
 

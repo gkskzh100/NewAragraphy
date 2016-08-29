@@ -27,13 +27,9 @@ public class ChangeFontFragment extends Fragment {
     private List<Typeface> fonts = new ArrayList<>();
     private ListView listView;
 
-    // WriteActivity 로 데이터 전송
-    private static WriteActivity.OnFontChange handler;
 
-
-    public static ChangeFontFragment newInstance(WriteActivity.OnFontChange handler) {
+    public static ChangeFontFragment newInstance() {
         ChangeFontFragment fragment = new ChangeFontFragment();
-        ChangeFontFragment.handler = handler;
         return fragment;
     }
 
@@ -102,7 +98,7 @@ public class ChangeFontFragment extends Fragment {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            final int position = i ;
+            final int position = i;
             if (view == null) {
                 view = inflater.inflate(R.layout.item_change_fonts, viewGroup, false);
             }
@@ -112,9 +108,9 @@ public class ChangeFontFragment extends Fragment {
             fontText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try{
+                    try {
                         WriteActivity.getSelectTextView().setTypeface(fonts.get(position));
-                    }catch (ClassCastException | NullPointerException e){
+                    } catch (ClassCastException | NullPointerException e) {
                         e.printStackTrace();
                     }
 //                    handler.onFontChanged(fonts.get(position));

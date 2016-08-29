@@ -1,7 +1,6 @@
 package jm.dodam.newaragraphy.controller.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -20,7 +19,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,7 +31,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -53,6 +50,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import jm.dodam.newaragraphy.CustomTextView;
 import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.controller.fragment.ChangeColorFragment;
 import jm.dodam.newaragraphy.controller.fragment.ChangeFontFragment;
@@ -72,7 +70,7 @@ public class WriteActivity extends AppCompatActivity {
     private RelativeLayout writeLayout;
     private ImageView writeImageView;
 
-    private TextView textView;
+    private CustomTextView customTextView;
 
     private int _xDelta = 0;
     private int _yDelta = 0;
@@ -93,7 +91,6 @@ public class WriteActivity extends AppCompatActivity {
 
     //TODO: Fragment 변수
     private ViewPager viewPager;
-//    private SlidingDrawer slidingDrawer;
 
     private FragmentManager supportFragmentManager;
 
@@ -162,7 +159,7 @@ public class WriteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addNewText();
-                writeLayout.addView(textView);
+                writeLayout.addView(customTextView);
             }
         });
         writeUploadBtn.setOnClickListener(new View.OnClickListener() {
@@ -171,8 +168,8 @@ public class WriteActivity extends AppCompatActivity {
                 // TODO: 하드코딩
                 String folder = "Test_Directory";
                 writeLayout.setDrawingCacheEnabled(false);
-                if (textView != null) {
-                    textView.setFocusable(false);
+                if (customTextView != null) {
+                    customTextView.setFocusable(false);
                 }
 
                 try {
@@ -253,27 +250,28 @@ public class WriteActivity extends AppCompatActivity {
     }
 
     private void addNewText() {
-        textView = new TextView(WriteActivity.this);
-        textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView.setX((float) 100.0);
-        textView.setY((float) 500.0);
-        textView.setBackgroundColor(Color.TRANSPARENT);
-        textView.setPadding(20, 10, 10, 10);
+        customTextView = new CustomTextView(WriteActivity.this);
+        customTextView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        customTextView.setX((float) 100.0);
+        customTextView.setY((float) 500.0);
+
+        TextView textview = customTextView.getTextView();
+        textview.setBackgroundColor(Color.TRANSPARENT);
+        textview.setPadding(20, 10, 10, 10);
         // TODO: Color
-        textView.setTextColor(Color.parseColor("#FFFFFF"));
-        textView.setTextSize(33);
+        textview.setTextColor(Color.parseColor("#000000"));
+        textview.setTextSize(33);
         // TODO: 하드코딩
-        textView.setHint("텍스트를 입력해주세요");
-        textView.setHintTextColor(Color.parseColor("#939393"));
+        textview.setHint("텍스트를 입력해주세요");
+        textview.setHintTextColor(Color.parseColor("#939393"));
 
 
         Bitmap bitmap;
-
         bitmap = Bitmap.createBitmap(80, 100, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        textView.layout(0, 80, 80, 100);
-        textView.draw(canvas);
-        textView.setOnTouchListener(new View.OnTouchListener() {
+        customTextView.layout(0, 80, 80, 100);
+        customTextView.draw(canvas);
+        customTextView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -284,9 +282,25 @@ public class WriteActivity extends AppCompatActivity {
                         RelativeLayout.LayoutParams IParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                         _xDelta = X - IParams.leftMargin;
                         _yDelta = Y - IParams.topMargin;
+
+
+                        //현재 클릭된 view 체크
+                        for (int i = 0; i < writeLayout.getChildCount(); i++) {
+                            if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
+                                CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
+                                customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
+                                customTextView.getLayoutMenu().setVisibility(View.GONE);
+                            }
+                        }
+                        CustomTextView customTextView = (CustomTextView) view;
+                        selectTextView = customTextView.getTextView();
+                        selectTextView.setBackgroundColor(Color.YELLOW);
+                        customTextView.getLayoutMenu().setVisibility(View.VISIBLE);
+
+
+
                         break;
                     case MotionEvent.ACTION_UP:
-                        selectTextView = (TextView) view;
                         break;
                     case MotionEvent.ACTION_POINTER_DOWN:
                         break;
@@ -299,7 +313,6 @@ public class WriteActivity extends AppCompatActivity {
                         layoutParams.rightMargin = -250;
                         layoutParams.bottomMargin = -250;
                         view.setLayoutParams(layoutParams);
-//                        view.setFocusableInTouchMode(false);
                         break;
                 }
 
@@ -390,7 +403,7 @@ public class WriteActivity extends AppCompatActivity {
                     addNewText();
                     editText.setVisibility(View.VISIBLE);
                     editText.setText("");
-                    writeLayout.addView(textView);
+                    writeLayout.addView(customTextView);
                     editText.setFocusable(true);
                     editText.setPressed(true);
                     editText.setSelected(true);
@@ -400,16 +413,16 @@ public class WriteActivity extends AppCompatActivity {
                     InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 
-                    selectTextView = textView;
+                    selectTextView = customTextView.getTextView();
                     editText.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            textView.setText(charSequence + " ");
+                            customTextView.getTextView().setText(charSequence + " ");
                         }
 
                         @Override
                         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            textView.setText(charSequence + " ");
+                            customTextView.getTextView().setText(charSequence + " ");
                         }
 
                         @Override
@@ -435,7 +448,7 @@ public class WriteActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
 //                        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                        imm.showSoftInput(textView, InputMethodManager.SHOW_FORCED);
+//                        imm.showSoftInput(customTextView, InputMethodManager.SHOW_FORCED);
                         return new Fragment();
                     case 1:
                         return new ChangeFontFragment();
@@ -466,16 +479,6 @@ public class WriteActivity extends AppCompatActivity {
         tabs.getTabAt(1).setCustomView(R.layout.change_font_btn);
         tabs.getTabAt(2).setCustomView(R.layout.change_size_btn);
         tabs.getTabAt(3).setCustomView(R.layout.change_color_btn);
-    }
-
-    public interface OnFontChange {
-        void onFontChanged(Typeface font);
-
-        void onColorChanged(int color);
-
-        void onSizeChanged(String size);
-
-        void onAttach(Context context);
     }
 
     public static TextView getSelectTextView() {

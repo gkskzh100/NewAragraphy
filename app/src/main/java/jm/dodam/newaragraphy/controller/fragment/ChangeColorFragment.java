@@ -36,13 +36,9 @@ public class ChangeColorFragment extends Fragment {
     private List<Integer> colors = new ArrayList<>();
     private GridView gridView;
 
-    // WriteActivity 로 데이터 전송
-    private static WriteActivity.OnFontChange handler;
 
-
-    public static ChangeColorFragment newInstance(WriteActivity.OnFontChange handler) {
+    public static ChangeColorFragment newInstance() {
         ChangeColorFragment fragment = new ChangeColorFragment();
-        ChangeColorFragment.handler = handler;
         return fragment;
     }
 
