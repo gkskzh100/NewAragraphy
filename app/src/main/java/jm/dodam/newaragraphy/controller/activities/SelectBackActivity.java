@@ -92,10 +92,10 @@ public class SelectBackActivity extends AppCompatActivity{
         recyclerView.addOnItemTouchListener(new SelectBackClickListener(getApplicationContext(), recyclerView, new SelectBackClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent itCropActivity = new Intent(getApplicationContext(),WriteActivity.class);
+                Intent itCropActivity = new Intent(getApplicationContext(),CropBgActivity.class);
                 // TODO: 하드코딩
                 //이미지의 포지션 값을 다음 화면에 보낸다.
-//                itCropActivity.putExtra("position",position);
+                itCropActivity.putExtra("position",position);
                 startActivity(itCropActivity);
             }
 

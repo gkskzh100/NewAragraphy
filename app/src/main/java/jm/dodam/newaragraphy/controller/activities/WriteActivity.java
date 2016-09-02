@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.support.annotation.RequiresPermission;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -117,16 +118,16 @@ public class WriteActivity extends AppCompatActivity {
     }
 
 
-
     private void setWriteImage() {
-//        Bitmap imageBitmap = getIntent().getParcelableExtra("bgImage");
-//        writeImageView.setImageBitmap(imageBitmap);
+        byte[] arr = getIntent().getByteArrayExtra("bgImage");
+        Bitmap bm = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+        writeImageView.setImageBitmap(bm);
 
     }
 
 
     private void init() {
-
+        mtWriteActivity = WriteActivity.this;
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
         writeLayout = (RelativeLayout) findViewById(R.id.writeLayout);
         writeImageView = (ImageView) findViewById(R.id.writeImageView);
@@ -134,6 +135,7 @@ public class WriteActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.edit_text);
         supportFragmentManager = getSupportFragmentManager();
 
+        setWriteImage();
         fragmentInit();
 
 

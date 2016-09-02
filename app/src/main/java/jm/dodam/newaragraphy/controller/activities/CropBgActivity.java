@@ -46,10 +46,6 @@ public class CropBgActivity extends AppCompatActivity {
     private TextView cropFreeTv, cropSquareTv, cropHsquareTv, cropVsquareTv;
     private ImageButton SelectAcceptImageBtn, SelectExitImageBtn;
     final DBManager dbManager = new DBManager(CropBgActivity.this,"Image.db",null,1);
-    /*
-    * TODO: Activity 를 멤버변수로 선언하는 것은 객체지향을 해치는 행위임으로 최대한 기피 해야함
-    * Activity Stack 하단의 Activity 를 종료하려 한다면 Flag 를 사용하는 것을 권장함
-    * */
 
     private ImageView freeCropImageBtn, squareCropImageBtn, hQuadrangleCropImageBtn, vQuadrangleCropImageBtn;
 
@@ -162,7 +158,12 @@ public class CropBgActivity extends AppCompatActivity {
         actionBar.setCustomView(mCustomView, params);
 
     }
-
+    private byte[] resizeBitmap(Bitmap bm){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 50,stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
     private void setListener() {
         SelectExitImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,10 +175,11 @@ public class CropBgActivity extends AppCompatActivity {
         SelectAcceptImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cropped = cropImageView.getCroppedImage();
-
-          //     intentWrite.putExtra("bgImage",cropped);
-                startActivity(new Intent(getApplicationContext(),WriteActivity.class));
+                cropped =  cropImageView.getCroppedImage();
+                byte[] byteArray = resizeBitmap(cropped);
+                Intent itWriteActivity = new Intent(getApplicationContext(),WriteActivity.class);
+                itWriteActivity.putExtra("bgImage",byteArray);
+                startActivity(itWriteActivity);
 
             }
         });
@@ -278,5 +280,6 @@ public class CropBgActivity extends AppCompatActivity {
         }
 
     }
+
 
 }
