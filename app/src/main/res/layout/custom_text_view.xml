@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/custom_text_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/layout_custom_menu"
@@ -19,14 +19,18 @@
 
         <Button
             android:id="@+id/btn_del"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="delete" />
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:background="@drawable/delete_btn"/>
+
+        <android.support.v4.widget.Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btn_modify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="modify" />
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:background="@drawable/modify_btn" />
     </LinearLayout>
 </LinearLayout>

@@ -16,6 +16,8 @@ public class CustomTextView extends LinearLayout {
     private LinearLayout layoutMenu;
     private Button btnDel, btnModify;
 
+    private WriteActivity writeActivity;
+
     public CustomTextView(Context context) {
         super(context);
         init();
@@ -42,6 +44,7 @@ public class CustomTextView extends LinearLayout {
                 removeAllViews();
             }
         });
+
         addView(v);
     }
 
