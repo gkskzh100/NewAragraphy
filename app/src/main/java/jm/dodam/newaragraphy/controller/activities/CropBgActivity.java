@@ -22,6 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -150,7 +151,10 @@ public class CropBgActivity extends AppCompatActivity {
 
         /*
         * TODO Color 의 경우 res폴더의 colors.xml 을 생성하여 다루는 것을 권장
-        * */
+        *
+        * android
+        *
+        */
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ffffff")));
 
 
@@ -170,14 +174,11 @@ public class CropBgActivity extends AppCompatActivity {
         SelectAcceptImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 cropped = cropImageView.getCroppedImage();
-                Log.d("asdfgn",cropped.toString());
-                Intent intentWrite = new Intent(getApplicationContext(),WriteActivity.class);
-                intentWrite.putExtra("bgImage",cropped);
 
-               // writeActivity.setWriteImageBitmap(cropped);
+          //     intentWrite.putExtra("bgImage",cropped);
                 startActivity(new Intent(getApplicationContext(),WriteActivity.class));
+
             }
         });
         freeCropImageBtn.setOnClickListener(new View.OnClickListener() {

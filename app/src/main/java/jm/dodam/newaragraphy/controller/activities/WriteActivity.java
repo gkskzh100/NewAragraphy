@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -118,18 +119,13 @@ public class WriteActivity extends AppCompatActivity {
 
 
     private void setWriteImage() {
-        Bitmap imageBitmap = null;
-
-        imageBitmap = getIntent().getParcelableExtra("bgImage");
-
-        Log.d("abcd",imageBitmap+"");
-        writeImageView.setImageBitmap(imageBitmap);
+//        Bitmap imageBitmap = getIntent().getParcelableExtra("bgImage");
+//        writeImageView.setImageBitmap(imageBitmap);
 
     }
 
 
     private void init() {
-        mtWriteActivity = WriteActivity.this;
 
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
         writeLayout = (RelativeLayout) findViewById(R.id.writeLayout);
@@ -138,7 +134,6 @@ public class WriteActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.edit_text);
         supportFragmentManager = getSupportFragmentManager();
 
-        setWriteImage();
         fragmentInit();
 
 
