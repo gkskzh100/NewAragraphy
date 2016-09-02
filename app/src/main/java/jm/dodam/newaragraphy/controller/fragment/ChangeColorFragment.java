@@ -61,26 +61,21 @@ public class ChangeColorFragment extends Fragment {
         // dummy data
 
         //투명
-        colors.add(Color.rgb(255, 255, 255));//흰색
-        colors.add(Color.rgb(109, 110, 114));//회색
-        colors.add(Color.rgb(0, 0, 0));     //검정
-        colors.add(Color.rgb(29, 32, 136));//남색
-
-        colors.add(Color.rgb(222, 127, 169));//핑크
-        colors.add(Color.rgb(230, 0, 18)); //빨강
-        colors.add(Color.rgb(235, 97, 0)); //주황
-        colors.add(Color.rgb(245, 158, 3));//귤색
-        colors.add(Color.rgb(255, 241, 0));//노랑
-
-        colors.add(Color.rgb(187, 213, 80));//라임
-        colors.add(Color.rgb(0, 153, 68)); //초록
-        colors.add(Color.rgb(0, 104, 183));//파랑
-        colors.add(Color.rgb(96, 25, 134));//보라
+//        colors.add(Color.rgb(255, 255, 255));
+        colors.add(Color.rgb(0, 0, 0));
+        colors.add(Color.rgb(79, 132, 84));
+        colors.add(Color.rgb(39, 100, 122));
+        colors.add(Color.rgb(42, 67, 95));
+        colors.add(Color.rgb(255, 151, 163));
+        colors.add(Color.rgb(251, 41, 115));
+        colors.add(Color.rgb(158, 55, 99));
+        colors.add(Color.rgb(0, 118, 177));
+        colors.add(Color.rgb(54, 193, 224));
+        colors.add(Color.rgb(153, 154, 60));
+        colors.add(Color.rgb(255, 215, 61));
+        colors.add(Color.rgb(168, 23, 44));
+        colors.add(Color.rgb(93, 70, 56));
         //팔레트
-
-//        투명 흰색 회색 검정 남색
-//        핑크 빨강 주황 귤색 노랑
-//        라임 초록 파랑 보라 팔레트
 
         gridView.setAdapter(new Adapter());
     }
@@ -96,7 +91,7 @@ public class ChangeColorFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return colors.size() + 2;
+            return colors.size() +2;
         }
 
         @Override
@@ -114,14 +109,14 @@ public class ChangeColorFragment extends Fragment {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             final int position = i - 1;
+//            final int position = i;
             if (view == null) {
                 view = inflater.inflate(R.layout.item_change_color, viewGroup, false);
             }
             ImageView colorCircle = (ImageView) view.findViewById(R.id.item_change_color_circle);
             if (i == 0) {
-                // 투명
-                // TODO 투명 이미지 입히기
-                colorCircle.setBackgroundResource(R.drawable.alpha_btn);
+                // 흰색테두리
+                colorCircle.setBackgroundResource(R.drawable.xml_border);
 //                Drawable background = colorCircle.getBackground();
 //                ((GradientDrawable) background).setColor(Color.WHITE);
 
@@ -131,17 +126,18 @@ public class ChangeColorFragment extends Fragment {
 //                        handler.onColorChanged(Global.INVISIBLE);
                         try {
 
-                            WriteActivity.getSelectTextView().setTextColor(Global.INVISIBLE);
+                            WriteActivity.getSelectTextView().setTextColor(Color.WHITE);
                         } catch (ClassCastException | NullPointerException e) {
                             e.printStackTrace();
                         }
                     }
                 });
 
-            } else if (position == colors.size()) {
+            } else
+            if (position == colors.size()) {
                 // 색 조합
                 // TODO 여러 색 입힐 수 있는 팔레트 이미지 입히기
-                colorCircle.setBackgroundResource(R.drawable.pallet_btn);
+                colorCircle.setBackgroundResource(R.drawable.color_palette);
 
                 colorCircle.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import jm.dodam.newaragraphy.controller.activities.WriteActivity;
+
 public class CustomTextView extends LinearLayout {
 
     private TextView textView;

@@ -64,8 +64,6 @@ public class WriteActivity extends AppCompatActivity {
 
     private EditText editText;
 
-    private ImageButton writeChangeImageBtn;
-    private ImageButton writeAddTextBtn;
     private ImageButton writeUploadBtn;
     private RelativeLayout writeLayout;
     private ImageView writeImageView;
@@ -141,8 +139,6 @@ public class WriteActivity extends AppCompatActivity {
     private void init() {
         mtWriteActivity = WriteActivity.this;
 
-        writeChangeImageBtn = (ImageButton) findViewById(R.id.writeChangeImageBtn);
-        writeAddTextBtn = (ImageButton) findViewById(R.id.writeAddTextBtn);
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
         writeLayout = (RelativeLayout) findViewById(R.id.writeLayout);
         writeImageView = (ImageView) findViewById(R.id.writeImageView);
@@ -155,13 +151,6 @@ public class WriteActivity extends AppCompatActivity {
     }
 
     private void setListener() {
-        writeAddTextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addNewText();
-                writeLayout.addView(customTextView);
-            }
-        });
         writeUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -241,12 +230,6 @@ public class WriteActivity extends AppCompatActivity {
 
             }
         });
-        writeChangeImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), SelectBackActivity.class));
-            }
-        });
     }
 
     private void addNewText() {
@@ -262,7 +245,7 @@ public class WriteActivity extends AppCompatActivity {
         textview.setTextColor(Color.parseColor("#000000"));
         textview.setTextSize(33);
         // TODO: 하드코딩
-        textview.setHint("텍스트를 입력해주세요");
+        textview.setHint("TEXT");
         textview.setHintTextColor(Color.parseColor("#939393"));
 
 
@@ -283,7 +266,6 @@ public class WriteActivity extends AppCompatActivity {
                         _xDelta = X - IParams.leftMargin;
                         _yDelta = Y - IParams.topMargin;
 
-
                         //현재 클릭된 view 체크
                         for (int i = 0; i < writeLayout.getChildCount(); i++) {
                             if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
@@ -294,11 +276,8 @@ public class WriteActivity extends AppCompatActivity {
                         }
                         CustomTextView customTextView = (CustomTextView) view;
                         selectTextView = customTextView.getTextView();
-                        selectTextView.setBackgroundColor(Color.YELLOW);
+                        customTextView.getTextView().setBackgroundResource(R.drawable.style_textview_background);
                         customTextView.getLayoutMenu().setVisibility(View.VISIBLE);
-
-
-
                         break;
                     case MotionEvent.ACTION_UP:
                         break;

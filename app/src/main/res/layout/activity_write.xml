@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:hint="텍스트를 입력해주세요"
+            android:hint="텍스트를 입력해주세요\"
             android:background="#ffffff"/>
         <!--<SlidingDrawer-->
         <!--android:id="@+id/view_sliding_drawer"-->
