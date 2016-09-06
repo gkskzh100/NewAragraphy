@@ -105,6 +105,7 @@ public class WriteActivity extends AppCompatActivity {
         if (isMenuShowing) {
             view_sliding_content.setVisibility(View.GONE);
             editText.setVisibility(View.GONE);
+            viewPager.setCurrentItem(1);
             isMenuShowing = false;
         } else {
             super.onBackPressed();
@@ -129,6 +130,18 @@ public class WriteActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.edit_text);
         supportFragmentManager = getSupportFragmentManager();
 
+        writeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i < writeLayout.getChildCount(); i++) {
+                    if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
+                        CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
+                        customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
+                        customTextView.getLayoutMenu().setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
         setWriteImage();
         fragmentInit();
 
@@ -233,10 +246,18 @@ public class WriteActivity extends AppCompatActivity {
         textview.setHint("TEXT");
         textview.setHintTextColor(Color.parseColor("#939393"));
 
+        for (int i = 0; i < writeLayout.getChildCount(); i++) {
+            if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
+                CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
+                customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
+                customTextView.getLayoutMenu().setVisibility(View.GONE);
+            }
+        }
 
         Bitmap bitmap;
         bitmap = Bitmap.createBitmap(80, 100, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
+        selectTextView = customTextView.getTextView();
         customTextView.layout(0, 80, 80, 100);
         customTextView.draw(canvas);
         customTextView.setOnTouchListener(new View.OnTouchListener() {
@@ -263,6 +284,23 @@ public class WriteActivity extends AppCompatActivity {
                         selectTextView = customTextView.getTextView();
                         customTextView.getTextView().setBackgroundResource(R.drawable.style_textview_background);
                         customTextView.getLayoutMenu().setVisibility(View.VISIBLE);
+                        editText.setText(customTextView.getTextView().getText().toString());
+                        editText.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                selectTextView.setText(charSequence + "");
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                selectTextView.setText(charSequence + "");
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+                            }
+                        });
                         break;
                     case MotionEvent.ACTION_UP:
                         break;
@@ -363,86 +401,109 @@ public class WriteActivity extends AppCompatActivity {
                     isMenuShowing = true;
                 }
                 if (position == 0) {
-                    addNewText();
-                    editText.setVisibility(View.VISIBLE);
-                    editText.setText("");
-                    writeLayout.addView(customTextView);
-                    editText.setFocusable(true);
-                    editText.setPressed(true);
-                    editText.setSelected(true);
-                    editText.setEnabled(true);
-                    editText.invalidate();
-                    editText.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+                    if (editText.getVisibility() == View.GONE) {
+                        addNewText();
+                        editText.setVisibility(View.VISIBLE);
+                        editText.setText("");
+                        writeLayout.addView(customTextView);
+                        editText.setFocusable(true);
+                        editText.setPressed(true);
+                        editText.setSelected(true);
+                        editText.setEnabled(true);
+                        editText.invalidate();
+                        editText.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 
-                    selectTextView = customTextView.getTextView();
-                    editText.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            customTextView.getTextView().setText(charSequence + " ");
-                        }
+//                    selectTextView = customTextView.getTextView();
+                        editText.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                selectTextView.setText(charSequence + "");
+                            }
 
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            customTextView.getTextView().setText(charSequence + " ");
-                        }
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                selectTextView.setText(charSequence + "");
+                            }
 
-                        @Override
-                        public void afterTextChanged(Editable editable) {
+                            @Override
+                            public void afterTextChanged(Editable editable) {
 
-                        }
-                    });
+                            }
+                        });
+                    } else {
+                        Log.d(TAG, "asdfasdfasdfasdf");
+                    }
                 } else {
                     editText.setVisibility(View.GONE);
                     InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                 }
-            }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+        }
 
-            }
-        });
-        fragmentPagerAdapter = new FragmentPagerAdapter(supportFragmentManager) {
-            @Override
-            public Fragment getItem(int position) {
-                switch (position) {
-                    case 0:
+        @Override
+        public void onPageScrollStateChanged ( int state){
+
+        }
+    }
+
+    );
+    fragmentPagerAdapter=new
+
+    FragmentPagerAdapter(supportFragmentManager) {
+        @Override
+        public Fragment getItem ( int position){
+            switch (position) {
+                case 0:
 //                        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 //                        imm.showSoftInput(customTextView, InputMethodManager.SHOW_FORCED);
-                        return new Fragment();
-                    case 1:
-                        return new ChangeFontFragment();
-                    case 2:
-                        return new ChangeSizeFragment().newInstance(mtWriteActivity);
-                    case 3:
-                        return new ChangeColorFragment();
-                }
-
-                return null;
+                    return new Fragment();
+                case 1:
+                    return new ChangeFontFragment();
+                case 2:
+                    return new ChangeSizeFragment().newInstance(mtWriteActivity);
+                case 3:
+                    return new ChangeColorFragment();
             }
 
-            @Override
-            public int getCount() {
-                return 4;
-            }
+            return null;
+        }
 
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return null;
-            }
+        @Override
+        public int getCount () {
+            return 4;
+        }
 
-        };
-        viewPager.setAdapter(fragmentPagerAdapter);
-        viewPager.setCurrentItem(1);
-        tabs.setupWithViewPager(viewPager);
-        tabs.getTabAt(0).setCustomView(R.layout.add_text_btn);
-        tabs.getTabAt(1).setCustomView(R.layout.change_font_btn);
-        tabs.getTabAt(2).setCustomView(R.layout.change_size_btn);
-        tabs.getTabAt(3).setCustomView(R.layout.change_color_btn);
+        @Override
+        public CharSequence getPageTitle ( int position){
+            return null;
+        }
+
     }
+
+    ;
+    viewPager.setAdapter(fragmentPagerAdapter);
+    viewPager.setCurrentItem(1);
+    tabs.setupWithViewPager(viewPager);
+    tabs.getTabAt(0).
+
+    setCustomView(R.layout.add_text_btn);
+
+    tabs.getTabAt(1).
+
+    setCustomView(R.layout.change_font_btn);
+
+    tabs.getTabAt(2).
+
+    setCustomView(R.layout.change_size_btn);
+
+    tabs.getTabAt(3).
+
+    setCustomView(R.layout.change_color_btn);
+
+}
 
     public static TextView getSelectTextView() {
         return selectTextView;
@@ -450,25 +511,49 @@ public class WriteActivity extends AppCompatActivity {
 
     public void setModify(View view) {
 
-        for (int i = 0; i < writeLayout.getChildCount(); i++) {
-            if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
-                CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
-                customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
-                customTextView.getLayoutMenu().setVisibility(View.GONE);
-            }
-        }
-        CharSequence text = selectTextView.getText();
-
-        if(editText.getVisibility() == View.GONE | view_sliding_content.getVisibility() == View.GONE) {
+        if (editText.getVisibility() == View.GONE | view_sliding_content.getVisibility() == View.GONE) {
             editText.setVisibility(View.VISIBLE);
             view_sliding_content.setVisibility(View.VISIBLE);
             InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
-            editText.setText(text);
-        } else if(editText.getVisibility() == View.VISIBLE){
-            editText.setText(text);
-        }
+            editText.setText(selectTextView.getText().toString());
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    selectTextView.setText(charSequence + "");
+                }
 
-        Log.d(TAG, text + "");
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    selectTextView.setText(charSequence + "");
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+        } else if (editText.getVisibility() == View.VISIBLE) {
+            editText.setText(selectTextView.getText().toString());
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    selectTextView.setText(charSequence + "");
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    selectTextView.setText(charSequence + "");
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+        }
+        viewPager.setCurrentItem(0);
+
+//        Log.d(TAG, text + "");
     }
 }
