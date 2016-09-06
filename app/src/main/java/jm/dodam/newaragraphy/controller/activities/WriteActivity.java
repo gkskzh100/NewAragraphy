@@ -57,7 +57,7 @@ import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 public class WriteActivity extends AppCompatActivity {
 
     private static final String TAG = "WriteActivity";
-    private EditText editText;
+    private TextView editText;
 
     private ImageButton writeUploadBtn;
     private RelativeLayout writeLayout;
@@ -83,7 +83,7 @@ public class WriteActivity extends AppCompatActivity {
 
 
     //TODO: Fragment 변수
-    private ViewPager viewPager;
+    public static ViewPager viewPager;
 
     private FragmentManager supportFragmentManager;
 
@@ -104,6 +104,7 @@ public class WriteActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (isMenuShowing) {
             view_sliding_content.setVisibility(View.GONE);
+            editText.setVisibility(View.GONE);
             isMenuShowing = false;
         } else {
             super.onBackPressed();
@@ -329,7 +330,6 @@ public class WriteActivity extends AppCompatActivity {
 
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
 
-
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT);
         actionBar.setCustomView(mCustomView, params);
     }
@@ -446,5 +446,29 @@ public class WriteActivity extends AppCompatActivity {
 
     public static TextView getSelectTextView() {
         return selectTextView;
+    }
+
+    public void setModify(View view) {
+
+        for (int i = 0; i < writeLayout.getChildCount(); i++) {
+            if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
+                CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
+                customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
+                customTextView.getLayoutMenu().setVisibility(View.GONE);
+            }
+        }
+        CharSequence text = selectTextView.getText();
+
+        if(editText.getVisibility() == View.GONE | view_sliding_content.getVisibility() == View.GONE) {
+            editText.setVisibility(View.VISIBLE);
+            view_sliding_content.setVisibility(View.VISIBLE);
+            InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+            editText.setText(text);
+        } else if(editText.getVisibility() == View.VISIBLE){
+            editText.setText(text);
+        }
+
+        Log.d(TAG, text + "");
     }
 }
