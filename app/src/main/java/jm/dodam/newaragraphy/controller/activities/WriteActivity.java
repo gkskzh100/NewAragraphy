@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
-import android.support.annotation.RequiresPermission;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,9 +39,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -50,15 +46,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import jm.dodam.newaragraphy.CustomTextView;
 import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.controller.fragment.ChangeColorFragment;
 import jm.dodam.newaragraphy.controller.fragment.ChangeFontFragment;
 import jm.dodam.newaragraphy.controller.fragment.ChangeSizeFragment;
-import jm.dodam.newaragraphy.utils.DBManager;
-import jm.dodam.newaragraphy.utils.ImageResource;
 import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
 public class WriteActivity extends AppCompatActivity {

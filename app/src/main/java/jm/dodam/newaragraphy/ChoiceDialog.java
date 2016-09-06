@@ -18,8 +18,8 @@ import jm.dodam.newaragraphy.controller.activities.SelectBackActivity;
 public class ChoiceDialog extends Dialog{
     Context context;
     private LinearLayout dialogLayout_unsplash, dialogLayout_gallery, dialogLayout_cancle;
-
     private View.OnClickListener unsplashClikListener, galleryClickListener, cancleClickLiistener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,7 @@ public class ChoiceDialog extends Dialog{
         dialogLayout_unsplash.setOnClickListener(unsplashClikListener);
         dialogLayout_gallery.setOnClickListener(galleryClickListener);
         dialogLayout_cancle.setOnClickListener(cancleClickLiistener);
-
+        
     }
 
 
@@ -60,8 +60,11 @@ public class ChoiceDialog extends Dialog{
 
     public ChoiceDialog(Context context, View.OnClickListener unsplashClickListener,View.OnClickListener galleryClickListener , View.OnClickListener cancleClickListener) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.context = context;
         this.unsplashClikListener = unsplashClickListener;
         this.galleryClickListener = galleryClickListener;
         this.cancleClickLiistener = cancleClickListener;
     }
+
+
 }

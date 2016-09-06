@@ -8,16 +8,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 
-import java.util.ArrayList;
-
 import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
 import jm.dodam.newaragraphy.utils.DBManager;
-import jm.dodam.newaragraphy.utils.ImageResource;
 import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.SelectBackClickListener;
 
@@ -30,8 +26,7 @@ public class SelectBackActivity extends AppCompatActivity{
     private ImageButton selectExitImageBtn;
     private RecyclerView recyclerView;
     public static SelectBackActivity mySelectBackActivity;
-    ArrayList<String> imageUris = new ArrayList<>();
-    ImageResource imageResource;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +91,9 @@ public class SelectBackActivity extends AppCompatActivity{
                 // TODO: 하드코딩
                 //이미지의 포지션 값을 다음 화면에 보낸다.
                 itCropActivity.putExtra("position",position);
+                itCropActivity.putExtra("login",true);
                 startActivity(itCropActivity);
+                finish();
             }
 
             @Override

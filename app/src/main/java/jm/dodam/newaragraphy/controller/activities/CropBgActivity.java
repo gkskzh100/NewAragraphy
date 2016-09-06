@@ -17,19 +17,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import jm.dodam.newaragraphy.utils.DBManager;
-import jm.dodam.newaragraphy.utils.ImageResource;
 import jm.dodam.newaragraphy.R;
 
 /**
@@ -46,7 +44,7 @@ public class CropBgActivity extends AppCompatActivity {
     private TextView cropFreeTv, cropSquareTv, cropHsquareTv, cropVsquareTv;
     private ImageButton SelectAcceptImageBtn, SelectExitImageBtn;
     final DBManager dbManager = new DBManager(CropBgActivity.this,"Image.db",null,1);
-
+    private byte[] imageArr;
     private ImageView freeCropImageBtn, squareCropImageBtn, hQuadrangleCropImageBtn, vQuadrangleCropImageBtn;
 
     /*
@@ -56,6 +54,7 @@ public class CropBgActivity extends AppCompatActivity {
     private CropImageView cropImageView;
     private Bitmap cropped = null;
     private Bitmap bitmap = null;
+    private Bitmap galleryImage = null;
     back task;
 
 
@@ -63,19 +62,27 @@ public class CropBgActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cropimage);
-        getImageResource();
         setCustomActionbar();
         init();
         cropImage();
+        getImageResource();
+
         setListener();
 
     }
 
 
     private void getImageResource(){
-        int position = getIntent().getIntExtra("position",0);
-        task = new back();
-        task.execute(dbManager.getImageList().get(position));
+        if(getIntent().getBooleanExtra("login", true)){
+            int position = getIntent().getIntExtra("position",0);
+            task = new back();
+            task.execute(dbManager.getImageList().get(position));
+        }else{
+            cropImageView.setImageUriAsync((Uri)getIntent().getExtras().get("galleryImage"));
+
+
+        }
+
 
 
 
@@ -180,6 +187,7 @@ public class CropBgActivity extends AppCompatActivity {
                 Intent itWriteActivity = new Intent(getApplicationContext(),WriteActivity.class);
                 itWriteActivity.putExtra("bgImage",byteArray);
                 startActivity(itWriteActivity);
+                finish();
 
             }
         });

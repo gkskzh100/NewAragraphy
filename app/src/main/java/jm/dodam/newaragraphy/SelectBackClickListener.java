@@ -26,6 +26,7 @@ public class SelectBackClickListener implements RecyclerView.OnItemTouchListener
                 View child = recyclerView.findChildViewUnder(e.getX(),e.getY());
                 if (child != null && mListener != null){
                     mListener.onLongItemClick(child, recyclerView.getChildAdapterPosition(child));
+
                 }
             }
         });

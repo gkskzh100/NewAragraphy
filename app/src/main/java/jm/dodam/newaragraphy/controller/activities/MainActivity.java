@@ -1,12 +1,14 @@
 package jm.dodam.newaragraphy.controller.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,18 +21,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.theartofdev.edmodo.cropper.CropImage;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import jm.dodam.newaragraphy.ChoiceDialog;
-import jm.dodam.newaragraphy.JsoupAsyncTask;
 import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.utils.DBManager;
 
@@ -39,12 +43,11 @@ public class MainActivity extends Activity {
     final DBManager dbManager = new DBManager(MainActivity.this, "Image.db", null, 1);
     private static final int MY_PERMISSION_REQUEST_STORAGE = 0;
     private static final String TAG = "checkPermission";
-    private final int PICK_FROM_GALLERY = 0;
+    private final int PICK_FROM_GALLERY = 100;
     private ImageView mainExImageView;
     private ImageButton mainWriteImgBtn;
     private ChoiceDialog mDialog;
-    private String cropedImage = null;
-
+    private Uri mCropImageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +57,6 @@ public class MainActivity extends Activity {
 
         init();
         checkPermission();
-        parseImages();
         parseImage();
 
 
@@ -83,16 +85,17 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View view) {
             startActivity(new Intent(MainActivity.this, SelectBackActivity.class));
+            mDialog.onBackPressed();
         }
     };
     private View.OnClickListener galleryClickListener = new View.OnClickListener() {
+
         @Override
         public void onClick(View view) {
-            Intent itGallery = new Intent(Intent.ACTION_PICK);
-            itGallery.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-            itGallery.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(itGallery, PICK_FROM_GALLERY);
 
+            CropImage.startPickImageActivity(MainActivity.this);
+
+            mDialog.onBackPressed();
 
         }
     };
@@ -104,37 +107,28 @@ public class MainActivity extends Activity {
     };
 
     @Override
+    @SuppressLint("NewApi")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == PICK_FROM_GALLERY) {
-            if (resultCode == Activity.RESULT_OK) {
-                cropedImage = getImageNameToUri(data.getData());
+        // handle result of pick image chooser
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
+                Log.d("abccd",imageUri.toString());
                 Intent itCropActivity = new Intent(getApplicationContext(),CropBgActivity.class);
-                itCropActivity.putExtra("String",cropedImage);
-                mDialog.onBackPressed();
+                itCropActivity.putExtra("galleryImage",imageUri);
+                itCropActivity.putExtra("login",false);
                 startActivity(itCropActivity);
-
-
-
             }
         }
-
     }
-
-    private String getImageNameToUri(Uri data) {
-
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(data, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-        cursor.moveToFirst();
-
-        String imgPath = cursor.getString(column_index);
-        String imgName = imgPath.substring(imgPath.lastIndexOf("/") + 1);
-
-        return imgName;
-
-    }
+    
 
     @TargetApi(Build.VERSION_CODES.M)
     private void checkPermission() {
@@ -185,13 +179,6 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void parseImages() {
-        // TODO: 변수명 + 하드코딩
-        //사진 사이트에서 이미지 파싱중
-
-        JsoupAsyncTask imageParsing = new JsoupAsyncTask(getApplicationContext(), "https://unsplash.com/collections/225685/surf");
-        imageParsing.execute();
-    }
 
     private void parseImage() {
         if (dbManager.PrintData() == "") {
