@@ -2,15 +2,10 @@ package jm.dodam.newaragraphy;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import jm.dodam.newaragraphy.controller.activities.SelectBackActivity;
 
 /**
  * Created by Bong on 2016-08-26.
@@ -28,7 +23,7 @@ public class ChoiceDialog extends Dialog{
         lpWindow.dimAmount = 0.8f;
         getWindow().setAttributes(lpWindow);
 
-        setContentView(R.layout.choice_dialog);
+        setContentView(R.layout.dialog_choice_getimage);
 
         setLayout();
         setClickListener();
