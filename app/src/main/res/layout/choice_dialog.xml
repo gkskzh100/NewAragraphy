@@ -28,40 +28,16 @@
             android:orientation="vertical"
             android:weightSum="100">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="37.6" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="30"
-                android:orientation="horizontal"
-                android:weightSum="100">
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8.5" />
 
                 <ImageView
+                    android:layout_margin="@dimen/dialog_btn_Image_margin"
                     android:id="@+id/dialogImage_unsplash"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="83"
-                    android:background="@drawable/unsplash" />
+                    android:src="@drawable/unsplash" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8.5" />
-            </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="32.4" />
 
 
         </LinearLayout>
@@ -77,43 +53,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="49.75"
-            android:orientation="vertical"
-            android:weightSum="100">
+            >
 
-            <Space
+            <ImageView
+                android:layout_margin="@dimen/dialog_btn_Image_margin_bottom"
+                android:id="@+id/dialogImage_gallery"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="35.4" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="30"
-                android:orientation="horizontal"
-                android:weightSum="100">
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="16" />
-
-                <ImageView
-                    android:id="@+id/dialogImage_gallery"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="68"
-                    android:background="@drawable/gallery" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="16" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="34.6" />
+                android:layout_height="match_parent"
+                android:src="@drawable/gallery" />
 
 
         </LinearLayout>
@@ -129,45 +76,21 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8.2"
-        android:weightSum="100"
+
         android:orientation="vertical"
         android:background="@drawable/btn_stroke"
         android:layout_marginLeft="@dimen/dialog_btn_margin"
         android:layout_marginRight="@dimen/dialog_btn_margin">
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="32.1" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="36.8"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="44" />
 
             <ImageView
                 android:id="@+id/dialogImage_cancle"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="12"
-                android:background="@drawable/image_cancle" />
+                android:layout_margin="@dimen/dialog_btn_Image_margin_cancle"
+                android:src="@drawable/image_cancle" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="44" />
-        </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="31.1" />
 
     </LinearLayout>
 

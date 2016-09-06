@@ -33,7 +33,7 @@ import jm.dodam.newaragraphy.R;
 /**
  * Created by Bong on 2016-08-03.
  */
-public class CropBgActivity extends AppCompatActivity {
+public class CropBgActivity extends AppCompatActivity{
     /*
     * TODO 변수명에 약어를 쓰는것은 좋지 않음
     * 예 ViewController
@@ -55,6 +55,7 @@ public class CropBgActivity extends AppCompatActivity {
     private Bitmap cropped = null;
     private Bitmap bitmap = null;
     private Bitmap galleryImage = null;
+    private Uri resultUri = null;
     back task;
 
 
@@ -68,8 +69,8 @@ public class CropBgActivity extends AppCompatActivity {
         getImageResource();
 
         setListener();
-
     }
+
 
 
     private void getImageResource(){
@@ -78,6 +79,7 @@ public class CropBgActivity extends AppCompatActivity {
             task = new back();
             task.execute(dbManager.getImageList().get(position));
         }else{
+
             cropImageView.setImageUriAsync((Uri)getIntent().getExtras().get("galleryImage"));
 
 
@@ -94,7 +96,10 @@ public class CropBgActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
+                Log.d("setImage","ok");
+                resultUri = result.getUri();
+
+
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
@@ -104,7 +109,12 @@ public class CropBgActivity extends AppCompatActivity {
     private void cropImage() {
         //URL url = new URL("https://images.unsplash.com/photo-1445771832954-9c7fb748f214?dpr=1&amp;auto=compress,format&amp;crop=entropy&amp;fit=crop&amp;w=767&amp;h=512&amp;q=80&quot;");
 
-
+        cropImageView.setOnSetImageUriCompleteListener(new CropImageView.OnSetImageUriCompleteListener() {
+            @Override
+            public void onSetImageUriComplete(CropImageView view, Uri uri, Exception error) {
+                SelectAcceptImageBtn.setEnabled(true);
+            }
+        });
         cropImageView.setOnGetCroppedImageCompleteListener(new CropImageView.OnGetCroppedImageCompleteListener() {
             @Override
             public void onGetCroppedImageComplete(CropImageView view, Bitmap bitmap, Exception error) {
@@ -127,13 +137,17 @@ public class CropBgActivity extends AppCompatActivity {
 
 
     private void init() {
+
+
         SelectAcceptImageBtn = (ImageButton) findViewById(R.id.SelectAcceptImageBtn);
         SelectExitImageBtn = (ImageButton) findViewById(R.id.SelectExitImageBtn);
         cropImageView = (CropImageView) findViewById(R.id.cropImage);
         freeCropImageBtn = (ImageView) findViewById(R.id.freeCropImageBtn);
+
         squareCropImageBtn = (ImageView) findViewById(R.id.squareCropImageBtn);
         hQuadrangleCropImageBtn = (ImageView) findViewById(R.id.hQuadrangleCropImageBtn);
         vQuadrangleCropImageBtn = (ImageView) findViewById(R.id.vQuadrangleCropImageBtn);
+
         cropFreeTv = (TextView) findViewById(R.id.cropFreeTv);
         cropSquareTv = (TextView) findViewById(R.id.cropSquareTv);
         cropHsquareTv = (TextView) findViewById(R.id.cropHsquareTv);
@@ -167,7 +181,7 @@ public class CropBgActivity extends AppCompatActivity {
     }
     private byte[] resizeBitmap(Bitmap bm){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 50,stream);
+        bm.compress(Bitmap.CompressFormat.JPEG, 30,stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
     }
@@ -183,11 +197,13 @@ public class CropBgActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 cropped =  cropImageView.getCroppedImage();
-                byte[] byteArray = resizeBitmap(cropped);
-                Intent itWriteActivity = new Intent(getApplicationContext(),WriteActivity.class);
-                itWriteActivity.putExtra("bgImage",byteArray);
-                startActivity(itWriteActivity);
-                finish();
+                if (cropped!=null) {
+                    byte[] byteArray = resizeBitmap(cropped);
+                    Intent itWriteActivity = new Intent(getApplicationContext(), WriteActivity.class);
+                    itWriteActivity.putExtra("bgImage", byteArray);
+                    startActivity(itWriteActivity);
+                    finish();
+                }
 
             }
         });
@@ -242,6 +258,8 @@ public class CropBgActivity extends AppCompatActivity {
         hQuadrangleCropImageBtn.setImageResource(R.drawable.cropfield_4_3);
         vQuadrangleCropImageBtn.setImageResource(R.drawable.cropfield_3_4);
     }
+
+
 
     private class back extends AsyncTask<String, Integer,Bitmap> {
 
