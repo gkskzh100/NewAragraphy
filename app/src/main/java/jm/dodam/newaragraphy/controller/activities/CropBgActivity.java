@@ -1,5 +1,6 @@
 package jm.dodam.newaragraphy.controller.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,6 +29,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import jm.dodam.newaragraphy.utils.CustomLoading;
 import jm.dodam.newaragraphy.utils.DBManager;
 import jm.dodam.newaragraphy.R;
 
@@ -54,61 +57,46 @@ public class CropBgActivity extends AppCompatActivity{
     private CropImageView cropImageView;
     private Bitmap cropped = null;
     private Bitmap bitmap = null;
-    private Bitmap galleryImage = null;
     private Uri resultUri = null;
-    back task;
+    private back task;
+    private Context context;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cropimage);
+        context = this;
         setCustomActionbar();
         init();
         cropImage();
         getImageResource();
-
         setListener();
     }
 
 
 
     private void getImageResource(){
-        if(getIntent().getBooleanExtra("login", true)){
-            int position = getIntent().getIntExtra("position",0);
-            task = new back();
-            task.execute(dbManager.getImageList().get(position));
-        }else{
+        CustomLoading.showLoading(context);
 
-            cropImageView.setImageUriAsync((Uri)getIntent().getExtras().get("galleryImage"));
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(getIntent().getBooleanExtra("login", true)){
+                    int position = getIntent().getIntExtra("position",0);
+                    task = new back();
+                    task.execute(dbManager.getImageList().get(position));
+                }else{
+                    cropImageView.setImageUriAsync((Uri)getIntent().getExtras().get("galleryImage"));
+                }
 
-
-        }
-
-
-
-
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Log.d("setImage","ok");
-                resultUri = result.getUri();
-
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
+                CustomLoading.hideLoading();
             }
-        }
+        },1600);
     }
 
     private void cropImage() {
-        //URL url = new URL("https://images.unsplash.com/photo-1445771832954-9c7fb748f214?dpr=1&amp;auto=compress,format&amp;crop=entropy&amp;fit=crop&amp;w=767&amp;h=512&amp;q=80&quot;");
-
         cropImageView.setOnSetImageUriCompleteListener(new CropImageView.OnSetImageUriCompleteListener() {
             @Override
             public void onSetImageUriComplete(CropImageView view, Uri uri, Exception error) {
@@ -123,22 +111,16 @@ public class CropBgActivity extends AppCompatActivity{
                         cropImageView.setImageBitmap(bitmap);
                     }
                 }
-
             }
         });
         cropImageView.setAutoZoomEnabled(false);
         cropImageView.setAspectRatio(1, 1);//비율 값
         cropImageView.setFixedAspectRatio(false);//비율 Free ON/OFF
         cropImageView.setScaleType(CropImageView.ScaleType.FIT_CENTER);
-//        cropImageView.getCroppedImageAsync(400, 400);
-
-
     }
 
 
     private void init() {
-
-
         SelectAcceptImageBtn = (ImageButton) findViewById(R.id.SelectAcceptImageBtn);
         SelectExitImageBtn = (ImageButton) findViewById(R.id.SelectExitImageBtn);
         cropImageView = (CropImageView) findViewById(R.id.cropImage);

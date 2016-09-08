@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.utils.CustomLoading;
 import jm.dodam.newaragraphy.utils.DBManager;
 
 /**
@@ -37,6 +38,7 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
         //이미지 넣어주기
         Glide.with(context)
                 .load(images.get(position))
