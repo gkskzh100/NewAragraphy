@@ -1,13 +1,20 @@
 package jm.dodam.newaragraphy.controller.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -74,11 +81,30 @@ public class SelectBackActivity extends AppCompatActivity{
 
      }
     private void setListAdapter(){
-        //그리드뷰 설정하는곳
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(dbManager.getImageList(), getApplicationContext());
-        recyclerView.setAdapter(myBackgroundAdapter);
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        boolean isWifiAvail = ni.isAvailable();
+        boolean isWifiConn = ni.isConnected();
+        ni = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        boolean isMobileAvail = ni.isAvailable();
+        boolean isMobileConn = ni.isConnected();
+
+        if(isWifiConn==false && isMobileConn==false) {
+            Snackbar.make(recyclerView, "인터넷에 연결할 수 없습니다.\n연결을 확인하세요.", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    }).show();
+        } else if (isWifiAvail==true || isMobileAvail==true) {
+            //그리드뷰 설정하는곳
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+            BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(dbManager.getImageList(), getApplicationContext());
+            recyclerView.setAdapter(myBackgroundAdapter);
+        }
 
 
     }
