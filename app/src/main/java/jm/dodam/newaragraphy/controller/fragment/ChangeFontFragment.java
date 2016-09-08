@@ -2,9 +2,11 @@ package jm.dodam.newaragraphy.controller.fragment;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,8 +54,8 @@ public class ChangeFontFragment extends Fragment {
 //        for (int i =0 ;i<10;i++) {
 //            fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "senal.ttf"));
 //        }
-        setListView();
         listView.setAdapter(new Adapter());
+        setListView();
     }
 
     private void setListView() {

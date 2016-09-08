@@ -7,13 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +54,7 @@ import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.controller.fragment.ChangeColorFragment;
 import jm.dodam.newaragraphy.controller.fragment.ChangeFontFragment;
 import jm.dodam.newaragraphy.controller.fragment.ChangeSizeFragment;
+import jm.dodam.newaragraphy.utils.CustomLoading;
 import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
 public class WriteActivity extends AppCompatActivity {
@@ -70,9 +73,6 @@ public class WriteActivity extends AppCompatActivity {
 
     private String savePath = null;
 
-    private int fontSize = 13;
-    private int fontColor = -1;
-    private Typeface fontStyle;
     private FragmentPagerAdapter fragmentPagerAdapter;
     private TabLayout tabs;
     public static WriteActivity mtWriteActivity;
@@ -81,23 +81,23 @@ public class WriteActivity extends AppCompatActivity {
     private boolean isMenuShowing = false;
     private static TextView selectTextView;
 
-
     //TODO: Fragment 변수
     public static ViewPager viewPager;
 
     private FragmentManager supportFragmentManager;
 
+    private Context context;
+    private boolean save_bool = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
-
+        context = this;
         setCustomActionbar();
         init();
         setHideStatusBar();
-
         setListener();
-
     }
 
     @Override
@@ -117,7 +117,6 @@ public class WriteActivity extends AppCompatActivity {
         byte[] arr = getIntent().getByteArrayExtra("bgImage");
         Bitmap bm = BitmapFactory.decodeByteArray(arr, 0, arr.length);
         writeImageView.setImageBitmap(bm);
-
     }
 
 
@@ -133,26 +132,23 @@ public class WriteActivity extends AppCompatActivity {
         writeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i = 0; i < writeLayout.getChildCount(); i++) {
-                    if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
-                        CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
-                        customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
-                        customTextView.getLayoutMenu().setVisibility(View.GONE);
-                    }
-                }
+                findSelectView();
             }
         });
         setWriteImage();
         fragmentInit();
-
-
     }
 
     private void setListener() {
         writeUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 // TODO: 하드코딩
+                if (!save_bool) {
+                    CustomLoading.showLoading(context);
+                    Log.d("loading","loading...");
+                }
+
                 String folder = "Test_Directory";
                 writeLayout.setDrawingCacheEnabled(false);
                 if (customTextView != null) {
@@ -171,6 +167,7 @@ public class WriteActivity extends AppCompatActivity {
                         Log.d("CAMERA_TEST", "Directory Created");
                     }
                     writeLayout.setDrawingCacheEnabled(true);
+
                     Bitmap captureView = writeLayout.getDrawingCache();
                     FileOutputStream fos;
                     String save;
@@ -178,17 +175,15 @@ public class WriteActivity extends AppCompatActivity {
                     try {
                         writeLayout.refreshDrawableState();
 
-                        save = sdCardPath.getPath() + "/" + folder + "/" + dateString + ".jpg";
+                        save = sdCardPath.getPath() + "/" + folder + "/" + dateString + ".png";
                         savePath = save;
                         fos = new FileOutputStream(save);
-                        captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-
-                        Log.d("capture", "okok");
+                        captureView.compress(Bitmap.CompressFormat.PNG, 100, fos);
 
                         File file = new File(save);
                         SingleMediaScanner mScanner = new SingleMediaScanner(getApplicationContext(), file);
 
-                        Log.d("Scanner", "okok");
+                        save_bool = true;
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -200,7 +195,7 @@ public class WriteActivity extends AppCompatActivity {
                 String text = "글씨가 아름다워지는 어플 #Aragraphy";
                 File file = new File(savePath);
 
-                List targetedShareIntents = new ArrayList<>();
+                final List targetedShareIntents = new ArrayList<>();
 
                 //facebook
                 Intent facebookIntent = getShareIntent("com.facebook.katana", text, file);
@@ -222,10 +217,20 @@ public class WriteActivity extends AppCompatActivity {
                 if (instagramIntent != null)
                     targetedShareIntents.add(instagramIntent);
 
-                Intent chooser = Intent.createChooser((Intent) targetedShareIntents.remove(0), "공유하기");
-                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
-                startActivity(chooser);
-
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (save_bool) {
+                            Intent chooser = Intent.createChooser((Intent) targetedShareIntents.remove(0), "공유하기");
+                            chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
+                            startActivity(chooser);
+                            CustomLoading.hideLoading();
+                            save_bool = false;
+                            Toast.makeText(getApplicationContext(), "저장이 되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },1000);
             }
         });
     }
@@ -246,13 +251,7 @@ public class WriteActivity extends AppCompatActivity {
         textview.setHint("TEXT");
         textview.setHintTextColor(Color.parseColor("#939393"));
 
-        for (int i = 0; i < writeLayout.getChildCount(); i++) {
-            if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
-                CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
-                customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
-                customTextView.getLayoutMenu().setVisibility(View.GONE);
-            }
-        }
+        findSelectView();
 
         Bitmap bitmap;
         bitmap = Bitmap.createBitmap(80, 100, Bitmap.Config.ARGB_8888);
@@ -272,35 +271,14 @@ public class WriteActivity extends AppCompatActivity {
                         _xDelta = X - IParams.leftMargin;
                         _yDelta = Y - IParams.topMargin;
 
-                        //현재 클릭된 view 체크
-                        for (int i = 0; i < writeLayout.getChildCount(); i++) {
-                            if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
-                                CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
-                                customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
-                                customTextView.getLayoutMenu().setVisibility(View.GONE);
-                            }
-                        }
+                        findSelectView();
+
                         CustomTextView customTextView = (CustomTextView) view;
                         selectTextView = customTextView.getTextView();
                         customTextView.getTextView().setBackgroundResource(R.drawable.style_textview_background);
                         customTextView.getLayoutMenu().setVisibility(View.VISIBLE);
                         editText.setText(customTextView.getTextView().getText().toString());
-                        editText.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                selectTextView.setText(charSequence + "");
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                selectTextView.setText(charSequence + "");
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-
-                            }
-                        });
+                        setTextChangedListener();
                         break;
                     case MotionEvent.ACTION_UP:
                         break;
@@ -415,23 +393,7 @@ public class WriteActivity extends AppCompatActivity {
                         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 
-//                    selectTextView = customTextView.getTextView();
-                        editText.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                selectTextView.setText(charSequence + "");
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                selectTextView.setText(charSequence + "");
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-
-                            }
-                        });
+                        setTextChangedListener();
                     } else {
                         Log.d(TAG, "asdfasdfasdfasdf");
                     }
@@ -441,69 +403,55 @@ public class WriteActivity extends AppCompatActivity {
                     imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                 }
 
-        }
-
-        @Override
-        public void onPageScrollStateChanged ( int state){
-
-        }
-    }
-
-    );
-    fragmentPagerAdapter=new
-
-    FragmentPagerAdapter(supportFragmentManager) {
-        @Override
-        public Fragment getItem ( int position){
-            switch (position) {
-                case 0:
-//                        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                        imm.showSoftInput(customTextView, InputMethodManager.SHOW_FORCED);
-                    return new Fragment();
-                case 1:
-                    return new ChangeFontFragment();
-                case 2:
-                    return new ChangeSizeFragment().newInstance(mtWriteActivity);
-                case 3:
-                    return new ChangeColorFragment();
             }
 
-            return null;
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        fragmentPagerAdapter = new FragmentPagerAdapter(supportFragmentManager) {
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return new Fragment();
+                    case 1:
+                        return new ChangeFontFragment();
+                    case 2:
+                        return new ChangeSizeFragment().newInstance(mtWriteActivity);
+                    case 3:
+                        return new ChangeColorFragment();
+                }
+
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 4;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return null;
+            }
+
         }
 
-        @Override
-        public int getCount () {
-            return 4;
-        }
+        ;
+        viewPager.setAdapter(fragmentPagerAdapter);
+        viewPager.setCurrentItem(1);
+        tabs.setupWithViewPager(viewPager);
+        tabs.getTabAt(0).setCustomView(R.layout.add_text_btn);
 
-        @Override
-        public CharSequence getPageTitle ( int position){
-            return null;
-        }
+        tabs.getTabAt(1).setCustomView(R.layout.change_font_btn);
+
+        tabs.getTabAt(2).setCustomView(R.layout.change_size_btn);
+
+        tabs.getTabAt(3).setCustomView(R.layout.change_color_btn);
 
     }
-
-    ;
-    viewPager.setAdapter(fragmentPagerAdapter);
-    viewPager.setCurrentItem(1);
-    tabs.setupWithViewPager(viewPager);
-    tabs.getTabAt(0).
-
-    setCustomView(R.layout.add_text_btn);
-
-    tabs.getTabAt(1).
-
-    setCustomView(R.layout.change_font_btn);
-
-    tabs.getTabAt(2).
-
-    setCustomView(R.layout.change_size_btn);
-
-    tabs.getTabAt(3).
-
-    setCustomView(R.layout.change_color_btn);
-
-}
 
     public static TextView getSelectTextView() {
         return selectTextView;
@@ -517,43 +465,41 @@ public class WriteActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
             editText.setText(selectTextView.getText().toString());
-            editText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    selectTextView.setText(charSequence + "");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    selectTextView.setText(charSequence + "");
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-
-                }
-            });
+            setTextChangedListener();
         } else if (editText.getVisibility() == View.VISIBLE) {
             editText.setText(selectTextView.getText().toString());
-            editText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    selectTextView.setText(charSequence + "");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    selectTextView.setText(charSequence + "");
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-
-                }
-            });
+            setTextChangedListener();
         }
         viewPager.setCurrentItem(0);
+    }
 
-//        Log.d(TAG, text + "");
+    private void findSelectView() {
+        //현재 클릭된 view 체크
+        for (int i = 0; i < writeLayout.getChildCount(); i++) {
+            if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
+                CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
+                customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
+                customTextView.getLayoutMenu().setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void setTextChangedListener() {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                selectTextView.setText(charSequence + "");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                selectTextView.setText(charSequence + "");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 }
