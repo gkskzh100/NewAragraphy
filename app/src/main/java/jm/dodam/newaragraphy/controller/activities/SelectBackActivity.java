@@ -81,7 +81,6 @@ public class SelectBackActivity extends AppCompatActivity{
 
      }
     private void setListAdapter(){
-
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         boolean isWifiAvail = ni.isAvailable();

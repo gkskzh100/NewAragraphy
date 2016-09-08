@@ -1,6 +1,7 @@
 package jm.dodam.newaragraphy.controller.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -89,6 +91,8 @@ public class WriteActivity extends AppCompatActivity {
     private Context context;
     private boolean save_bool = false;
 
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,13 +106,18 @@ public class WriteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
         if (isMenuShowing) {
             view_sliding_content.setVisibility(View.GONE);
             editText.setVisibility(View.GONE);
             viewPager.setCurrentItem(1);
             isMenuShowing = false;
+        }
+        if(0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            alertDialogCreate();
         } else {
-            super.onBackPressed();
+            backPressedTime = tempTime;
         }
     }
 
@@ -143,6 +152,7 @@ public class WriteActivity extends AppCompatActivity {
         writeUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                findSelectView();
                 // TODO: 하드코딩
                 if (!save_bool) {
                     CustomLoading.showLoading(context);
@@ -501,5 +511,24 @@ public class WriteActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void alertDialogCreate() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setMessage("작업실을 나가겠습니까?")
+                .setCancelable(false)
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        WriteActivity.this.finish();
+                    }
+                }) .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
