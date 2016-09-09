@@ -18,10 +18,18 @@
         android:layout_height="match_parent"
         android:layout_marginTop="70dp">
 
-        <ImageView
-            android:id="@+id/writeImageView"
+        <RelativeLayout
+            android:id="@+id/writeCaptureLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true">
+            <ImageView
+                android:id="@+id/writeImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

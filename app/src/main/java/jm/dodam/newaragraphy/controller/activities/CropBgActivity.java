@@ -163,7 +163,7 @@ public class CropBgActivity extends AppCompatActivity{
     }
     private byte[] resizeBitmap(Bitmap bm){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 30,stream);
+        bm.compress(Bitmap.CompressFormat.JPEG, 100,stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
     }

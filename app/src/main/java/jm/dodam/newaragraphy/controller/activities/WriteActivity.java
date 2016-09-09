@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +25,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -67,6 +67,7 @@ public class WriteActivity extends AppCompatActivity {
     private ImageButton writeUploadBtn;
     private RelativeLayout writeLayout;
     private ImageView writeImageView;
+    private RelativeLayout writeCaptureLayout;
 
     private CustomTextView customTextView;
 
@@ -89,7 +90,9 @@ public class WriteActivity extends AppCompatActivity {
     private FragmentManager supportFragmentManager;
 
     private Context context;
-    private boolean save_bool = false;
+    private boolean saveBool = false;
+    private int bitmapHeight = 0;
+    private int bitmapWidth = 0;
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -125,6 +128,20 @@ public class WriteActivity extends AppCompatActivity {
     private void setWriteImage() {
         byte[] arr = getIntent().getByteArrayExtra("bgImage");
         Bitmap bm = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+        bitmapWidth = bm.getWidth();
+        bitmapHeight = bm.getHeight();
+
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+        float screenWidth = dm.widthPixels;
+
+        float ratio = screenWidth/bitmapWidth;
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) writeCaptureLayout.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.height = (int) (bitmapHeight*ratio);
+        writeCaptureLayout.setLayoutParams(layoutParams);
+
         writeImageView.setImageBitmap(bm);
     }
 
@@ -134,6 +151,7 @@ public class WriteActivity extends AppCompatActivity {
         writeUploadBtn = (ImageButton) findViewById(R.id.writeUploadBtn);
         writeLayout = (RelativeLayout) findViewById(R.id.writeLayout);
         writeImageView = (ImageView) findViewById(R.id.writeImageView);
+        writeCaptureLayout = (RelativeLayout) findViewById(R.id.writeCaptureLayout);
 
         editText = (EditText) findViewById(R.id.edit_text);
         supportFragmentManager = getSupportFragmentManager();
@@ -154,13 +172,13 @@ public class WriteActivity extends AppCompatActivity {
             public void onClick(final View view) {
                 findSelectView();
                 // TODO: 하드코딩
-                if (!save_bool) {
+                if (!saveBool) {
                     CustomLoading.showLoading(context);
                     Log.d("loading","loading...");
                 }
 
                 String folder = "Test_Directory";
-                writeLayout.setDrawingCacheEnabled(false);
+                writeCaptureLayout.setDrawingCacheEnabled(false);
                 if (customTextView != null) {
                     customTextView.setFocusable(false);
                 }
@@ -176,14 +194,14 @@ public class WriteActivity extends AppCompatActivity {
                         dirs.mkdirs();
                         Log.d("CAMERA_TEST", "Directory Created");
                     }
-                    writeLayout.setDrawingCacheEnabled(true);
+                    writeCaptureLayout.setDrawingCacheEnabled(true);
 
-                    Bitmap captureView = writeLayout.getDrawingCache();
+                    Bitmap captureView = writeCaptureLayout.getDrawingCache();
                     FileOutputStream fos;
                     String save;
 
                     try {
-                        writeLayout.refreshDrawableState();
+                        writeCaptureLayout.refreshDrawableState();
 
                         save = sdCardPath.getPath() + "/" + folder + "/" + dateString + ".png";
                         savePath = save;
@@ -193,7 +211,7 @@ public class WriteActivity extends AppCompatActivity {
                         File file = new File(save);
                         SingleMediaScanner mScanner = new SingleMediaScanner(getApplicationContext(), file);
 
-                        save_bool = true;
+                        saveBool = true;
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -231,12 +249,12 @@ public class WriteActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (save_bool) {
+                        if (saveBool) {
                             Intent chooser = Intent.createChooser((Intent) targetedShareIntents.remove(0), "공유하기");
                             chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
                             startActivity(chooser);
                             CustomLoading.hideLoading();
-                            save_bool = false;
+                            saveBool = false;
                             Toast.makeText(getApplicationContext(), "저장이 되었습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -249,7 +267,7 @@ public class WriteActivity extends AppCompatActivity {
         customTextView = new CustomTextView(WriteActivity.this);
         customTextView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         customTextView.setX((float) 100.0);
-        customTextView.setY((float) 500.0);
+        customTextView.setY((float) 100.0);
 
         TextView textview = customTextView.getTextView();
         textview.setBackgroundColor(Color.TRANSPARENT);
@@ -306,7 +324,7 @@ public class WriteActivity extends AppCompatActivity {
                         break;
                 }
 
-                writeLayout.invalidate();
+                writeCaptureLayout.invalidate();
 
                 return true;
             }
@@ -393,7 +411,7 @@ public class WriteActivity extends AppCompatActivity {
                         addNewText();
                         editText.setVisibility(View.VISIBLE);
                         editText.setText("");
-                        writeLayout.addView(customTextView);
+                        writeCaptureLayout.addView(customTextView);
                         editText.setFocusable(true);
                         editText.setPressed(true);
                         editText.setSelected(true);
@@ -485,9 +503,9 @@ public class WriteActivity extends AppCompatActivity {
 
     private void findSelectView() {
         //현재 클릭된 view 체크
-        for (int i = 0; i < writeLayout.getChildCount(); i++) {
-            if (writeLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
-                CustomTextView customTextView = (CustomTextView) writeLayout.getChildAt(i);
+        for (int i = 0; i < writeCaptureLayout.getChildCount(); i++) {
+            if (writeCaptureLayout.getChildAt(i).getClass().getSimpleName().equals("CustomTextView")) {
+                CustomTextView customTextView = (CustomTextView) writeCaptureLayout.getChildAt(i);
                 customTextView.getTextView().setBackgroundColor(Color.TRANSPARENT);
                 customTextView.getLayoutMenu().setVisibility(View.GONE);
             }
