@@ -171,6 +171,7 @@ public class CropBgActivity extends AppCompatActivity{
         SelectExitImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                
 
                 finish();
             }
