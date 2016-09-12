@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -31,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -96,6 +98,8 @@ public class WriteActivity extends AppCompatActivity {
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
+    private boolean keyboardCheck = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +109,43 @@ public class WriteActivity extends AppCompatActivity {
         init();
         setHideStatusBar();
         setListener();
+
+        writeLayout.getViewTreeObserver()
+                .addOnGlobalLayoutListener(
+                        new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                            @Override
+                            public void onGlobalLayout() {
+
+                                Rect rect = new Rect();
+                                writeLayout.getWindowVisibleDisplayFrame(rect);
+                                int screenHeight = writeLayout.getRootView().getHeight();
+
+                                int keypadHeight = screenHeight - rect.bottom;
+
+                                Log.d(TAG, "keypadHeight = " + keypadHeight);
+
+                                if (keypadHeight > screenHeight * 0.15) {
+                                    // keyboard is opened
+                                    keyboardCheck = true;
+                                    Log.d(TAG, keyboardCheck+"");
+                                    if(viewPager.getCurrentItem()==0){
+                                        view_sliding_content.setVisibility(View.VISIBLE);
+                                        editText.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                                else {
+                                    // keyboard is closed
+                                    keyboardCheck = false;
+                                    Log.d(TAG, keyboardCheck+"");
+                                    if(viewPager.getCurrentItem()==0){
+                                        view_sliding_content.setVisibility(View.GONE);
+                                        editText.setVisibility(View.GONE);
+                                        isMenuShowing = false;
+                                    }
+                                }
+                            }
+                        });
     }
 
     @Override
@@ -119,7 +160,7 @@ public class WriteActivity extends AppCompatActivity {
         }
         if(0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
             alertDialogCreate();
-        } else {
+        } else if (view_sliding_content.getVisibility()==View.GONE){
             backPressedTime = tempTime;
         }
     }
