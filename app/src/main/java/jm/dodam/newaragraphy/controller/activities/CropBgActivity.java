@@ -93,7 +93,7 @@ public class CropBgActivity extends AppCompatActivity{
 
                 CustomLoading.hideLoading();
             }
-        },1000);
+        },2000);
     }
 
     private void cropImage() {

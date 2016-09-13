@@ -50,10 +50,6 @@ public class ChangeFontFragment extends Fragment {
     private void init(View view) {
         listView = (ListView) view.findViewById(R.id.fragment_change_font_list);
 
-        // dummy data
-//        for (int i =0 ;i<10;i++) {
-//            fonts.add(Typeface.createFromAsset(getActivity().getAssets(), "senal.ttf"));
-//        }
         listView.setAdapter(new Adapter());
         setListView();
     }
@@ -83,7 +79,7 @@ public class ChangeFontFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return fonts.size();
+            return 11;
         }
 
         @Override
@@ -115,7 +111,6 @@ public class ChangeFontFragment extends Fragment {
                     } catch (ClassCastException | NullPointerException e) {
                         e.printStackTrace();
                     }
-//                    handler.onFontChanged(fonts.get(position));
                 }
             });
 

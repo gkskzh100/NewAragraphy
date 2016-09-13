@@ -86,7 +86,6 @@ public class WriteActivity extends AppCompatActivity {
     private boolean isMenuShowing = false;
     private static TextView selectTextView;
 
-    //TODO: Fragment 변수
     public static ViewPager viewPager;
 
     private FragmentManager supportFragmentManager;
@@ -98,7 +97,6 @@ public class WriteActivity extends AppCompatActivity {
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-    private boolean keyboardCheck = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,52 +108,43 @@ public class WriteActivity extends AppCompatActivity {
         setHideStatusBar();
         setListener();
 
-        writeLayout.getViewTreeObserver()
-                .addOnGlobalLayoutListener(
-                        new ViewTreeObserver.OnGlobalLayoutListener() {
+        writeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
-                            @Override
-                            public void onGlobalLayout() {
+            @Override
+            public void onGlobalLayout() {
 
-                                Rect rect = new Rect();
-                                writeLayout.getWindowVisibleDisplayFrame(rect);
-                                int screenHeight = writeLayout.getRootView().getHeight();
+                Rect rect = new Rect();
+                writeLayout.getWindowVisibleDisplayFrame(rect);
+                int screenHeight = writeLayout.getRootView().getHeight();
 
-                                int keypadHeight = screenHeight - rect.bottom;
+                int keypadHeight = screenHeight - rect.bottom;
 
-                                Log.d(TAG, "keypadHeight = " + keypadHeight);
-
-                                if (keypadHeight > screenHeight * 0.15) {
-                                    // keyboard is opened
-                                    keyboardCheck = true;
-                                    Log.d(TAG, keyboardCheck+"");
-                                    if(viewPager.getCurrentItem()==0){
-                                        view_sliding_content.setVisibility(View.VISIBLE);
-                                        editText.setVisibility(View.VISIBLE);
-                                    }
-                                }
-                                else {
-                                    // keyboard is closed
-                                    keyboardCheck = false;
-                                    Log.d(TAG, keyboardCheck+"");
-                                    if(viewPager.getCurrentItem()==0){
-                                        view_sliding_content.setVisibility(View.GONE);
-                                        editText.setVisibility(View.GONE);
-                                        isMenuShowing = false;
-                                    }
-                                }
-                            }
-                        });
+                if (keypadHeight > screenHeight * 0.15) {
+                    // keyboard is opened
+                    if (viewPager.getCurrentItem() == 0) {
+                        view_sliding_content.setVisibility(View.VISIBLE);
+                        editText.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    // keyboard is closed
+                    if (viewPager.getCurrentItem() == 0) {
+                        view_sliding_content.setVisibility(View.GONE);
+                        editText.setVisibility(View.GONE);
+                        isMenuShowing = false;
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - backPressedTime;
+
         if (isMenuShowing) {
             view_sliding_content.setVisibility(View.GONE);
             editText.setVisibility(View.GONE);
-            viewPager.setCurrentItem(1);
             isMenuShowing = false;
         }
         if(0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
@@ -261,7 +250,7 @@ public class WriteActivity extends AppCompatActivity {
                 }
 
 
-                String text = "글씨가 아름다워지는 어플 #Aragraphy";
+                String text = "#Aragraphy";
                 File file = new File(savePath);
 
                 final List targetedShareIntents = new ArrayList<>();
@@ -285,6 +274,12 @@ public class WriteActivity extends AppCompatActivity {
                 Intent instagramIntent = getShareIntent("com.instagram.android", text, file);
                 if (instagramIntent != null)
                     targetedShareIntents.add(instagramIntent);
+
+//                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//                shareIntent.setType("image/*");
+//                shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                shareIntent.putExtra(Intent.EXTRA_TEXT,"#Aragraphy");
+//                shareIntent.setPackage("com.instagram.android");
 
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -313,10 +308,8 @@ public class WriteActivity extends AppCompatActivity {
         TextView textview = customTextView.getTextView();
         textview.setBackgroundColor(Color.TRANSPARENT);
         textview.setPadding(20, 10, 10, 10);
-        // TODO: Color
         textview.setTextColor(Color.parseColor("#000000"));
         textview.setTextSize(33);
-        // TODO: 하드코딩
         textview.setHint("TEXT");
         textview.setHintTextColor(Color.parseColor("#939393"));
 
@@ -328,6 +321,7 @@ public class WriteActivity extends AppCompatActivity {
         selectTextView = customTextView.getTextView();
         customTextView.layout(0, 80, 80, 100);
         customTextView.draw(canvas);
+
         customTextView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

@@ -91,7 +91,7 @@ public class ChangeColorFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return colors.size() +2;
+            return 15;
         }
 
         @Override
@@ -134,7 +134,7 @@ public class ChangeColorFragment extends Fragment {
                 });
 
             } else
-            if (position == colors.size()) {
+            if (position == 13) {
                 // 색 조합
                 // TODO 여러 색 입힐 수 있는 팔레트 이미지 입히기
                 colorCircle.setBackgroundResource(R.drawable.color_palette);
