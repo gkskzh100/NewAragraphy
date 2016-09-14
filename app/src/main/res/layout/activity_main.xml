@@ -13,31 +13,44 @@
             android:id="@+id/mainExImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/aragraphy_background"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/aragraphy_background" />
+        <!--블러처리할 배경화면-->
         <LinearLayout
+            android:id="@+id/mainBlurLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="100"
-            android:orientation="vertical">
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="70"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="90dp">
+            android:orientation="vertical"></LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/mainWriteImgBtn"
-                    android:layout_width="80dp"
+        <!--정사각형 사진, 버튼-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/main_center_stroke">
+                <ImageView
+                    android:id="@+id/mainChangeImage"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/write_btn"
-                    android:background="#00ffffff"
-                    android:layout_centerInParent="true"
-                    android:scaleType="fitCenter"/>
-            </RelativeLayout>
-        </LinearLayout>
+                    android:src="@drawable/delete_btn"/>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/mainWriteImgBtn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="70dp"
+                android:background="#00ffffff"
+                android:scaleType="fitCenter"
+                android:src="@drawable/write_btn" />
+
+        </RelativeLayout>
     </FrameLayout>
 
 

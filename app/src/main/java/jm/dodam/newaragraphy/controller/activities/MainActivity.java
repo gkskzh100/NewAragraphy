@@ -7,14 +7,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -28,9 +33,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -48,6 +51,8 @@ public class MainActivity extends Activity {
     private ImageButton mainWriteImgBtn;
     private ChoiceDialog mDialog;
     private Uri mCropImageUri;
+    private Bitmap bitmap;
+    private ImageView mainChangeImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,9 @@ public class MainActivity extends Activity {
     private void init() {
         mainExImageView = (ImageView) findViewById(R.id.mainExImageView);
         mainWriteImgBtn = (ImageButton) findViewById(R.id.mainWriteImgBtn);
+        mainChangeImage = (ImageView) findViewById(R.id.mainChangeImage);
+
+        bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.aragraphy_background);
 
         setListener();
     }
@@ -74,11 +82,35 @@ public class MainActivity extends Activity {
         mainWriteImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), WriteActivity.class));
                 mDialog = new ChoiceDialog(MainActivity.this, unsplashClickListener, galleryClickListener, cancleClickListener);
                 mDialog.show();
             }
         });
+
+        Bitmap changeBitmap = blur(getApplicationContext(), bitmap, 25);
+
+        mainExImageView.setColorFilter(Color.argb(30,0,0,0));
+        mainExImageView.setImageBitmap(changeBitmap);
+
+    }
+
+    public static Bitmap blur(Context ct, Bitmap sentBitmap, int radius) {
+
+        if (Build.VERSION.SDK_INT > 16) {
+            Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+
+            final RenderScript rs = RenderScript.create(ct);
+            final Allocation input = Allocation.createFromBitmap(rs, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
+                    Allocation.USAGE_SCRIPT);
+            final Allocation output = Allocation.createTyped(rs, input.getType());
+            final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, android.renderscript.Element.U8_4(rs));
+            script.setRadius(radius);
+            script.setInput(input);
+            script.forEach(output);
+            output.copyTo(bitmap);
+            return bitmap;
+        }
+        return sentBitmap;
     }
 
     private View.OnClickListener unsplashClickListener = new View.OnClickListener() {
