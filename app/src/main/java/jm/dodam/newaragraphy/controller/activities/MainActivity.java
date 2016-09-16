@@ -217,10 +217,7 @@ public class MainActivity extends Activity {
             JsoupParseAsyncTask jsoupAsyncTask;
             jsoupAsyncTask = new JsoupParseAsyncTask(getApplicationContext());
             jsoupAsyncTask.execute();
-
-
         }
-
     }
 
     public class JsoupParseAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -233,12 +230,10 @@ public class MainActivity extends Activity {
         public JsoupParseAsyncTask(Context context) {
             this.context = context;
         }
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
-
 
         protected Void doInBackground(Void... params) {
             try {
@@ -247,10 +242,9 @@ public class MainActivity extends Activity {
                 Elements tags = doc.select(".cV68d");
                 imageUris = new ArrayList<String>();
 
-
                 for (Element i : tags) {
-                    imageUris.add(i.attr("style").toString().substring(i.attr("style").toString().indexOf('"') + 1, i.attr("style").toString().lastIndexOf('"')));
-//                Log.d("images", "Image : " + imageUris.get(count));
+                    imageUris.add(i.attr("style").toString().substring(i.attr("style").toString()
+                            .indexOf('"') + 1, i.attr("style").toString().lastIndexOf('"')));
                     dbManager.insert("insert into IMAGES values(null, '" + imageUris.get(count) + "'" + ");");
                     count++;
 

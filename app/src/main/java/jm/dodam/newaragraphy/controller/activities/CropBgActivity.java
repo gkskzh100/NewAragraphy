@@ -250,41 +250,21 @@ public class CropBgActivity extends AppCompatActivity{
         protected Bitmap doInBackground(String... urls) {
 
             try{
-
                 URL myFileUrl = new URL(urls[0]);
-
                 HttpURLConnection conn = (HttpURLConnection)myFileUrl.openConnection();
-
                 conn.setDoInput(true);
-
                 conn.connect();
 
-
-
                 InputStream is = conn.getInputStream();
-
-
-
                 bitmap = BitmapFactory.decodeStream(is);
 
-
-
-
             }catch(IOException e){
-
                 e.printStackTrace();
-
             }
-
             return bitmap;
-
         }
 
-
-
         protected void onPostExecute(Bitmap img){
-
-
             cropImageView.setImageBitmap(img);
         }
 

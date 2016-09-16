@@ -61,12 +61,10 @@ public class DBManager extends SQLiteOpenHelper {
     public ArrayList<String> getImageList(){
 
         SQLiteDatabase db = getReadableDatabase();
-        int cnt = 0;
 
         Cursor cursor = db.rawQuery("select * from IMAGES", null);
         while(cursor.moveToNext()){
             imageUris.add(cursor.getString(1));
-            cnt++;
         }
         return imageUris;
     }
