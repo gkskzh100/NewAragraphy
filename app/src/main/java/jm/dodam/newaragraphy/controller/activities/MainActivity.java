@@ -9,7 +9,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -53,6 +59,8 @@ public class MainActivity extends Activity {
     private Uri mCropImageUri;
     private Bitmap bitmap;
     private ImageView mainChangeImage;
+    private ImageButton mainRightButton;
+    private boolean bitmapRatio = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +81,17 @@ public class MainActivity extends Activity {
         mainWriteImgBtn = (ImageButton) findViewById(R.id.mainWriteImgBtn);
         mainChangeImage = (ImageView) findViewById(R.id.mainChangeImage);
 
-        bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.aragraphy_background);
+        // TODO: 2016. 9. 18. 하영, 이 버튼은 사진 랜덤으로 바꾸는거임
+        mainRightButton = (ImageButton) findViewById(R.id.mainRightButton);
+
+        //사진 받아오는 부분
+        bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3);
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+        Log.d(TAG, "height : " + height + ", width : " + width);
+        if(height == width) {
+            bitmapRatio = true;
+        }
 
         setListener();
     }
@@ -91,6 +109,15 @@ public class MainActivity extends Activity {
 
         mainExImageView.setColorFilter(Color.argb(30,0,0,0));
         mainExImageView.setImageBitmap(changeBitmap);
+
+        if(bitmapRatio){
+            Bitmap changeRoundBitmap = setRoundCorner(bitmap, 70);
+            mainChangeImage.setImageBitmap(changeRoundBitmap);
+        } else if(!bitmapRatio){
+            mainChangeImage.setImageBitmap(bitmap);
+        }
+
+
 
     }
 
@@ -111,6 +138,27 @@ public class MainActivity extends Activity {
             return bitmap;
         }
         return sentBitmap;
+    }
+
+    public static Bitmap setRoundCorner(Bitmap bitmap, int pixel) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        int color = 0xff424242;
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        paint.setColor(color);
+        canvas.drawARGB(0, 0, 0, 0);
+        canvas.drawRoundRect(rectF, pixel, pixel, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
     }
 
     private View.OnClickListener unsplashClickListener = new View.OnClickListener() {

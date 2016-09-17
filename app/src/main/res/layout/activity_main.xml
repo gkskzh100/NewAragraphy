@@ -31,12 +31,13 @@
                 android:layout_height="300dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="100dp"
-                android:background="@drawable/main_center_stroke">
+                android:background="@drawable/center_stroke">
                 <ImageView
                     android:id="@+id/mainChangeImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/delete_btn"/>
+                    android:background="@drawable/main_center_stroke"
+                    android:src="@drawable/testt"/>
             </LinearLayout>
 
             <ImageButton
@@ -50,6 +51,16 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/write_btn" />
 
+            <ImageButton
+                android:id="@+id/mainRightButton"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="60dp"
+                android:layout_marginRight="30dp"
+                android:src="@drawable/right_button"
+                android:scaleType="fitCenter"
+                android:background="#00000000"/>
         </RelativeLayout>
     </FrameLayout>
 
