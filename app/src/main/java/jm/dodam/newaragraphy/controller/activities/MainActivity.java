@@ -47,6 +47,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -72,17 +73,18 @@ public class MainActivity extends Activity {
     private ImageView mainChangeImage;
     private ImageButton mainRightButton;
     private boolean bitmapRatio = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         startActivity(new Intent(this, SplashActivity.class));
-
+        loadHtml();
         init();
         checkPermission();
         parseImage();
-        loadHtml();
+
 
 
     }
@@ -101,7 +103,7 @@ public class MainActivity extends Activity {
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
         Log.d(TAG, "height : " + height + ", width : " + width);
-        if(height == width) {
+        if (height == width) {
             bitmapRatio = true;
         }
 
@@ -116,19 +118,24 @@ public class MainActivity extends Activity {
                 mDialog.show();
             }
         });
+        mainRightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadHtml();
+            }
+        });
 
         Bitmap changeBitmap = blur(getApplicationContext(), bitmap, 25);
 
-        mainExImageView.setColorFilter(Color.argb(30,0,0,0));
+        mainExImageView.setColorFilter(Color.argb(30, 0, 0, 0));
         mainExImageView.setImageBitmap(changeBitmap);
 
-        if(bitmapRatio){
+        if (bitmapRatio) {
             Bitmap changeRoundBitmap = setRoundCorner(bitmap, 70);
             mainChangeImage.setImageBitmap(changeRoundBitmap);
-        } else if(!bitmapRatio){
+        } else if (!bitmapRatio) {
             mainChangeImage.setImageBitmap(bitmap);
         }
-
 
 
     }
@@ -209,18 +216,18 @@ public class MainActivity extends Activity {
             if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
                 // request permissions and handle the result in onRequestPermissionsResult()
                 mCropImageUri = imageUri;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
             } else {
                 // no permissions required or already grunted, can start crop image activity
-                Log.d("abccd",imageUri.toString());
-                Intent itCropActivity = new Intent(getApplicationContext(),CropBgActivity.class);
-                itCropActivity.putExtra("galleryImage",imageUri);
-                itCropActivity.putExtra("login",false);
+                Log.d("abccd", imageUri.toString());
+                Intent itCropActivity = new Intent(getApplicationContext(), CropBgActivity.class);
+                itCropActivity.putExtra("galleryImage", imageUri);
+                itCropActivity.putExtra("login", false);
                 startActivity(itCropActivity);
             }
         }
     }
-    
+
 
     @TargetApi(Build.VERSION_CODES.M)
     private void checkPermission() {
@@ -291,6 +298,7 @@ public class MainActivity extends Activity {
         public JsoupParseAsyncTask(Context context) {
             this.context = context;
         }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -324,24 +332,26 @@ public class MainActivity extends Activity {
         }
 
     }
+
     Handler handler = new Handler();
-    private void loadHtml(){
+
+    private void loadHtml() {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 final StringBuffer sb = new StringBuffer();
-                try{
+                try {
                     URL url = new URL("http://bhy98528.cafe24.com/img/imgview.php");
-                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                    if (conn != null){
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    if (conn != null) {
                         conn.setConnectTimeout(2000);
                         conn.setUseCaches(false);
-                        if (conn.getResponseCode()==HttpURLConnection.HTTP_OK){
-                            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(),"euc-kr"));
-                            while (true){
+                        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "euc-kr"));
+                            while (true) {
                                 String line = br.readLine();
-                                if (line==null)break;
-                                sb.append(line+"\n");
+                                if (line == null) break;
+                                sb.append(line + "\n");
                             }
                             br.close();
                         }
@@ -350,14 +360,11 @@ public class MainActivity extends Activity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                String str = "http://bhy98528.cafe24.com/"+sb.toString().substring(sb.toString().indexOf("e")+4,sb.toString().lastIndexOf("}")-1);
-                                str = str.replaceAll("\\\\","");
-                                Log.d("bbb",str);
-                                Glide.with(getApplicationContext())
-                                        .load(Uri.parse(str))
-                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                        .into(mainChangeImage);
-
+                                String str = "http://bhy98528.cafe24.com/" + sb.toString().substring(sb.toString().indexOf("e") + 4, sb.toString().lastIndexOf("}") - 1);
+                                str = str.replaceAll("\\\\", "");
+                                Log.d("bbb", str);
+                                back task = new back();
+                                task.execute(str);
 
                             }
                         });
@@ -371,6 +378,32 @@ public class MainActivity extends Activity {
         });
         t.start();
     }
+    private class back extends AsyncTask<String, Integer,Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+
+            try{
+                URL myFileUrl = new URL(urls[0]);
+                HttpURLConnection conn = (HttpURLConnection)myFileUrl.openConnection();
+                conn.setDoInput(true);
+                conn.connect();
+
+                InputStream is = conn.getInputStream();
+                bitmap = BitmapFactory.decodeStream(is);
+
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap img){
+            mainChangeImage.setImageBitmap(img);
+        }
+
+    }
+
 
 
 }
