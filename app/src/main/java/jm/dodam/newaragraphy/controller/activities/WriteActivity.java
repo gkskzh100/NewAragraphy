@@ -317,6 +317,7 @@ public class WriteActivity extends AppCompatActivity {
                             if(MainActivity.server_trans){
                                 MyTask myTask = new MyTask();
                                 myTask.execute();
+                                Log.d(TAG, "true");
                             }
                             Toast.makeText(getApplicationContext(), "저장이 되었습니다.", Toast.LENGTH_SHORT).show();
                         }

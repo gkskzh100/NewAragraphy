@@ -18,6 +18,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -27,6 +29,8 @@ import android.os.Handler;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.GridLayoutManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -57,6 +61,7 @@ import java.util.regex.Pattern;
 
 import jm.dodam.newaragraphy.ChoiceDialog;
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
 import jm.dodam.newaragraphy.utils.DBManager;
 
 public class MainActivity extends Activity {
@@ -74,7 +79,7 @@ public class MainActivity extends Activity {
     private ImageButton mainRightButton;
     private boolean bitmapRatio = false;
     static boolean server_trans = false;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,16 +105,34 @@ public class MainActivity extends Activity {
         mainRightButton = (ImageButton) findViewById(R.id.mainRightButton);
 
         //사진 받아오는 부분
-        bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3);
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        boolean isWifiAvail = ni.isAvailable();
+        boolean isWifiConn = ni.isConnected();
+        ni = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        boolean isMobileAvail = ni.isAvailable();
+        boolean isMobileConn = ni.isConnected();
 
+        if(isWifiConn==false && isMobileConn==false) {
+            Snackbar.make(mainExImageView, "인터넷에 연결할 수 없습니다.\n연결을 확인하세요.", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    }).show();
+            bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3);
 
-        int height = bitmap.getHeight();
-        int width = bitmap.getWidth();
-        Log.d(TAG, "height : " + height + ", width : " + width);
-        if (height == width) {
-            bitmapRatio = true;
+            int height = bitmap.getHeight();
+            int width = bitmap.getWidth();
+            Log.d(TAG, "height : " + height + ", width : " + width);
+            if (height == width) {
+                bitmapRatio = true;
+            }
+
+        } else if (isWifiAvail==true || isMobileAvail==true) {
+            Log.d(TAG, "인터넷 연결 true");
         }
-
         setListener();
     }
 
@@ -127,18 +150,6 @@ public class MainActivity extends Activity {
                 loadHtml();
             }
         });
-
-        Bitmap changeBitmap = blur(getApplicationContext(), bitmap, 25);
-
-        mainExImageView.setColorFilter(Color.argb(30, 0, 0, 0));
-        mainExImageView.setImageBitmap(changeBitmap);
-
-        if (bitmapRatio) {
-            Bitmap changeRoundBitmap = setRoundCorner(bitmap, 70);
-            mainChangeImage.setImageBitmap(changeRoundBitmap);
-        } else if (!bitmapRatio) {
-            mainChangeImage.setImageBitmap(bitmap);
-        }
 
 
     }
@@ -402,6 +413,28 @@ public class MainActivity extends Activity {
         }
 
         protected void onPostExecute(Bitmap img){
+            //사진 받아오는 부분
+//            img = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3);
+
+
+            int height = bitmap.getHeight();
+            int width = bitmap.getWidth();
+            Log.d(TAG, "height : " + height + ", width : " + width);
+            if (height == width) {
+                bitmapRatio = true;
+            }
+            Bitmap changeBitmap = blur(getApplicationContext(), bitmap, 25);
+
+            mainExImageView.setColorFilter(Color.argb(30, 0, 0, 0));
+            mainExImageView.setImageBitmap(changeBitmap);
+
+            if (bitmapRatio) {
+                Bitmap changeRoundBitmap = setRoundCorner(bitmap, 70);
+                mainChangeImage.setImageBitmap(changeRoundBitmap);
+            } else if (!bitmapRatio) {
+                mainChangeImage.setImageBitmap(bitmap);
+            }
+
             mainChangeImage.setImageBitmap(img);
         }
 
