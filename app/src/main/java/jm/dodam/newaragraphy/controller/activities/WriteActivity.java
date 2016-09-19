@@ -298,12 +298,6 @@ public class WriteActivity extends AppCompatActivity {
                 if (instagramIntent != null)
                     targetedShareIntents.add(instagramIntent);
 
-//                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//                shareIntent.setType("image/*");
-//                shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                shareIntent.putExtra(Intent.EXTRA_TEXT,"#Aragraphy");
-//                shareIntent.setPackage("com.instagram.android");
-
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override

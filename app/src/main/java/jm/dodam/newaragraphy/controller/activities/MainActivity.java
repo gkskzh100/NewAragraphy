@@ -16,30 +16,23 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.GridLayoutManager;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jsoup.Jsoup;
@@ -48,7 +41,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,11 +49,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 import jm.dodam.newaragraphy.ChoiceDialog;
 import jm.dodam.newaragraphy.R;
-import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
 import jm.dodam.newaragraphy.utils.DBManager;
 
 public class MainActivity extends Activity {
@@ -100,11 +90,8 @@ public class MainActivity extends Activity {
         mainExImageView = (ImageView) findViewById(R.id.mainExImageView);
         mainWriteImgBtn = (ImageButton) findViewById(R.id.mainWriteImgBtn);
         mainChangeImage = (ImageView) findViewById(R.id.mainChangeImage);
-
-        // TODO: 2016. 9. 18. 하영, 이 버튼은 사진 랜덤으로 바꾸는거임
         mainRightButton = (ImageButton) findViewById(R.id.mainRightButton);
 
-        //사진 받아오는 부분
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         boolean isWifiAvail = ni.isAvailable();
@@ -114,24 +101,8 @@ public class MainActivity extends Activity {
         boolean isMobileConn = ni.isConnected();
 
         if(isWifiConn==false && isMobileConn==false) {
-            Snackbar.make(mainExImageView, "인터넷에 연결할 수 없습니다.\n연결을 확인하세요.", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("OK", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            finish();
-                        }
-                    }).show();
-            bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3);
-
-            int height = bitmap.getHeight();
-            int width = bitmap.getWidth();
-            Log.d(TAG, "height : " + height + ", width : " + width);
-            if (height == width) {
-                bitmapRatio = true;
-            }
-
+            Toast.makeText(getApplicationContext(), "인터넷에 연결할 수 없습니다.\n연결을 확인하세요.", Toast.LENGTH_LONG).show();
         } else if (isWifiAvail==true || isMobileAvail==true) {
-            Log.d(TAG, "인터넷 연결 true");
         }
         setListener();
     }
@@ -147,7 +118,19 @@ public class MainActivity extends Activity {
         mainRightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadHtml();
+                ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo ni = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                boolean isWifiAvail = ni.isAvailable();
+                boolean isWifiConn = ni.isConnected();
+                ni = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+                boolean isMobileAvail = ni.isAvailable();
+                boolean isMobileConn = ni.isConnected();
+
+                if(isWifiConn==false && isMobileConn==false) {
+                    Toast.makeText(getApplicationContext(), "인터넷에 연결할 수 없습니다.\n연결을 확인하세요.", Toast.LENGTH_LONG).show();
+                } else if (isWifiAvail==true || isMobileAvail==true) {
+                    loadHtml();
+                }
             }
         });
 
@@ -413,15 +396,13 @@ public class MainActivity extends Activity {
         }
 
         protected void onPostExecute(Bitmap img){
-            //사진 받아오는 부분
-//            img = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3);
-
-
-            int height = bitmap.getHeight();
-            int width = bitmap.getWidth();
+            int height = img.getHeight();
+            int width = img.getWidth();
             Log.d(TAG, "height : " + height + ", width : " + width);
             if (height == width) {
                 bitmapRatio = true;
+            } else {
+                bitmapRatio = false;
             }
             Bitmap changeBitmap = blur(getApplicationContext(), bitmap, 25);
 
@@ -429,13 +410,12 @@ public class MainActivity extends Activity {
             mainExImageView.setImageBitmap(changeBitmap);
 
             if (bitmapRatio) {
-                Bitmap changeRoundBitmap = setRoundCorner(bitmap, 70);
+                Bitmap changeRoundBitmap = setRoundCorner(img, 50);
                 mainChangeImage.setImageBitmap(changeRoundBitmap);
             } else if (!bitmapRatio) {
-                mainChangeImage.setImageBitmap(bitmap);
+                mainChangeImage.setImageBitmap(img);
             }
 
-            mainChangeImage.setImageBitmap(img);
         }
 
     }

@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/aragraphy_background" />
+            android:src="@drawable/basic_background" />
         <!--블러처리할 배경화면-->
         <LinearLayout
             android:id="@+id/mainBlurLayout"
@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/main_center_stroke"
-                    android:src="@drawable/testt"/>
+                    android:src="@drawable/basic_image"/>
             </LinearLayout>
 
             <ImageButton
