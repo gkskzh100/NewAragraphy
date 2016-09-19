@@ -30,4 +30,5 @@ dependencies {
     compile 'com.android.support:support-v4:24.1.1'
     compile 'com.github.QuadFlask:colorpicker:0.0.10'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'org.adw.library:discrete-seekbar:1.0.1'
 }

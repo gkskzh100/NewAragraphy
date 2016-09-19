@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import java.io.Writer;
 
 import jm.dodam.newaragraphy.R;
@@ -17,7 +19,7 @@ import jm.dodam.newaragraphy.controller.activities.WriteActivity;
 
 public class ChangeSizeFragment extends Fragment {
 
-    private SeekBar seekBar;
+    private DiscreteSeekBar seekBar;
     private int brightnes;
     private WriteActivity writeActivity;
 
@@ -41,31 +43,51 @@ public class ChangeSizeFragment extends Fragment {
     }
 
     private void init(View view) {
-        seekBar = (SeekBar) view.findViewById(R.id.fragment_change_size_edit);
+        seekBar = (DiscreteSeekBar) view.findViewById(R.id.fragment_change_size_edit);
 
-        seekBar.setProgress(50);
+        seekBar.setProgress(33);
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
                 try{
-                    WriteActivity.getSelectTextView().setTextSize(i);
+                    WriteActivity.getSelectTextView().setTextSize(value);
                 }catch (ClassCastException | NullPointerException e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
 
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
 
             }
         });
+//        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+//
+//                try{
+//                    WriteActivity.getSelectTextView().setTextSize(i);
+//                }catch (ClassCastException | NullPointerException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
 /*        editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
