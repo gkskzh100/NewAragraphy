@@ -1,5 +1,7 @@
 package jm.dodam.newaragraphy.controller.activities;
 
+import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,6 +29,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,9 +49,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,6 +79,9 @@ import jm.dodam.newaragraphy.utils.CustomLoading;
 import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
 public class WriteActivity extends AppCompatActivity {
+    int serverResponseCode = 0;
+    private String imageName = null;
+    private String filePath = null;
 
     private static final String TAG = "WriteActivity";
     private TextView editText;
@@ -72,7 +92,6 @@ public class WriteActivity extends AppCompatActivity {
     private RelativeLayout writeCaptureLayout;
 
     private CustomTextView customTextView;
-
     private int _xDelta = 0;
     private int _yDelta = 0;
 
@@ -97,6 +116,7 @@ public class WriteActivity extends AppCompatActivity {
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
+    public Bitmap bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +127,6 @@ public class WriteActivity extends AppCompatActivity {
         init();
         setHideStatusBar();
         setListener();
-
         writeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
             @Override
@@ -147,9 +166,9 @@ public class WriteActivity extends AppCompatActivity {
             editText.setVisibility(View.GONE);
             isMenuShowing = false;
         }
-        if(0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
             alertDialogCreate();
-        } else if (view_sliding_content.getVisibility()==View.GONE){
+        } else if (view_sliding_content.getVisibility() == View.GONE) {
             backPressedTime = tempTime;
         }
     }
@@ -157,22 +176,23 @@ public class WriteActivity extends AppCompatActivity {
 
     private void setWriteImage() {
         byte[] arr = getIntent().getByteArrayExtra("bgImage");
-        Bitmap bm = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+        bm = BitmapFactory.decodeByteArray(arr, 0, arr.length);
         bitmapWidth = bm.getWidth();
         bitmapHeight = bm.getHeight();
-
         DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
         float screenWidth = dm.widthPixels;
 
-        float ratio = screenWidth/bitmapWidth;
+        float ratio = screenWidth / bitmapWidth;
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) writeCaptureLayout.getLayoutParams();
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        layoutParams.height = (int) (bitmapHeight*ratio);
+        layoutParams.height = (int) (bitmapHeight * ratio);
         writeCaptureLayout.setLayoutParams(layoutParams);
 
         writeImageView.setImageBitmap(bm);
+
+
     }
 
 
@@ -204,7 +224,7 @@ public class WriteActivity extends AppCompatActivity {
                 // TODO: 하드코딩
                 if (!saveBool) {
                     CustomLoading.showLoading(context);
-                    Log.d("loading","loading...");
+                    Log.d("loading", "loading...");
                 }
 
                 String folder = "Test_Directory";
@@ -235,6 +255,8 @@ public class WriteActivity extends AppCompatActivity {
 
                         save = sdCardPath.getPath() + "/" + folder + "/" + dateString + ".png";
                         savePath = save;
+                        filePath = sdCardPath.getPath() + "/" + folder + "/";
+                        imageName = dateString + ".png";
                         fos = new FileOutputStream(save);
                         captureView.compress(Bitmap.CompressFormat.PNG, 100, fos);
 
@@ -242,6 +264,7 @@ public class WriteActivity extends AppCompatActivity {
                         SingleMediaScanner mScanner = new SingleMediaScanner(getApplicationContext(), file);
 
                         saveBool = true;
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -291,10 +314,14 @@ public class WriteActivity extends AppCompatActivity {
                             startActivity(chooser);
                             CustomLoading.hideLoading();
                             saveBool = false;
+                            Log.d("iii", filePath);
+                            Log.d("iii", imageName);
+                            MyTask myTask = new MyTask();
+                            myTask.execute();
                             Toast.makeText(getApplicationContext(), "저장이 되었습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
-                },1000);
+                }, 1000);
             }
         });
     }
@@ -575,13 +602,119 @@ public class WriteActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         WriteActivity.this.finish();
                     }
-                }) .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                }
+                }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+
+    }
+
+    class MyTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String fileName = filePath + "" + imageName;
+
+            HttpURLConnection conn = null;
+            DataOutputStream dos = null;
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary = "*****";
+            int bytesRead, bytesAvailable, bufferSize;
+            byte[] buffer;
+            int maxBufferSize = 1 * 1024 * 1024;
+            File sourceFile = new File(filePath + "" + imageName);
+
+            if (!sourceFile.isFile()) {
+
+                Log.e("uploadFile", "Source File not exist :"
+                        + filePath + "" + fileName);
+
+
+            } else {
+                try {
+
+                    // open a URL connection to the Servlet
+                    FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                    URL url = new URL("http://bhy98528.cafe24.com/setimg.php");
+
+                    // Open a HTTP  connection to  the URL
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setDoInput(true);// Allow Inputs
+                    conn.setDoOutput(true);// Allow Outputs
+                    conn.setUseCaches(false);// Don't use a Cached Copy
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Connection", "Keep-Alive");
+                    conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+                    conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                    conn.setRequestProperty("uploaded_file", fileName);
+
+                    dos = new DataOutputStream(conn.getOutputStream());
+
+                    dos.writeBytes(twoHyphens + boundary + lineEnd);
+                    dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\"" + fileName + "\"" + lineEnd);
+
+                    dos.writeBytes(lineEnd);
+
+                    // create a buffer of  maximum size
+                    bytesAvailable = fileInputStream.available();
+
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    buffer = new byte[bufferSize];
+
+                    // read file and write it into form...
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                    System.out.println("=====Start");
+                    while (bytesRead > 0) {
+
+                        dos.write(buffer, 0, bufferSize);
+                        bytesAvailable = fileInputStream.available();
+                        bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                        bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                    }
+                    System.out.println("=====End");
+                    // send multipart form data necesssary after file data...
+                    dos.writeBytes(lineEnd);
+                    dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+                    // Responses from the server (code and message)
+                    serverResponseCode = conn.getResponseCode();
+                    String serverResponseMessage = conn.getResponseMessage();
+
+                    Log.i("uploadFile", "HTTP Response is : "
+                            + serverResponseMessage + ": " + serverResponseCode);
+
+
+                    //close the streams //
+                    fileInputStream.close();
+                    dos.flush();
+                    DataInputStream dis = new DataInputStream(conn.getInputStream());
+                    while (dis != null) {
+                        System.out.println(dis.readUTF());
+                    }
+                    dos.close();
+
+
+                } catch (MalformedURLException ex) {
+
+                    ex.printStackTrace();
+
+
+                    Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+
+                }
+
+            }
+            return null;
+        }
+
     }
 }

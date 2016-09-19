@@ -23,15 +23,19 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jsoup.Jsoup;
@@ -39,9 +43,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import jm.dodam.newaragraphy.ChoiceDialog;
 import jm.dodam.newaragraphy.R;
@@ -52,7 +63,7 @@ public class MainActivity extends Activity {
     final DBManager dbManager = new DBManager(MainActivity.this, "Image.db", null, 1);
     private static final int MY_PERMISSION_REQUEST_STORAGE = 0;
     private static final String TAG = "checkPermission";
-    private final int PICK_FROM_GALLERY = 100;
+
     private ImageView mainExImageView;
     private ImageButton mainWriteImgBtn;
     private ChoiceDialog mDialog;
@@ -71,6 +82,7 @@ public class MainActivity extends Activity {
         init();
         checkPermission();
         parseImage();
+        loadHtml();
 
 
     }
@@ -261,6 +273,7 @@ public class MainActivity extends Activity {
 
 
     private void parseImage() {
+
         if (dbManager.PrintData() == "") {
             JsoupParseAsyncTask jsoupAsyncTask;
             jsoupAsyncTask = new JsoupParseAsyncTask(getApplicationContext());
@@ -310,6 +323,53 @@ public class MainActivity extends Activity {
 
         }
 
+    }
+    Handler handler = new Handler();
+    private void loadHtml(){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final StringBuffer sb = new StringBuffer();
+                try{
+                    URL url = new URL("http://bhy98528.cafe24.com/img/imgview.php");
+                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                    if (conn != null){
+                        conn.setConnectTimeout(2000);
+                        conn.setUseCaches(false);
+                        if (conn.getResponseCode()==HttpURLConnection.HTTP_OK){
+                            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(),"euc-kr"));
+                            while (true){
+                                String line = br.readLine();
+                                if (line==null)break;
+                                sb.append(line+"\n");
+                            }
+                            br.close();
+                        }
+                        conn.disconnect();
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                String str = "http://bhy98528.cafe24.com/"+sb.toString().substring(sb.toString().indexOf("e")+4,sb.toString().lastIndexOf("}")-1);
+                                str = str.replaceAll("\\\\","");
+                                Log.d("bbb",str);
+                                Glide.with(getApplicationContext())
+                                        .load(Uri.parse(str))
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .into(mainChangeImage);
+
+
+                            }
+                        });
+                    }
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
     }
 
 
