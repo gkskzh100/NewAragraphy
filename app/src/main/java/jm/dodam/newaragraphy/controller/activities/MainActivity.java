@@ -72,6 +72,7 @@ public class MainActivity extends Activity {
     private ImageView mainChangeImage;
     private ImageButton mainRightButton;
     private boolean bitmapRatio = false;
+    static boolean server_trans = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +99,8 @@ public class MainActivity extends Activity {
 
         //사진 받아오는 부분
         bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3);
+
+
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
         Log.d(TAG, "height : " + height + ", width : " + width);
@@ -176,6 +179,7 @@ public class MainActivity extends Activity {
     private View.OnClickListener unsplashClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            server_trans = true;
             startActivity(new Intent(MainActivity.this, SelectBackActivity.class));
             mDialog.onBackPressed();
         }
@@ -184,9 +188,8 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View view) {
-
+            server_trans = false;
             CropImage.startPickImageActivity(MainActivity.this);
-
             mDialog.onBackPressed();
 
         }

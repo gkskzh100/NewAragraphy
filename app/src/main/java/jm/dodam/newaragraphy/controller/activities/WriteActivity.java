@@ -314,10 +314,10 @@ public class WriteActivity extends AppCompatActivity {
                             startActivity(chooser);
                             CustomLoading.hideLoading();
                             saveBool = false;
-                            Log.d("iii", filePath);
-                            Log.d("iii", imageName);
-                            MyTask myTask = new MyTask();
-                            myTask.execute();
+                            if(MainActivity.server_trans){
+                                MyTask myTask = new MyTask();
+                                myTask.execute();
+                            }
                             Toast.makeText(getApplicationContext(), "저장이 되었습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
