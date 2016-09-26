@@ -181,6 +181,7 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View view) {
             server_trans = true;
+            parseImage();
             startActivity(new Intent(MainActivity.this, SelectBackActivity.class));
             mDialog.onBackPressed();
         }
