@@ -75,6 +75,8 @@ public class MainActivity extends Activity {
     static boolean server_trans = false;
     private int guideCount;
 
+    private boolean imageDownload = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,9 +94,13 @@ public class MainActivity extends Activity {
 
 
         if(guideCount > 0) {
+            imageDownload = false;
             mainGuideLayout.setVisibility(View.GONE);
         }
 
+        if (imageDownload == true){
+            dbManager.delete("delete from " + "IMAGES");
+        }
 
     }
 
@@ -339,7 +345,7 @@ public class MainActivity extends Activity {
                 for (Element i : tags) {
                     Log.d("ImageCheck", i.attr("src"));
 
-                    dbManager.insert("insert into IMAGES values(null, '" + i.attr("src") + "'" + ");");
+                    dbManager.insert("insert into IMAGES values(null, '" + "http://bhy98528.cafe24.com/"+i.attr("src") + "'" + ");");
 
 
                 }

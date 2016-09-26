@@ -58,6 +58,17 @@ public class DBManager extends SQLiteOpenHelper {
 
         return str;
     }
+    public int getLength() {
+        SQLiteDatabase db = getReadableDatabase();
+        int dbLength = 0;
+
+        Cursor cursor = db.rawQuery("select * from IMAGES", null);
+        while(cursor.moveToNext()) {
+            dbLength++;
+        }
+
+        return dbLength;
+    }
     public ArrayList<String> getImageList(){
 
         SQLiteDatabase db = getReadableDatabase();
