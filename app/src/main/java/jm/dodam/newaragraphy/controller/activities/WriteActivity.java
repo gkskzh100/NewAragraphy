@@ -154,6 +154,8 @@ public class WriteActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     @Override

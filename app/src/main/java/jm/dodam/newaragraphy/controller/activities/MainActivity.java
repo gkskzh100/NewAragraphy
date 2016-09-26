@@ -105,6 +105,8 @@ public class MainActivity extends Activity {
         } else if (isWifiAvail==true || isMobileAvail==true) {
         }
         setListener();
+
+        
     }
 
     private void setListener() {
