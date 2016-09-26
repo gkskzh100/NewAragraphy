@@ -62,6 +62,13 @@
                 android:scaleType="fitCenter"
                 android:background="#00000000"/>
         </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/mainGuideLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/guide"
+            android:visibility="visible"></ImageButton>
     </FrameLayout>
 
 
