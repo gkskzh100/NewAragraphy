@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,8 +30,10 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -58,7 +61,7 @@ public class MainActivity extends Activity {
 
     final DBManager dbManager = new DBManager(MainActivity.this, "Image.db", null, 1);
     private static final int MY_PERMISSION_REQUEST_STORAGE = 0;
-    private static final String TAG = "checkPermission";
+    private static final String TAG = "MainActivity";
 
     private ImageView mainExImageView;
     private ImageButton mainWriteImgBtn;
@@ -67,8 +70,10 @@ public class MainActivity extends Activity {
     private Bitmap bitmap;
     private ImageView mainChangeImage;
     private ImageButton mainRightButton;
+    private ImageButton mainGuideLayout;
     private boolean bitmapRatio = false;
     static boolean server_trans = false;
+    private int guideCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,15 @@ public class MainActivity extends Activity {
         checkPermission();
         parseImage();
 
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        guideCount = pref.getInt("Guide", 0);
+        Log.d(TAG,guideCount + "");
+
+
+        if(guideCount > 0) {
+            mainGuideLayout.setVisibility(View.GONE);
+        }
+
 
     }
 
@@ -90,6 +104,7 @@ public class MainActivity extends Activity {
         mainWriteImgBtn = (ImageButton) findViewById(R.id.mainWriteImgBtn);
         mainChangeImage = (ImageView) findViewById(R.id.mainChangeImage);
         mainRightButton = (ImageButton) findViewById(R.id.mainRightButton);
+        mainGuideLayout = (ImageButton) findViewById(R.id.mainGuideLayout);
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -104,6 +119,7 @@ public class MainActivity extends Activity {
         } else if (isWifiAvail == true || isMobileAvail == true) {
         }
         setListener();
+
     }
 
     private void setListener() {
@@ -130,6 +146,17 @@ public class MainActivity extends Activity {
                 } else if (isWifiAvail == true || isMobileAvail == true) {
                     loadHtml();
                 }
+            }
+        });
+        mainGuideLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guideCount++;
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("Guide", guideCount);
+                editor.commit();
+                mainGuideLayout.setVisibility(View.GONE);
             }
         });
 

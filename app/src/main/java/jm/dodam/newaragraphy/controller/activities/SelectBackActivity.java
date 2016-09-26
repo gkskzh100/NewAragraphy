@@ -33,6 +33,7 @@ public class SelectBackActivity extends AppCompatActivity{
     private ImageButton selectExitImageBtn;
     private RecyclerView recyclerView;
     public static SelectBackActivity mySelectBackActivity;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class SelectBackActivity extends AppCompatActivity{
         setCustomActionbar();
         init();
 
+        context = this;
         setListener();
         setListAdapter();
         setItemClick();
@@ -51,6 +53,7 @@ public class SelectBackActivity extends AppCompatActivity{
         mySelectBackActivity = SelectBackActivity.this;
         recyclerView = (RecyclerView)findViewById(R.id.SelectRecyclerView);
         selectExitImageBtn = (ImageButton)findViewById(R.id.SelectExitImageBtn);
+
     }
 
     private void setListener() {
@@ -103,6 +106,7 @@ public class SelectBackActivity extends AppCompatActivity{
             recyclerView.setLayoutManager(new GridLayoutManager(this,2));
             BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(dbManager.getImageList(), getApplicationContext());
             recyclerView.setAdapter(myBackgroundAdapter);
+            alertDialogCreate();
         }
 
 
@@ -125,6 +129,26 @@ public class SelectBackActivity extends AppCompatActivity{
 
             }
         }));
+    }
+
+    private void alertDialogCreate() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setMessage("Free 이미지로 제작할 시 메인화면에 올라가게 됩니다.작업을 계속하시겠습니까?")
+                .setCancelable(false)
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        SelectBackActivity.this.finish();
+                    }
+                }).setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
     }
 
 
