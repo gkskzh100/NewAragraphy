@@ -82,7 +82,6 @@ public class MainActivity extends Activity {
         parseImage();
 
 
-
     }
 
 
@@ -100,9 +99,9 @@ public class MainActivity extends Activity {
         boolean isMobileAvail = ni.isAvailable();
         boolean isMobileConn = ni.isConnected();
 
-        if(isWifiConn==false && isMobileConn==false) {
+        if (isWifiConn == false && isMobileConn == false) {
             Toast.makeText(getApplicationContext(), "인터넷에 연결할 수 없습니다.\n연결을 확인하세요.", Toast.LENGTH_LONG).show();
-        } else if (isWifiAvail==true || isMobileAvail==true) {
+        } else if (isWifiAvail == true || isMobileAvail == true) {
         }
         setListener();
     }
@@ -126,9 +125,9 @@ public class MainActivity extends Activity {
                 boolean isMobileAvail = ni.isAvailable();
                 boolean isMobileConn = ni.isConnected();
 
-                if(isWifiConn==false && isMobileConn==false) {
+                if (isWifiConn == false && isMobileConn == false) {
                     Toast.makeText(getApplicationContext(), "인터넷에 연결할 수 없습니다.\n연결을 확인하세요.", Toast.LENGTH_LONG).show();
-                } else if (isWifiAvail==true || isMobileAvail==true) {
+                } else if (isWifiAvail == true || isMobileAvail == true) {
                     loadHtml();
                 }
             }
@@ -180,8 +179,8 @@ public class MainActivity extends Activity {
     private View.OnClickListener unsplashClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            server_trans = true;
             parseImage();
+            server_trans = true;
             startActivity(new Intent(MainActivity.this, SelectBackActivity.class));
             mDialog.onBackPressed();
         }
@@ -288,7 +287,7 @@ public class MainActivity extends Activity {
 
     public class JsoupParseAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private String htmlPageUrl = "https://unsplash.com/collections/225685/surf";
+        private String htmlPageUrl = "http://bhy98528.cafe24.com/parsedImage.html";
         int count = 0;
         Context context;
         ArrayList<String> imageUris = new ArrayList<String>();
@@ -303,22 +302,24 @@ public class MainActivity extends Activity {
         }
 
         protected Void doInBackground(Void... params) {
+
+
             try {
-
                 Document doc = Jsoup.connect(htmlPageUrl).timeout(0).get();
-                Elements tags = doc.select(".cV68d");
+                Elements tags = doc.select("img");
                 imageUris = new ArrayList<String>();
-
+                Log.d("sasasa", dbManager.PrintData());
                 for (Element i : tags) {
-                    imageUris.add(i.attr("style").toString().substring(i.attr("style").toString()
-                            .indexOf('"') + 1, i.attr("style").toString().lastIndexOf('"')));
-                    dbManager.insert("insert into IMAGES values(null, '" + imageUris.get(count) + "'" + ");");
-                    count++;
+                    Log.d("ImageCheck", i.attr("src"));
+
+                    dbManager.insert("insert into IMAGES values(null, '" + i.attr("src") + "'" + ");");
+
 
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
 
             return null;
         }
@@ -376,27 +377,28 @@ public class MainActivity extends Activity {
         });
         t.start();
     }
-    private class back extends AsyncTask<String, Integer,Bitmap> {
+
+    private class back extends AsyncTask<String, Integer, Bitmap> {
 
         @Override
         protected Bitmap doInBackground(String... urls) {
 
-            try{
+            try {
                 URL myFileUrl = new URL(urls[0]);
-                HttpURLConnection conn = (HttpURLConnection)myFileUrl.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
                 conn.setDoInput(true);
                 conn.connect();
 
                 InputStream is = conn.getInputStream();
                 bitmap = BitmapFactory.decodeStream(is);
 
-            }catch(IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return bitmap;
         }
 
-        protected void onPostExecute(Bitmap img){
+        protected void onPostExecute(Bitmap img) {
             int height = img.getHeight();
             int width = img.getWidth();
             Log.d(TAG, "height : " + height + ", width : " + width);
@@ -420,7 +422,6 @@ public class MainActivity extends Activity {
         }
 
     }
-
 
 
 }
