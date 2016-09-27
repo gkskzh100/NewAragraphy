@@ -9,11 +9,11 @@ import android.view.View;
 /**
  * Created by Bong on 2016-08-03.
  */
-public class SelectBackClickListener implements RecyclerView.OnItemTouchListener {
+public class RecyclerVIewClickListener implements RecyclerView.OnItemTouchListener {
     private OnItemClickListener mListener;
     GestureDetector mGestureDetector;
 
-    public SelectBackClickListener(Context context, final RecyclerView recyclerView, final OnItemClickListener mListener) {
+    public RecyclerVIewClickListener(Context context, final RecyclerView recyclerView, final OnItemClickListener mListener) {
         this.mListener = mListener;
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener(){
             @Override

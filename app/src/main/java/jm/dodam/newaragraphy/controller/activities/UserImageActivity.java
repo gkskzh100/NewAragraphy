@@ -2,6 +2,7 @@ package jm.dodam.newaragraphy.controller.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.RecyclerVIewClickListener;
 import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
 import jm.dodam.newaragraphy.controller.adapters.UserImageAdapter;
 import jm.dodam.newaragraphy.utils.DBManager;
@@ -80,7 +82,25 @@ public class UserImageActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         UserImageAdapter userImageAdapter = new UserImageAdapter(getApplicationContext(),userImageDB.getImageList());
         recyclerView.setAdapter(userImageAdapter);
+        setItemClick();
 
+    }
+    private void setItemClick(){
+        recyclerView.addOnItemTouchListener(new RecyclerVIewClickListener(getApplicationContext(), recyclerView, new RecyclerVIewClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent chImageActivity = new Intent(getApplicationContext(),ChoosedUserImageActivity.class);
+
+                //이미지의 포지션 값을 다음 화면에 보낸다.
+                chImageActivity.putExtra("position",position);
+                startActivity(chImageActivity);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
 
     }
 }

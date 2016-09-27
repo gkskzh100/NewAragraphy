@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -22,7 +21,7 @@ import android.widget.ImageButton;
 import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
 import jm.dodam.newaragraphy.utils.DBManager;
 import jm.dodam.newaragraphy.R;
-import jm.dodam.newaragraphy.SelectBackClickListener;
+import jm.dodam.newaragraphy.RecyclerVIewClickListener;
 import jm.dodam.newaragraphy.utils.Global;
 
 /**
@@ -113,7 +112,7 @@ public class SelectBackActivity extends AppCompatActivity{
 
     }
     private void setItemClick(){
-        recyclerView.addOnItemTouchListener(new SelectBackClickListener(getApplicationContext(), recyclerView, new SelectBackClickListener.OnItemClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerVIewClickListener(getApplicationContext(), recyclerView, new RecyclerVIewClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Intent itCropActivity = new Intent(getApplicationContext(),CropBgActivity.class);
