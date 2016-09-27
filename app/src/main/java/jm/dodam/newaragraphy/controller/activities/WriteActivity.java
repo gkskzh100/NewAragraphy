@@ -76,6 +76,8 @@ import jm.dodam.newaragraphy.controller.fragment.ChangeColorFragment;
 import jm.dodam.newaragraphy.controller.fragment.ChangeFontFragment;
 import jm.dodam.newaragraphy.controller.fragment.ChangeSizeFragment;
 import jm.dodam.newaragraphy.utils.CustomLoading;
+import jm.dodam.newaragraphy.utils.DBManager;
+import jm.dodam.newaragraphy.utils.Global;
 import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
 public class WriteActivity extends AppCompatActivity {
@@ -117,6 +119,8 @@ public class WriteActivity extends AppCompatActivity {
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
     public Bitmap bm;
+
+    final DBManager userImageDB = new DBManager(WriteActivity.this, "UserImage.db", null, Global.DB_VERSION);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,7 +281,7 @@ public class WriteActivity extends AppCompatActivity {
 
                 String text = "#Aragraphy";
                 File file = new File(savePath);
-
+                userImageDB.insert("insert into IMAGES values(null, '" + savePath + "'" + ");");
                 final List targetedShareIntents = new ArrayList<>();
 
                 //facebook

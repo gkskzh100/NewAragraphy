@@ -40,6 +40,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".controller.activities.CropBgActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".controller.activities.UserImageActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"/>
     </application>

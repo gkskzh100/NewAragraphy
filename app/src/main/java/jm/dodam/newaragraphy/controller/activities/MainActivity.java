@@ -56,10 +56,11 @@ import java.util.ArrayList;
 import jm.dodam.newaragraphy.ChoiceDialog;
 import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.utils.DBManager;
+import jm.dodam.newaragraphy.utils.Global;
 
 public class MainActivity extends Activity {
 
-    final DBManager dbManager = new DBManager(MainActivity.this, "Image.db", null, 1);
+    final DBManager dbManager = new DBManager(MainActivity.this, "Image.db", null, Global.DB_VERSION);
     private static final int MY_PERMISSION_REQUEST_STORAGE = 0;
     private static final String TAG = "MainActivity";
 
@@ -71,11 +72,11 @@ public class MainActivity extends Activity {
     private ImageView mainChangeImage;
     private ImageButton mainRightButton;
     private ImageButton mainGuideLayout;
+    private ImageButton mainLeftButton;
     private boolean bitmapRatio = false;
     static boolean server_trans = false;
     private int guideCount;
 
-    private boolean imageDownload = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,18 +95,15 @@ public class MainActivity extends Activity {
 
 
         if(guideCount > 0) {
-            imageDownload = false;
             mainGuideLayout.setVisibility(View.GONE);
         }
 
-        if (imageDownload == true){
-            dbManager.delete("delete from " + "IMAGES");
-        }
 
     }
 
 
     private void init() {
+        mainLeftButton = (ImageButton) findViewById(R.id.mainLeftButton);
         mainExImageView = (ImageView) findViewById(R.id.mainExImageView);
         mainWriteImgBtn = (ImageButton) findViewById(R.id.mainWriteImgBtn);
         mainChangeImage = (ImageView) findViewById(R.id.mainChangeImage);
@@ -129,6 +127,12 @@ public class MainActivity extends Activity {
     }
 
     private void setListener() {
+        mainLeftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),UserImageActivity.class));
+            }
+        });
         mainWriteImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,7 +216,6 @@ public class MainActivity extends Activity {
     private View.OnClickListener unsplashClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            parseImage();
             server_trans = true;
             startActivity(new Intent(MainActivity.this, SelectBackActivity.class));
             mDialog.onBackPressed();
@@ -310,60 +313,19 @@ public class MainActivity extends Activity {
 
 
     private void parseImage() {
-
+        Log.d("sqqqqq",dbManager.PrintData());
         if (dbManager.PrintData() == "") {
-            JsoupParseAsyncTask jsoupAsyncTask;
-            jsoupAsyncTask = new JsoupParseAsyncTask(getApplicationContext());
-            jsoupAsyncTask.execute();
+            setImageData();
         }
     }
-
-    public class JsoupParseAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        private String htmlPageUrl = "http://bhy98528.cafe24.com/parsedImage.html";
-        int count = 0;
-        Context context;
-        ArrayList<String> imageUris = new ArrayList<String>();
-
-        public JsoupParseAsyncTask(Context context) {
-            this.context = context;
+    private void setImageData(){
+        for (int i=1;i<=54;i++){
+            dbManager.insert("insert into IMAGES values(null, '" + "http://bhy98528.cafe24.com/"+"unsplash/"+i+".jpg"+ "'" + ");");
         }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected Void doInBackground(Void... params) {
+      }
 
 
-            try {
-                Document doc = Jsoup.connect(htmlPageUrl).timeout(0).get();
-                Elements tags = doc.select("img");
-                imageUris = new ArrayList<String>();
-                Log.d("sasasa", dbManager.PrintData());
-                for (Element i : tags) {
-                    Log.d("ImageCheck", i.attr("src"));
 
-                    dbManager.insert("insert into IMAGES values(null, '" + "http://bhy98528.cafe24.com/"+i.attr("src") + "'" + ");");
-
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-
-        }
-
-    }
 
     Handler handler = new Handler();
 

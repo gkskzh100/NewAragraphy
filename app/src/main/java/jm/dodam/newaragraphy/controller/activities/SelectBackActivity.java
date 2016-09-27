@@ -23,13 +23,14 @@ import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
 import jm.dodam.newaragraphy.utils.DBManager;
 import jm.dodam.newaragraphy.R;
 import jm.dodam.newaragraphy.SelectBackClickListener;
+import jm.dodam.newaragraphy.utils.Global;
 
 /**
  * Created by Bong on 201d6-08-02.
  */
 public class SelectBackActivity extends AppCompatActivity{
 
-    final DBManager dbManager = new DBManager(SelectBackActivity.this,"Image.db",null,1);
+    final DBManager dbManager = new DBManager(SelectBackActivity.this,"Image.db",null, Global.DB_VERSION);
     private ImageButton selectExitImageBtn;
     private RecyclerView recyclerView;
     public static SelectBackActivity mySelectBackActivity;

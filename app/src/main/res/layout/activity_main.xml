@@ -31,6 +31,7 @@
                 android:layout_height="300dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="100dp"
+
                 android:background="@drawable/center_stroke">
                 <ImageView
                     android:id="@+id/mainChangeImage"
@@ -54,13 +55,24 @@
             <ImageButton
                 android:id="@+id/mainRightButton"
                 android:layout_width="50dp"
-                android:layout_height="20dp"
+                android:layout_height="26dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="60dp"
                 android:layout_marginRight="30dp"
                 android:src="@drawable/right_button"
                 android:scaleType="fitCenter"
                 android:background="#00000000"/>
+            <ImageButton
+                android:id="@+id/mainLeftButton"
+                android:layout_width="50dp"
+                android:layout_height="26dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="30dp"
+                android:src="@drawable/left_btn"
+                android:scaleType="fitCenter"
+                android:background="#00000000"/>
+
         </RelativeLayout>
 
         <ImageButton
