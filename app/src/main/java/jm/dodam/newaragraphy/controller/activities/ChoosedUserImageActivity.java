@@ -3,22 +3,37 @@ package jm.dodam.newaragraphy.controller.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import jm.dodam.newaragraphy.R;
+import jm.dodam.newaragraphy.utils.CustomLoading;
 import jm.dodam.newaragraphy.utils.DBManager;
 import jm.dodam.newaragraphy.utils.Global;
+import jm.dodam.newaragraphy.utils.SingleMediaScanner;
 
 /**
  * Created by Bong on 2016-09-27.
@@ -27,10 +42,12 @@ public class ChoosedUserImageActivity extends Activity {
 
     final DBManager userImageDB = new DBManager(ChoosedUserImageActivity.this, "UserImage.db", null, Global.DB_VERSION);
     private ImageView imageView;
+    private RelativeLayout userCaptureLayout;
     private ImageButton choosedExitBtn, choosedDownloadBtn;
     private LinearLayout topLayout, bottomLayout;
     private Boolean imageVisible = false;
-    private String imageUri;
+    private String imageUri = null, savePath = null;
+    private int imageWidth = 0, imageHeight = 0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +57,7 @@ public class ChoosedUserImageActivity extends Activity {
     }
 
     private void init() {
+        userCaptureLayout = (RelativeLayout)findViewById(R.id.UserCaptureLayout);
         choosedDownloadBtn = (ImageButton)findViewById(R.id.choosedDownloadBtn);
         choosedExitBtn = (ImageButton)findViewById(R.id.choosedExitBtn);
         imageView = (ImageView)findViewById(R.id.choosedImage);
@@ -56,7 +74,7 @@ public class ChoosedUserImageActivity extends Activity {
         choosedDownloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                captureImage();
             }
         });
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +104,56 @@ public class ChoosedUserImageActivity extends Activity {
 
         Glide.with(getApplicationContext())
                 .load(imageUri)
-                .centerCrop()
+                .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
+    }
+
+    private void captureImage(){
+
+
+        String folder = "Aragraphy";
+
+
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date currentTime_1 = new Date();
+            String dateString = formatter.format(currentTime_1);
+            File sdCardPath = Environment.getExternalStorageDirectory();
+            File dirs = new File(Environment.getExternalStorageDirectory(), folder);
+
+            if (!dirs.exists()) {
+                dirs.mkdirs();
+                Log.d("CAMERA_TEST", "Directory Created");
+            }
+            imageView.setDrawingCacheEnabled(true);
+
+            Bitmap captureView = imageView.getDrawingCache();
+            FileOutputStream fos;
+            String save;
+
+            try {
+                imageView.refreshDrawableState();
+
+                save = sdCardPath.getPath() + "/" + folder + "/" + dateString + ".png";
+                savePath = save;
+                fos = new FileOutputStream(save);
+                captureView.compress(Bitmap.CompressFormat.PNG, 100, fos);
+
+                File file = new File(save);
+                SingleMediaScanner mScanner = new SingleMediaScanner(getApplicationContext(), file);
+                Toast.makeText(ChoosedUserImageActivity.this, "이미지가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            Log.e("Screen", "" + e.toString());
+        }
+
+
+        String text = "#Aragraphy";
+        File file = new File(savePath);
     }
 
 }
