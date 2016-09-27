@@ -233,7 +233,7 @@ public class WriteActivity extends AppCompatActivity {
                     Log.d("loading", "loading...");
                 }
 
-                String folder = "Test_Directory";
+                String folder = "Aragraphy";
                 writeCaptureLayout.setDrawingCacheEnabled(false);
                 if (customTextView != null) {
                     customTextView.setFocusable(false);
