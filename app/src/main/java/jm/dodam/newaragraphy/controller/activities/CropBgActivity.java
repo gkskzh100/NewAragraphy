@@ -46,7 +46,6 @@ public class CropBgActivity extends AppCompatActivity{
     * */
     private TextView cropFreeTv, cropSquareTv, cropHsquareTv, cropVsquareTv;
     private ImageButton SelectAcceptImageBtn, SelectExitImageBtn;
-    final DBManager dbManager = new DBManager(CropBgActivity.this,"Image.db",null,1);
     private byte[] imageArr;
     private ImageView freeCropImageBtn, squareCropImageBtn, hQuadrangleCropImageBtn, vQuadrangleCropImageBtn;
 
@@ -84,9 +83,8 @@ public class CropBgActivity extends AppCompatActivity{
             @Override
             public void run() {
                 if(getIntent().getBooleanExtra("login", true)){
-                    int position = getIntent().getIntExtra("position",0);
                     task = new back();
-                    task.execute(dbManager.getImageList().get(position));
+                    task.execute(getIntent().getStringExtra("SelectImage"));
                 }else{
                     cropImageView.setImageUriAsync((Uri)getIntent().getExtras().get("galleryImage"));
                 }

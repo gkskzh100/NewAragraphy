@@ -18,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 
+import java.util.ArrayList;
+
 import jm.dodam.newaragraphy.controller.adapters.BackgroundAdapter;
 import jm.dodam.newaragraphy.utils.DBManager;
 import jm.dodam.newaragraphy.R;
@@ -29,12 +31,11 @@ import jm.dodam.newaragraphy.utils.Global;
  */
 public class SelectBackActivity extends AppCompatActivity{
 
-    final DBManager dbManager = new DBManager(SelectBackActivity.this,"Image.db",null, Global.DB_VERSION);
     private ImageButton selectExitImageBtn;
     private RecyclerView recyclerView;
     public static SelectBackActivity mySelectBackActivity;
     private Context context;
-
+    private ArrayList<String> imageUri = new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +49,13 @@ public class SelectBackActivity extends AppCompatActivity{
         setItemClick();
 
     }
-
+    private void setImageData(){
+        for (int i=1;i<=54;i++){
+            imageUri.add("http://bhy98528.cafe24.com/"+"unsplash/"+i+".jpg");
+        }
+    }
     private void init() {
+        setImageData();
         mySelectBackActivity = SelectBackActivity.this;
         recyclerView = (RecyclerView)findViewById(R.id.SelectRecyclerView);
         selectExitImageBtn = (ImageButton)findViewById(R.id.SelectExitImageBtn);
@@ -104,7 +110,7 @@ public class SelectBackActivity extends AppCompatActivity{
             //그리드뷰 설정하는곳
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-            BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(dbManager.getImageList(), getApplicationContext());
+            BackgroundAdapter myBackgroundAdapter = new BackgroundAdapter(imageUri, getApplicationContext());
             recyclerView.setAdapter(myBackgroundAdapter);
             alertDialogCreate();
         }
@@ -118,7 +124,7 @@ public class SelectBackActivity extends AppCompatActivity{
                 Intent itCropActivity = new Intent(getApplicationContext(),CropBgActivity.class);
 
                 //이미지의 포지션 값을 다음 화면에 보낸다.
-                itCropActivity.putExtra("position",position);
+                itCropActivity.putExtra("SelectImage",imageUri.get(position));
                 itCropActivity.putExtra("login",true);
                 startActivity(itCropActivity);
                 finish();
