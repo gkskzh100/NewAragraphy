@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ import jm.dodam.newaragraphy.utils.Global;
  * Created by Bong on 2016-09-26.
  */
 public class UserImageActivity extends AppCompatActivity {
+
 
     private RecyclerView recyclerView;
     private ImageButton userImageBtn;
@@ -47,6 +49,9 @@ public class UserImageActivity extends AppCompatActivity {
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.UserRecyclerView);
         userImageBtn = (ImageButton) findViewById(R.id.UserExitImageBtn);
+
+
+
         setListener();
         setListAdapter();
     }

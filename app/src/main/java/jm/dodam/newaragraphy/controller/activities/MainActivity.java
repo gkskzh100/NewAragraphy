@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class MainActivity extends Activity {
 
     private static final int MY_PERMISSION_REQUEST_STORAGE = 0;
     private static final String TAG = "MainActivity";
+    final DBManager userImageDB = new DBManager(MainActivity.this, "UserImage.db", null, Global.DB_VERSION);
 
     private ImageView mainExImageView;
     private ImageButton mainWriteImgBtn;
@@ -88,10 +90,10 @@ public class MainActivity extends Activity {
         checkPermission();
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         guideCount = pref.getInt("Guide", 0);
-        Log.d(TAG,guideCount + "");
+        Log.d(TAG, guideCount + "");
 
 
-        if(guideCount > 0) {
+        if (guideCount > 0) {
             mainGuideLayout.setVisibility(View.GONE);
         }
 
@@ -127,7 +129,11 @@ public class MainActivity extends Activity {
         mainLeftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),UserImageActivity.class));
+                if (userImageDB.getLength() != 0) {
+                    startActivity(new Intent(getApplicationContext(), UserImageActivity.class));
+                } else {
+                    Toast.makeText(getApplicationContext(), "제작한 이미지가 없습니다.", Toast.LENGTH_LONG).show();
+                }
             }
         });
         mainWriteImgBtn.setOnClickListener(new View.OnClickListener() {
@@ -307,10 +313,6 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
     }
-
-
-
-
 
 
     Handler handler = new Handler();
