@@ -6,6 +6,5 @@ package jm.dodam.newaragraphy.utils;
 public class Global {
 
     public static final int INVISIBLE = 1;
-    public static final int DB_VERSION = 2;
-
+    public static final int DB_VERSION = 1;
 }
