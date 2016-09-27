@@ -60,6 +60,7 @@ import jm.dodam.newaragraphy.utils.Global;
 
 public class MainActivity extends Activity {
 
+    final DBManager dbManager = new DBManager(MainActivity.this, "Image.db", null, Global.DB_VERSION);
     private static final int MY_PERMISSION_REQUEST_STORAGE = 0;
     private static final String TAG = "MainActivity";
 
@@ -86,6 +87,8 @@ public class MainActivity extends Activity {
         loadHtml();
         init();
         checkPermission();
+        parseImage();
+
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         guideCount = pref.getInt("Guide", 0);
         Log.d(TAG,guideCount + "");
@@ -309,6 +312,17 @@ public class MainActivity extends Activity {
     }
 
 
+    private void parseImage() {
+        Log.d("sqqqqq",dbManager.PrintData());
+        if (dbManager.PrintData() == "") {
+            setImageData();
+        }
+    }
+    private void setImageData(){
+        for (int i=1;i<=54;i++){
+            dbManager.insert("insert into IMAGES values(null, '" + "http://bhy98528.cafe24.com/"+"unsplash/"+i+".jpg"+ "'" + ");");
+        }
+      }
 
 
 
