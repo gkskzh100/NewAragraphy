@@ -31,10 +31,8 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -132,7 +130,7 @@ public class MainActivity extends Activity {
                 if (userImageDB.getLength() != 0) {
                     startActivity(new Intent(getApplicationContext(), UserImageActivity.class));
                 } else {
-                    Toast.makeText(getApplicationContext(), "제작한 이미지가 없습니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "제작한 이미지가 없습니다.\n먼저 이미지를 제작해주세요.", Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -139,7 +139,7 @@ public class SelectBackActivity extends AppCompatActivity{
 
     private void alertDialogCreate() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setMessage("Free 이미지로 제작할 시 메인화면에 올라가게 됩니다.작업을 계속하시겠습니까?")
+        alertDialogBuilder.setMessage("Free 이미지로 제작할 시 글귀가 메인화면에 올라가게 됩니다.작업을 계속하시겠습니까?")
                 .setCancelable(false)
                 .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
