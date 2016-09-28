@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,6 +49,7 @@ public class ChoosedUserImageActivity extends Activity {
     private Boolean imageVisible = false;
     private String imageUri = null, savePath = null;
     private int imageWidth = 0, imageHeight = 0;
+    private Bitmap bm = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,16 +103,28 @@ public class ChoosedUserImageActivity extends Activity {
         });
     }
     private void setChooseImage(){
+        BitmapFactory.Options bfo = new BitmapFactory.Options();
+        bfo.inSampleSize = 2;
+        bm = BitmapFactory.decodeFile(imageUri,bfo);
 
-        Glide.with(getApplicationContext())
-                .load(imageUri)
-                .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView);
+        imageWidth = bm.getWidth();
+        imageHeight = bm.getHeight();
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+        float screenWidth = dm.widthPixels;
+
+        float ratio = screenWidth / imageWidth;
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) userCaptureLayout.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.height = (int) (imageHeight * ratio);
+        userCaptureLayout.setLayoutParams(layoutParams);
+
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imageView.setImageBitmap(bm);
     }
 
     private void captureImage(){
-
 
         String folder = "Aragraphy";
 
@@ -126,14 +140,14 @@ public class ChoosedUserImageActivity extends Activity {
                 dirs.mkdirs();
                 Log.d("CAMERA_TEST", "Directory Created");
             }
-            imageView.setDrawingCacheEnabled(true);
+            userCaptureLayout.setDrawingCacheEnabled(true);
 
-            Bitmap captureView = imageView.getDrawingCache();
+            Bitmap captureView = userCaptureLayout.getDrawingCache();
             FileOutputStream fos;
             String save;
 
             try {
-                imageView.refreshDrawableState();
+                userCaptureLayout.refreshDrawableState();
 
                 save = sdCardPath.getPath() + "/" + folder + "/" + dateString + ".png";
                 savePath = save;
